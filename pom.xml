@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>com.hpe.caf</groupId>
+        <artifactId>caf-maven-latest</artifactId>
+        <version>1-SNAPSHOT</version>
+        <relativePath>../caf-maven-latest</relativePath>
+    </parent>
+
+    <groupId>com.hpe.caf.worker</groupId>
+    <artifactId>worker-batch-container</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>worker-batch-container-build</module>
+    </modules>
+
+    <properties>
+        <version.major>1-SNAPSHOT</version.major>
+        <version.major.minor>${project.version}</version.major.minor>
+
+        <caf.worker-framework.version>10.4</caf.worker-framework.version>
+        <caf.config.impl>config-file</caf.config.impl>
+        <caf.codec.impl>codec-json</caf.codec.impl>
+        <caf.worker-store.impl>worker-store-cs</caf.worker-store.impl>
+        <caf.worker-queue.impl>worker-queue-rabbit</caf.worker-queue.impl>
+        <deployFileUrl>${project.distributionManagement.snapshotRepository.url}</deployFileUrl>
+        <repositoryId>${project.distributionManagement.snapshotRepository.id}</repositoryId>
+
+        <!-- location of test data to be used by tests ran via worker-tester framework -->
+        <test.data>${project.basedir}/test-data</test.data>
+    </properties>
+    
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.hpe.caf.worker</groupId>
+                <artifactId>worker-framework</artifactId>
+                <version>${caf.worker-framework.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <ciManagement>
+        <system>hudson</system>
+        <url>http://cafbuilder.hpswlabs.hp.com:8080/job/worker-batch-container/</url>
+    </ciManagement>
+
+</project>
