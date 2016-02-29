@@ -22,4 +22,6 @@ public interface BatchWorkerPlugin {
      */
     void processBatch(BatchWorkerServices batchWorkerServices, String batchDefinition, String taskMessageType,
                       Map<String, String> taskMessageParams);
+
+    String getIdentifier();
 }
