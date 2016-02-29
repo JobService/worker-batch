@@ -1,0 +1,6 @@
+---
+batchType: BATCH_WORKER_TEST_IMPL
+targetPipe: targetPipe
+taskMessageParams:
+      param1: value1
+taskMessageType: classname-of-worker-task

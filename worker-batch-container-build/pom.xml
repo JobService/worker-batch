@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>worker-batch-container</artifactId>
-        <groupId>com.hpe.caf.worker</groupId>
+        <groupId>com.hpe.caf.worker.batch</groupId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -12,19 +12,17 @@
     <packaging>pom</packaging>
 
     <artifactId>worker-batch-container-build</artifactId>
-    
+
     <dependencies>
         <dependency>
             <groupId>com.hpe.caf</groupId>
             <artifactId>caf-api</artifactId>
         </dependency>
-        <!--
-            TODO add in when available
         <dependency>
-            <groupId>com.hpe.caf.worker</groupId>
+            <groupId>com.hpe.caf.worker.batch</groupId>
             <artifactId>worker-batch</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>com.hpe.caf.worker</groupId>
             <artifactId>${caf.worker-store.impl}</artifactId>
@@ -68,6 +66,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.hpe.caf.worker.batch</groupId>
+            <artifactId>worker-batch-test-plugin</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
         <!-- Integration test dependencies -->
         <dependency>
             <groupId>com.hpe.caf.worker</groupId>
@@ -81,14 +85,334 @@
             <version>1-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
-        <!-- TODO add in during integration tests
         <dependency>
             <groupId>com.hpe.caf.worker</groupId>
-            <artifactId>worker-testing-boilerplate</artifactId>
+            <artifactId>worker-testing-batch</artifactId>
             <version>1-SNAPSHOT</version>
             <scope>test</scope>
-        </dependency>-->
+        </dependency>
     </dependencies>
-    
-    
+
+    <properties>
+        <!-- location of test data to be used by tests ran via worker-tester framework -->
+        <test.data>${project.basedir}/test-data</test.data>
+    </properties>
+
+
+    <profiles>
+        <profile>
+            <id>use-default-fixed-ports</id>
+            <properties>
+                <worker.adminport>8081</worker.adminport>
+                <rabbitmq.node.port>5672</rabbitmq.node.port>
+                <rabbitmq.ctrl.port>15672</rabbitmq.ctrl.port>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>integration-test</id>
+            <activation>
+                <property>
+                    <name>CAF_BUILD_TYPE</name>
+                    <value>official</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jolokia</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>${docker.maven.version}</version>
+                        <executions>
+                            <execution>
+                                <id>start</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>stop</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>store-fs</id>
+            <activation>
+            </activation>
+            <properties>
+                <caf.worker-store.impl>worker-store-fs</caf.worker-store.impl>
+                <worker-batch.container.name>caf/worker-batch-fs
+                </worker-batch.container.name>
+                <worker-batch.container.alias>batch-worker-fs</worker-batch.container.alias>
+            </properties>
+        </profile>
+        <profile>
+            <id>store-cs</id>
+            <activation>
+                <property>
+                    <name>CAF_BUILD_TYPE</name>
+                    <value>official</value>
+                </property>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <caf.worker-store.impl>worker-store-cs</caf.worker-store.impl>
+                <worker-batch.container.name>caf/worker-batch
+                </worker-batch.container.name>
+                <worker-batch.container.alias>batch-worker</worker-batch.container.alias>
+
+                <datastore.container.id>0a1b8e24cc44490888b3d8d8ebba8309</datastore.container.id>
+            </properties>
+        </profile>
+    </profiles>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven.failsafe.version}</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <!-- properties used by worker-tester integration test framework -->
+                        <docker.host.address>${docker.host.address}</docker.host.address>
+                        <worker.adminport>${worker.adminport}</worker.adminport>
+                        <rabbitmq.node.port>${rabbitmq.node.port}</rabbitmq.node.port>
+                        <rabbitmq.ctrl.port>${rabbitmq.ctrl.port}</rabbitmq.ctrl.port>
+                        <input.folder>${test.data}</input.folder>
+                        <expected.folder>${test.data}</expected.folder>
+                        <datastore.container.id>${datastore.container.id}</datastore.container.id>
+                        <datastore.enabled>false</datastore.enabled>
+                    </systemPropertyVariables>
+                    <environmentVariables>
+                        <CAF_APPNAME>test/worker-batch</CAF_APPNAME>
+                        <CAF_CONFIG_PATH>${project.basedir}/test-configs</CAF_CONFIG_PATH>
+                        <!-- Environment variables needed for old style tests-->
+                        <rabbit.port>${rabbitmq.node.port}</rabbit.port>
+                        <rabbit.host>${docker.host.address}</rabbit.host>
+
+                    </environmentVariables>
+                    <!--<debugForkedProcess>true</debugForkedProcess>-->
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
+                <executions>
+                    <execution>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jolokia</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker.maven.version}</version>
+                <executions>
+                    <execution>
+                        <id>upload-docker-container</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>push</goal>
+                        </goals>
+                        <configuration>
+                            <registry>${docker.dev.repo}</registry>
+                            <image>${worker-batch.container.alias}</image>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <verbose>true</verbose>
+                    <autoPull>on</autoPull>
+                    <logDate>default</logDate>
+                    <images>
+                        <!-- Start Rabbit image -->
+                        <image>
+                            <alias>rabbitmq</alias>
+                            <name>rabbitmq:3-management</name>
+                            <run>
+                                <ports>
+                                    <port>${rabbitmq.ctrl.port}:15672</port>
+                                    <port>${rabbitmq.node.port}:5672</port>
+                                </ports>
+                                <wait>
+                                    <log>Server startup complete</log>
+                                    <http>
+                                        <url>http://${docker.host.address}:${rabbitmq.ctrl.port}</url>
+                                    </http>
+                                    <time>120000</time>
+                                    <shutdown>500</shutdown>
+                                </wait>
+                                <log>
+                                    <enabled>true</enabled>
+                                </log>
+                            </run>
+                        </image>
+                        <!-- End Rabbit image -->
+                        <!-- Start Config image -->
+                        <image>
+                            <alias>config</alias>
+                            <name>${project.artifactId}-test-config:${project.version}</name>
+                            <build>
+                                <assembly>
+                                    <basedir>/config</basedir>
+                                    <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>test-configs</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                        </image>
+                        <!-- End Config image -->
+                        <!-- Start Plugin Container -->
+                        <image>
+                            <alias>plugin</alias>
+                            <name>${project.artifactId}-test-plugins</name>
+                            <build>
+                                <assembly>
+                                    <basedir>batch-plugins</basedir>
+                                    <inline>
+                                        <dependencySets>
+                                            <dependencySet>
+                                                <includes>
+                                                    <include>com.hpe.caf.worker.batch:worker-batch-test-plugin</include>
+                                                </includes>
+                                                <outputDirectory>/mnt/mesos/sandbox</outputDirectory>
+                                                <outputFileNameMapping>batch-plugins</outputFileNameMapping>
+                                            </dependencySet>
+                                        </dependencySets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                        </image>
+                        <!-- End Plugin Container -->
+                        <!-- Begin Batch Worker image -->
+                        <image>
+                            <alias>${worker-batch.container.alias}</alias>
+                            <name>${worker-batch.container.name}</name>
+                            <build>
+                                <from>java:8</from>
+                                <maintainer>dominic.joh.gibson@hpe.com</maintainer>
+                                <ports>
+                                    <port>8080</port>
+                                    <port>8081</port>
+                                </ports>
+                                <tags>
+                                    <tag>${version.major}</tag>
+                                    <tag>${version.major.minor}</tag>
+                                    <tag>latest</tag>
+                                </tags>
+                                <labels>
+                                    <caf.worker-framework.version>${caf.worker-framework.version}
+                                    </caf.worker-framework.version>
+                                    <caf.worker-queue.impl>${caf.worker-queue.impl}</caf.worker-queue.impl>
+                                    <caf.worker-store.impl>${caf.worker-store.impl}</caf.worker-store.impl>
+                                    <caf.config.impl>${caf.config.impl}</caf.config.impl>
+                                    <caf.codec.impl>${caf.codec.impl}</caf.codec.impl>
+                                </labels>
+                                <entryPoint>
+                                    <exec>
+                                        <args>/maven/tini-${tini.version}.exe</args>
+                                        <args>-v</args>
+                                        <args>--</args>
+                                    </exec>
+                                </entryPoint>
+                                <cmd>/maven/worker.sh</cmd>
+                                <assembly>
+                                    <mode>tar</mode>
+                                    <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <lineEnding>unix</lineEnding>
+                                                <includes>
+                                                    <include>*.sh</include>
+                                                </includes>
+                                                <fileMode>0755</fileMode>
+                                            </fileSet>
+                                            <fileSet>
+                                                <lineEnding>unix</lineEnding>
+                                                <includes>
+                                                    <include>*.yaml</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                        <dependencySets>
+                                            <dependencySet>
+                                                <useProjectArtifact>false</useProjectArtifact>
+                                                <scope>runtime</scope>
+                                                <excludes>
+                                                    <exclude>com.github.krallin:tini</exclude>
+                                                </excludes>
+                                            </dependencySet>
+                                            <dependencySet>
+                                                <useProjectArtifact>false</useProjectArtifact>
+                                                <fileMode>0755</fileMode>
+                                                <includes>
+                                                    <include>com.github.krallin:tini</include>
+                                                </includes>
+                                            </dependencySet>
+                                        </dependencySets>
+                                    </inline>
+                                </assembly>
+                            </build>
+
+                            <run>
+                                <ports>
+                                    <port>${worker.adminport}:8081</port>
+                                </ports>
+                                <env>
+                                    <CAF_APPNAME>test/worker-batch</CAF_APPNAME>
+                                    <CAF_CONFIG_PATH>/config</CAF_CONFIG_PATH>
+                                </env>
+                                <volumes>
+                                    <from>
+                                        <image>config</image>
+                                        <image>plugin</image>
+                                    </from>
+                                </volumes>
+                                <links>
+                                    <link>rabbitmq</link>
+                                </links>
+                                <log>
+                                    <enabled>true</enabled>
+                                </log>
+                                <wait>
+                                    <http>
+                                        <url>http://${docker.host.address}:${worker.adminport}</url>
+                                    </http>
+                                    <time>120000</time>
+                                    <shutdown>500</shutdown>
+                                </wait>
+                            </run>
+                        </image>
+                        <!-- End Batch Worker image -->
+                    </images>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
 </project>

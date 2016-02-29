@@ -1,0 +1,5 @@
+{
+    "outputQueue":"${marathon-group}-workflow-in",
+    "threads":"${batch-threads}",
+    "cacheExpireTime": ${batch-cache-expire}
+}

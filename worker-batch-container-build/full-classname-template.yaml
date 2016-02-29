@@ -1,0 +1,6 @@
+--- 
+batchType: com.hpe.caf.worker.batch.BatchPluginTestImpl
+targetPipe: targetPipe
+taskMessageParams: 
+      param1: value1
+taskMessageType: classname-of-worker-task

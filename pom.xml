@@ -11,13 +11,15 @@
         <relativePath>../caf-maven-latest</relativePath>
     </parent>
 
-    <groupId>com.hpe.caf.worker</groupId>
+    <groupId>com.hpe.caf.worker.batch</groupId>
     <artifactId>worker-batch-container</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
+        <module>worker-batch-test-plugin</module>
         <module>worker-batch-container-build</module>
+        <module>worker-batch-configuration</module>
     </modules>
 
     <properties>
@@ -29,11 +31,6 @@
         <caf.codec.impl>codec-json</caf.codec.impl>
         <caf.worker-store.impl>worker-store-cs</caf.worker-store.impl>
         <caf.worker-queue.impl>worker-queue-rabbit</caf.worker-queue.impl>
-        <deployFileUrl>${project.distributionManagement.snapshotRepository.url}</deployFileUrl>
-        <repositoryId>${project.distributionManagement.snapshotRepository.id}</repositoryId>
-
-        <!-- location of test data to be used by tests ran via worker-tester framework -->
-        <test.data>${project.basedir}/test-data</test.data>
     </properties>
     
     <dependencyManagement>
