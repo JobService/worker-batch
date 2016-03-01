@@ -12,13 +12,8 @@ public interface BatchWorkerServices {
      * Registers a processed a sub batch for publishing to the Batch Worker's input queue
      *
      * @param batchDefinition   String containing the new batch definition
-     * @param batchType         String containing the new batch type
-     * @param taskMessageType   String containing the new batch task message type
-     * @param taskMessageParams Map containing any additional parameters for the task messages.
-     * @param targetPipe        String containing the target output for the task messages.
      */
-    void registerBatchSubtask(String batchDefinition, String batchType, String taskMessageType,
-                              Map<String, String> taskMessageParams, String targetPipe);
+    void registerBatchSubtask(String batchDefinition);
 
     /**
      * Registers a task message's parameters for serialisation and publishing to an input queue
