@@ -28,7 +28,7 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
      */
     public BatchWorker(BatchWorkerTask task, String resultQueue, Codec codec, LoadingCache channelCache, Connection conn, String inputQueue, Map<String, BatchWorkerPlugin> plugins) throws InvalidTaskException {
         super(task, resultQueue, codec);
-        batchWorkerServices = new BatchWorkerServicesImpl(task.getTargetPipe(), getCodec(), channelCache, conn, inputQueue);
+        batchWorkerServices = new BatchWorkerServicesImpl(task, getCodec(), channelCache, conn, inputQueue);
         registeredPlugins = plugins;
     }
 

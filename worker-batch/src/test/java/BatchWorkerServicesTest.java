@@ -43,17 +43,19 @@ public class BatchWorkerServicesTest {
     private Codec codec = new JsonCodec();
     private BatchWorkerServicesImpl services;
     private byte[] taskData;
-    private byte[] taskMessage;
+    private byte[] taskMessageSerialized;
+    private BatchWorkerTask task;
     private final String inputQueue = "input";
     private final String outputQueue = "output";
 
     @Before
     public void setup() throws CodecException {
-        services = new BatchWorkerServicesImpl(outputQueue, codec, channelCache, connection, inputQueue);
         Object object = new BatchWorkerTask();
         ((BatchWorkerTask)object).setTargetPipe(outputQueue);
+        task = (BatchWorkerTask) object;
+        services = new BatchWorkerServicesImpl(task, codec, channelCache, connection, inputQueue);
         taskData = codec.serialise(object);
-        taskMessage = codec.serialise(new TaskMessage(UUID.randomUUID().toString(), BatchWorkerConstants.WORKER_NAME,
+        taskMessageSerialized = codec.serialise(new TaskMessage(UUID.randomUUID().toString(), BatchWorkerConstants.WORKER_NAME,
                 BatchWorkerConstants.WORKER_API_VERSION, taskData, TaskStatus.NEW_TASK, new HashMap<>()));
     }
 
@@ -64,7 +66,7 @@ public class BatchWorkerServicesTest {
         Object object = new BatchWorkerTask();
         ((BatchWorkerTask)object).setTargetPipe(outputQueue);
         services.registerItemSubtask(BatchWorkerConstants.WORKER_NAME, BatchWorkerConstants.WORKER_API_VERSION, object);
-        Mockito.verify(outputChannel).basicPublish(Mockito.eq(""), Mockito.eq(outputQueue), Mockito.eq(MessageProperties.PERSISTENT_TEXT_PLAIN), Mockito.argThat(new TaskMessageMatcher(taskMessage)));
+        Mockito.verify(outputChannel).basicPublish(Mockito.eq(""), Mockito.eq(outputQueue), Mockito.eq(MessageProperties.PERSISTENT_TEXT_PLAIN), Mockito.argThat(new TaskMessageMatcher(taskMessageSerialized)));
     }
 
     @Test
@@ -72,8 +74,8 @@ public class BatchWorkerServicesTest {
         Mockito.when(connection.createChannel()).thenReturn(channel);
         Mockito.when(channelCache.get(outputQueue)).thenReturn(outputChannel);
         Mockito.when(channelCache.get(inputQueue)).thenReturn(channel);
-        services.registerBatchSubtask(null, null, null, null, outputQueue);
-        Mockito.verify(channel).basicPublish(Mockito.eq(""), Mockito.eq(inputQueue), Mockito.eq(MessageProperties.PERSISTENT_TEXT_PLAIN), Mockito.argThat(new TaskMessageMatcher(taskMessage)));
+        services.registerBatchSubtask(null);
+        Mockito.verify(channel).basicPublish(Mockito.eq(""), Mockito.eq(inputQueue), Mockito.eq(MessageProperties.PERSISTENT_TEXT_PLAIN), Mockito.argThat(new TaskMessageMatcher(taskMessageSerialized)));
     }
 
     @Test
@@ -100,7 +102,7 @@ public class BatchWorkerServicesTest {
         ((BatchWorkerTask)object).setTargetPipe(outputQueue);
         //Mock codec and recreate services object to used the new mocked codec.
         Codec codec = Mockito.mock(Codec.class);
-        services = new BatchWorkerServicesImpl(outputQueue, codec, channelCache, connection, inputQueue);
+        services = new BatchWorkerServicesImpl(task, codec, channelCache, connection, inputQueue);
         Mockito.when(codec.serialise(object)).thenThrow(CodecException.class);
         Boolean exceptionThrown = false;
         try {

@@ -25,24 +25,24 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
     private Connection conn;
     private LoadingCache<String, Channel> channelCache;
     private Codec codec;
-    private String targetPipe;
     private int subtaskCount;
     private String inputQueue;
+    private BatchWorkerTask currentTask;
     private static Logger logger = Logger.getLogger(BatchWorkerServicesImpl.class);
 
-    public BatchWorkerServicesImpl(String targetPipe, Codec codec, LoadingCache<String, Channel> channelCache, Connection conn, String inputQueue) {
+    public BatchWorkerServicesImpl(BatchWorkerTask task, Codec codec, LoadingCache<String, Channel> channelCache, Connection conn, String inputQueue) {
         this.conn = conn;
         this.channelCache = channelCache;
         this.codec = codec;
-        this.targetPipe = targetPipe;
+        this.currentTask = task;
         this.inputQueue = inputQueue;
     }
 
     @Override
-    public void registerBatchSubtask(String batchDefinition, String batchType, String taskMessageType, Map<String, String> taskMessageParams, String targetPipe) {
+    public void registerBatchSubtask(String batchDefinition) {
         try {
             String currentTaskId = incrementTaskId();
-            byte[] serializedTask = codec.serialise(createBatchWorkerTask(batchDefinition, batchType, taskMessageType, taskMessageParams, targetPipe));
+            byte[] serializedTask = codec.serialise(createBatchWorkerTask(batchDefinition, currentTask.getBatchType(), currentTask.getTaskMessageType(), currentTask.getTaskMessageParams(), currentTask.getTargetPipe()));
             TaskMessage taskMessage = new TaskMessage(currentTaskId, BatchWorkerConstants.WORKER_NAME,
                     BatchWorkerConstants.WORKER_API_VERSION, serializedTask, TaskStatus.NEW_TASK, new HashMap<>());
             publishMessage(inputQueue, taskMessage);
@@ -61,7 +61,7 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
             String currentTaskId = incrementTaskId();
             TaskMessage message = new TaskMessage(currentTaskId, taskClassifier, taskApiVersion,
                     codec.serialise(taskData), TaskStatus.NEW_TASK, new HashMap<>());
-            publishMessage(targetPipe, message);
+            publishMessage(currentTask.getTargetPipe(), message);
         } catch (ExecutionException e) {
             throw new TaskFailedException("Failed to retrieve or load queue channel from cache", e);
         } catch (CodecException e) {
