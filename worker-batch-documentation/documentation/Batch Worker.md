@@ -22,7 +22,7 @@ class with the following options:
 
 *   `outputQueue`: the name of the queue to put results on. _(Required)_
 *   `threads`: the maximum number of threads the worker can run. _(Required)_
-*   `cacheExpireTime`: the time in seconds for the worker to maintain a channel to a queue up to a maximum of 10 minutes (600 seconds). _(Required)_
+*   `cacheExpireTime`: the time in seconds for the worker to maintain a channel to a queue. _(Required)_
 
 # Batch Worker API
 
