@@ -1,7 +1,5 @@
 package com.hpe.caf.worker.batch;
 
-import java.util.Map;
-
 /**
  * The Batch Worker Services is used to register processed batch definitions for further batch defining. The class is
  * also used to register a task message's parameters before serialisation.
