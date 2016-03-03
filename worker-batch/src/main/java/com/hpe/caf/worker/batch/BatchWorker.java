@@ -3,6 +3,7 @@ package com.hpe.caf.worker.batch;
 import com.google.common.cache.LoadingCache;
 import com.hpe.caf.api.Codec;
 import com.hpe.caf.api.worker.InvalidTaskException;
+import com.hpe.caf.api.worker.TaskFailedException;
 import com.hpe.caf.api.worker.TaskRejectedException;
 import com.hpe.caf.api.worker.WorkerResponse;
 import com.hpe.caf.worker.AbstractWorker;
@@ -33,7 +34,7 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
     }
 
     @Override
-    public WorkerResponse doWork() throws InterruptedException, TaskRejectedException {
+    public WorkerResponse doWork() throws InterruptedException {
         try {
             checkIfInterrupted();
             BatchWorkerTask task = getTask();
@@ -46,7 +47,7 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
             batchWorkerPlugin.processBatch(batchWorkerServices, task.getBatchDefinition(), task.getTaskMessageType(), task.getTaskMessageParams());
 
         } catch (ReflectiveOperationException e) {
-            throw new TaskRejectedException("Invalid batch type  " + getTask().getBatchType());
+            throw new TaskFailedException("Invalid batch type  " + getTask().getBatchType());
         }
 
         //todo When tracking info added, set to taskId
