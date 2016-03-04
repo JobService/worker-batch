@@ -21,7 +21,5 @@ public interface BatchWorkerPlugin {
      * @param taskMessageParams Map containing additional task message parameters
      */
     void processBatch(BatchWorkerServices batchWorkerServices, String batchDefinition, String taskMessageType,
-                      Map<String, String> taskMessageParams);
-
-    String getIdentifier();
+                      Map<String, String> taskMessageParams) throws BatchDefinitionException;
 }
