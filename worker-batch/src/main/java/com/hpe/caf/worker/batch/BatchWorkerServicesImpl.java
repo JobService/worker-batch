@@ -17,9 +17,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-/**
- * Created by gibsodom on 22/02/2016.
- */
 public class BatchWorkerServicesImpl implements BatchWorkerServices {
 
     private Connection conn;

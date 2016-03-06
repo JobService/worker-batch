@@ -4,9 +4,6 @@ import com.hpe.caf.api.worker.TaskMessage;
 import com.hpe.caf.codec.JsonCodec;
 import org.mockito.ArgumentMatcher;
 
-/**
- * Created by gibsodom on 25/02/2016.
- */
 public class TaskMessageMatcher extends ArgumentMatcher<byte[]> {
 
     private JsonCodec codec = new JsonCodec();

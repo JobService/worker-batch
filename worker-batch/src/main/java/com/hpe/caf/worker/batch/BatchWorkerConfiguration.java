@@ -5,9 +5,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-/**
- * Created by gibsodom on 22/02/2016.
- */
 public class BatchWorkerConfiguration {
 
     @NotNull

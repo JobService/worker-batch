@@ -25,21 +25,21 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-/**
- * Created by gibsodom on 25/02/2016.
- */
-
 @RunWith(MockitoJUnitRunner.class)
 public class BatchWorkerServicesTest {
 
     @Mock
     private Connection connection;
+
     @Mock
     LoadingCache<String, Channel> channelCache;
+
     @Mock
     ChannelN channel;
+
     @Mock
     ChannelN outputChannel;
+
     private Codec codec = new JsonCodec();
     private BatchWorkerServicesImpl services;
     private byte[] taskData;

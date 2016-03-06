@@ -11,9 +11,6 @@ import com.rabbitmq.client.Connection;
 
 import java.util.Map;
 
-/**
- * Created by gibsodom on 22/02/2016.
- */
 public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResult> {
 
     BatchWorkerServices batchWorkerServices;

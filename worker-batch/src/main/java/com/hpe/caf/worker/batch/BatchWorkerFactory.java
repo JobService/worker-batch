@@ -23,9 +23,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-/**
- * Created by gibsodom on 22/02/2016.
- */
 public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfiguration, BatchWorkerTask> {
 
     private LoadingCache<String, Channel> channelCache;
@@ -138,5 +135,4 @@ public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfigu
             registeredPlugins.put(plugin.getIdentifier(), plugin);
         }
     }
-
 }
