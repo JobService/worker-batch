@@ -8,9 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 
-/**
- * Created by gibsodom on 25/02/2016.
- */
 public class BatchResultPreparationProvider extends PreparationItemProvider<BatchWorkerTask, BatchWorkerResult, BatchTestInput, BatchTestExpectation> {
 
     TestConfiguration configuration;

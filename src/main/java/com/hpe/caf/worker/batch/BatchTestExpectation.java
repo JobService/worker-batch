@@ -5,9 +5,6 @@ import com.hpe.caf.api.worker.TaskMessage;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by gibsodom on 25/02/2016.
- */
 public class BatchTestExpectation {
     private List<TaskMessage> subTasks;
 

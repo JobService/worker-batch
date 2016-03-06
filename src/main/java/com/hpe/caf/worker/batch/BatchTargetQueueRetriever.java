@@ -19,9 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
-/**
- * Created by gibsodom on 25/02/2016.
- */
 public class BatchTargetQueueRetriever {
 
     private static BatchTargetQueueRetriever instance;
@@ -90,5 +87,4 @@ public class BatchTargetQueueRetriever {
             logger.error("Failed to close channel", e);
         }
     }
-
 }

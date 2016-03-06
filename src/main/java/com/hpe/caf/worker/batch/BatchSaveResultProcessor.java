@@ -8,9 +8,6 @@ import com.hpe.caf.worker.testing.preparation.PreparationResultProcessor;
 
 import java.util.List;
 
-/**
- * Created by gibsodom on 25/02/2016.
- */
 public class BatchSaveResultProcessor extends PreparationResultProcessor<BatchWorkerTask,BatchWorkerResult,BatchTestInput,BatchTestExpectation> {
 
     protected BatchSaveResultProcessor(TestConfiguration<BatchWorkerTask, BatchWorkerResult, BatchTestInput, BatchTestExpectation> configuration, Codec codec) {

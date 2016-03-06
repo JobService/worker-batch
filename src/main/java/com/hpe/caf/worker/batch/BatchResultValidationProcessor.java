@@ -9,9 +9,6 @@ import org.junit.Assert;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by gibsodom on 25/02/2016.
- */
 public class BatchResultValidationProcessor implements ResultProcessor {
 
     @Override

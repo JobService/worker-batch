@@ -5,9 +5,6 @@ import com.hpe.caf.worker.testing.FileInputWorkerTaskFactory;
 import com.hpe.caf.worker.testing.TestItem;
 import com.hpe.caf.worker.testing.WorkerServices;
 
-/**
- * Created by gibsodom on 25/02/2016.
- */
 public class BatchTaskFactory extends FileInputWorkerTaskFactory<BatchWorkerTask, BatchTestInput, BatchTestExpectation> {
 
     public BatchTaskFactory(WorkerServices workerServices, String containerId, String testFilesFolder) {
