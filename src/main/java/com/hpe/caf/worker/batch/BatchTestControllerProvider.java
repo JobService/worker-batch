@@ -3,8 +3,6 @@ package com.hpe.caf.worker.batch;
 import com.hpe.caf.worker.testing.*;
 import com.hpe.caf.worker.testing.execution.AbstractTestControllerProvider;
 
-import java.util.function.Function;
-
 public class BatchTestControllerProvider extends AbstractTestControllerProvider<BatchWorkerConfiguration, BatchWorkerTask, BatchWorkerResult, BatchTestInput, BatchTestExpectation> {
 
     public BatchTestControllerProvider() {

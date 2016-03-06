@@ -3,7 +3,6 @@ package com.hpe.caf.worker.batch;
 import com.hpe.caf.api.worker.TaskMessage;
 
 import java.util.List;
-import java.util.Map;
 
 public class BatchTestExpectation {
     private List<TaskMessage> subTasks;
