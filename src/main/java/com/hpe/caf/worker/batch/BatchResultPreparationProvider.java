@@ -26,14 +26,13 @@ public class BatchResultPreparationProvider extends PreparationItemProvider<Batc
         BatchWorkerTask task = getTaskTemplate();
         if(task == null){
             task = new BatchWorkerTask();
-            task.setTargetPipe(UUID.randomUUID().toString());
-            task.setBatchDefinition(new String(Files.readAllBytes(inputFile)));
-            task.setBatchType("com.hpe.caf.worker.batch.BatchPluginTestImpl");
+            task.targetPipe = UUID.randomUUID().toString();
+            task.batchDefinition = new String(Files.readAllBytes(inputFile));
+            task.batchType = "com.hpe.caf.worker.batch.BatchPluginTestImpl";
         } else {
-            task.setBatchDefinition(new String(Files.readAllBytes(inputFile)));
+            task.batchDefinition = new String(Files.readAllBytes(inputFile));
         }
         testItem.getInputData().setTask(task);
         return testItem;
     }
-
 }

@@ -20,7 +20,7 @@ public class BatchResultValidationProcessor implements ResultProcessor {
             BatchTestInput testInput = (BatchTestInput) testItem.getInputData();
             BatchTestExpectation testOuput = (BatchTestExpectation) testItem.getExpectedOutputData();
             BatchWorkerTask inputTask = testInput.getTask();
-            List<TaskMessage> subTasks = BatchTargetQueueRetriever.getInstance().retrieveMessages(inputTask.getTargetPipe());
+            List<TaskMessage> subTasks = BatchTargetQueueRetriever.getInstance().retrieveMessages(inputTask.targetPipe);
             if (subTasks.size() != testOuput.getSubTasks().size()) {
                 return false;
             }
@@ -44,5 +44,4 @@ public class BatchResultValidationProcessor implements ResultProcessor {
             Assert.assertTrue("Task data should match", Arrays.equals(expectedSubTasks.get(i).getTaskData(),actualSubTasks.get(i).getTaskData()));
         }
     }
-
 }

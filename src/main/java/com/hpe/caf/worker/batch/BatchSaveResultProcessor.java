@@ -19,7 +19,7 @@ public class BatchSaveResultProcessor extends PreparationResultProcessor<BatchWo
 
     @Override
     protected byte[] getOutputContent(BatchWorkerResult batchWorkerResult, TaskMessage message, TestItem<BatchTestInput, BatchTestExpectation> testItem) throws Exception {
-        List<TaskMessage> subTasks = BatchTargetQueueRetriever.getInstance().retrieveMessages(testItem.getInputData().getTask().getTargetPipe());
+        List<TaskMessage> subTasks = BatchTargetQueueRetriever.getInstance().retrieveMessages(testItem.getInputData().getTask().targetPipe);
         testItem.getExpectedOutputData().setSubTasks(subTasks);
         return super.getOutputContent(batchWorkerResult, message, testItem);
     }
