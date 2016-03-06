@@ -50,11 +50,10 @@ public class BatchWorkerServicesTest {
 
     @Before
     public void setup() throws CodecException {
-        Object object = new BatchWorkerTask();
-        ((BatchWorkerTask)object).setTargetPipe(outputQueue);
-        task = (BatchWorkerTask) object;
+        task = new BatchWorkerTask();
+        task.targetPipe = outputQueue;
         services = new BatchWorkerServicesImpl(task, codec, channelCache, connection, inputQueue);
-        taskData = codec.serialise(object);
+        taskData = codec.serialise(task);
         taskMessageSerialized = codec.serialise(new TaskMessage(UUID.randomUUID().toString(), BatchWorkerConstants.WORKER_NAME,
                 BatchWorkerConstants.WORKER_API_VERSION, taskData, TaskStatus.NEW_TASK, new HashMap<>()));
     }
@@ -63,9 +62,9 @@ public class BatchWorkerServicesTest {
     public void testCreateTask() throws ExecutionException, IOException, CodecException {
         Mockito.when(connection.createChannel()).thenReturn(outputChannel);
         Mockito.when(channelCache.get(outputQueue)).thenReturn(outputChannel);
-        Object object = new BatchWorkerTask();
-        ((BatchWorkerTask)object).setTargetPipe(outputQueue);
-        services.registerItemSubtask(BatchWorkerConstants.WORKER_NAME, BatchWorkerConstants.WORKER_API_VERSION, object);
+        BatchWorkerTask localTask = new BatchWorkerTask();
+        localTask.targetPipe = outputQueue;
+        services.registerItemSubtask(BatchWorkerConstants.WORKER_NAME, BatchWorkerConstants.WORKER_API_VERSION, localTask);
         Mockito.verify(outputChannel).basicPublish(Mockito.eq(""), Mockito.eq(outputQueue), Mockito.eq(MessageProperties.PERSISTENT_TEXT_PLAIN), Mockito.argThat(new TaskMessageMatcher(taskMessageSerialized)));
     }
 
@@ -82,11 +81,11 @@ public class BatchWorkerServicesTest {
     public void testCacheFailure() throws ExecutionException, IOException, CodecException {
         Mockito.when(connection.createChannel()).thenReturn(outputChannel);
         Mockito.when(channelCache.get(outputQueue)).thenThrow(ExecutionException.class);
-        Object object = new BatchWorkerTask();
-        ((BatchWorkerTask)object).setTargetPipe(outputQueue);
+        BatchWorkerTask localTask = new BatchWorkerTask();
+        localTask.targetPipe = outputQueue;
         Boolean exceptionThrown = false;
         try {
-            services.registerItemSubtask(BatchWorkerConstants.WORKER_NAME, BatchWorkerConstants.WORKER_API_VERSION, object);
+            services.registerItemSubtask(BatchWorkerConstants.WORKER_NAME, BatchWorkerConstants.WORKER_API_VERSION, localTask);
         } catch (TaskFailedException e){
             exceptionThrown = true;
             Assert.assertEquals(e.getMessage(),"Failed to retrieve or load queue channel from cache");
@@ -98,15 +97,15 @@ public class BatchWorkerServicesTest {
     public void testSerializeFailure() throws ExecutionException, IOException, CodecException {
         Mockito.when(connection.createChannel()).thenReturn(outputChannel);
         Mockito.when(channelCache.get(outputQueue)).thenReturn(outputChannel);
-        Object object = new BatchWorkerTask();
-        ((BatchWorkerTask)object).setTargetPipe(outputQueue);
-        //Mock codec and recreate services object to used the new mocked codec.
+        BatchWorkerTask localTask = new BatchWorkerTask();
+        localTask.targetPipe = outputQueue;
+        //Mock codec and recreate services localTask to used the new mocked codec.
         Codec codec = Mockito.mock(Codec.class);
         services = new BatchWorkerServicesImpl(task, codec, channelCache, connection, inputQueue);
-        Mockito.when(codec.serialise(object)).thenThrow(CodecException.class);
+        Mockito.when(codec.serialise(localTask)).thenThrow(CodecException.class);
         Boolean exceptionThrown = false;
         try {
-            services.registerItemSubtask(BatchWorkerConstants.WORKER_NAME, BatchWorkerConstants.WORKER_API_VERSION, object);
+            services.registerItemSubtask(BatchWorkerConstants.WORKER_NAME, BatchWorkerConstants.WORKER_API_VERSION, localTask);
         } catch (TaskFailedException e){
             exceptionThrown = true;
             Assert.assertEquals(e.getMessage(),"Failed to serialize");
@@ -118,15 +117,14 @@ public class BatchWorkerServicesTest {
     public void testGeneralException() throws ExecutionException, IOException {
         Mockito.when(connection.createChannel()).thenReturn(outputChannel);
         Mockito.when(channelCache.get(outputQueue)).thenThrow(Exception.class);
-        Object object = new BatchWorkerTask();
-        ((BatchWorkerTask)object).setTargetPipe(outputQueue);
+        BatchWorkerTask localTask = new BatchWorkerTask();
+        localTask.targetPipe = outputQueue;
         Boolean exceptionThrown = false;
         try {
-            services.registerItemSubtask(BatchWorkerConstants.WORKER_NAME, BatchWorkerConstants.WORKER_API_VERSION, object);
+            services.registerItemSubtask(BatchWorkerConstants.WORKER_NAME, BatchWorkerConstants.WORKER_API_VERSION, localTask);
         } catch (Exception e){
             exceptionThrown = true;
         }
         Assert.assertTrue("Task Failed Exception should have been thrown", exceptionThrown);
     }
-
 }

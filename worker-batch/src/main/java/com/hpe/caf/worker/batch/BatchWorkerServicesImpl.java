@@ -42,7 +42,7 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
     public void registerBatchSubtask(String batchDefinition) {
         try {
             String currentTaskId = incrementTaskId();
-            byte[] serializedTask = codec.serialise(createBatchWorkerTask(batchDefinition, currentTask.getBatchType(), currentTask.getTaskMessageType(), currentTask.getTaskMessageParams(), currentTask.getTargetPipe()));
+            byte[] serializedTask = codec.serialise(createBatchWorkerTask(batchDefinition, currentTask.batchType, currentTask.taskMessageType, currentTask.taskMessageParams, currentTask.targetPipe));
             TaskMessage taskMessage = new TaskMessage(currentTaskId, BatchWorkerConstants.WORKER_NAME,
                     BatchWorkerConstants.WORKER_API_VERSION, serializedTask, TaskStatus.NEW_TASK, new HashMap<>());
             publishMessage(inputQueue, taskMessage);
@@ -61,7 +61,7 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
             String currentTaskId = incrementTaskId();
             TaskMessage message = new TaskMessage(currentTaskId, taskClassifier, taskApiVersion,
                     codec.serialise(taskData), TaskStatus.NEW_TASK, new HashMap<>());
-            publishMessage(currentTask.getTargetPipe(), message);
+            publishMessage(currentTask.targetPipe, message);
         } catch (ExecutionException e) {
             throw new TaskFailedException("Failed to retrieve or load queue channel from cache", e);
         } catch (CodecException e) {
@@ -80,11 +80,11 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
 
     private BatchWorkerTask createBatchWorkerTask(String batchDefinition, String batchType, String taskMessageType, Map<String, String> taskMessageParams, String targetPipe) {
         BatchWorkerTask batchWorkerTask = new BatchWorkerTask();
-        batchWorkerTask.setBatchDefinition(batchDefinition);
-        batchWorkerTask.setBatchType(batchType);
-        batchWorkerTask.setTargetPipe(targetPipe);
-        batchWorkerTask.setTaskMessageParams(taskMessageParams);
-        batchWorkerTask.setTaskMessageType(taskMessageType);
+        batchWorkerTask.batchDefinition = batchDefinition;
+        batchWorkerTask.batchType = batchType;
+        batchWorkerTask.targetPipe = targetPipe;
+        batchWorkerTask.taskMessageParams = taskMessageParams;
+        batchWorkerTask.taskMessageType = taskMessageType;
         return batchWorkerTask;
     }
 

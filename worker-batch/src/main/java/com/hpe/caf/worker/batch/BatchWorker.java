@@ -38,21 +38,22 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
         try {
             checkIfInterrupted();
             BatchWorkerTask task = getTask();
-            BatchWorkerPlugin batchWorkerPlugin = registeredPlugins.get(task.getBatchType());
+            BatchWorkerPlugin batchWorkerPlugin = registeredPlugins.get(task.batchType);
             //If plugin not registered, check if full class name has been specified.
             if (batchWorkerPlugin == null) {
-                Class pluginClass = ClassLoader.getSystemClassLoader().loadClass(task.getBatchType());
+                Class pluginClass = ClassLoader.getSystemClassLoader().loadClass(task.batchType);
                 batchWorkerPlugin = (BatchWorkerPlugin) pluginClass.newInstance();
             }
-            batchWorkerPlugin.processBatch(batchWorkerServices, task.getBatchDefinition(), task.getTaskMessageType(), task.getTaskMessageParams());
+            batchWorkerPlugin.processBatch(batchWorkerServices, task.batchDefinition, task.taskMessageType, task.taskMessageParams);
 
         } catch (ReflectiveOperationException e) {
-            throw new TaskFailedException("Invalid batch type  " + getTask().getBatchType());
+            throw new TaskFailedException("Invalid batch type  " + getTask().batchType);
         }
 
         //todo When tracking info added, set to taskId
-        String id = getTask().getTargetPipe();
-        return createSuccessResult(new BatchWorkerResult(id));
+        BatchWorkerResult result = new BatchWorkerResult();
+        result.batchTask = getTask().targetPipe;
+        return createSuccessResult(result);
     }
 
     @Override
