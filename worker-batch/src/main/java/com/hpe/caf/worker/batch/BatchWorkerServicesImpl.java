@@ -13,19 +13,20 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 public class BatchWorkerServicesImpl implements BatchWorkerServices {
 
-    private Connection conn;
-    private LoadingCache<String, Channel> channelCache;
-    private Codec codec;
+    private static final Logger logger = Logger.getLogger(BatchWorkerServicesImpl.class);
+
+    private final Connection conn;
+    private final LoadingCache<String, Channel> channelCache;
+    private final Codec codec;
+    private final String inputQueue;
+    private final BatchWorkerTask currentTask;
+
     private int subtaskCount;
-    private String inputQueue;
-    private BatchWorkerTask currentTask;
-    private static Logger logger = Logger.getLogger(BatchWorkerServicesImpl.class);
 
     public BatchWorkerServicesImpl(BatchWorkerTask task, Codec codec, LoadingCache<String, Channel> channelCache, Connection conn, String inputQueue) {
         this.conn = conn;
@@ -33,13 +34,15 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
         this.codec = codec;
         this.currentTask = task;
         this.inputQueue = inputQueue;
+        this.subtaskCount = 0;
     }
 
     @Override
     public void registerBatchSubtask(String batchDefinition) {
         try {
             String currentTaskId = incrementTaskId();
-            byte[] serializedTask = codec.serialise(createBatchWorkerTask(batchDefinition, currentTask.batchType, currentTask.taskMessageType, currentTask.taskMessageParams, currentTask.targetPipe));
+            BatchWorkerTask subtask = createBatchWorkerTask(batchDefinition);
+            byte[] serializedTask = codec.serialise(subtask);
             TaskMessage taskMessage = new TaskMessage(currentTaskId, BatchWorkerConstants.WORKER_NAME,
                     BatchWorkerConstants.WORKER_API_VERSION, serializedTask, TaskStatus.NEW_TASK, new HashMap<>());
             publishMessage(inputQueue, taskMessage);
@@ -75,13 +78,13 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
         return UUID.randomUUID().toString();
     }
 
-    private BatchWorkerTask createBatchWorkerTask(String batchDefinition, String batchType, String taskMessageType, Map<String, String> taskMessageParams, String targetPipe) {
+    private BatchWorkerTask createBatchWorkerTask(String batchDefinition) {
         BatchWorkerTask batchWorkerTask = new BatchWorkerTask();
         batchWorkerTask.batchDefinition = batchDefinition;
-        batchWorkerTask.batchType = batchType;
-        batchWorkerTask.targetPipe = targetPipe;
-        batchWorkerTask.taskMessageParams = taskMessageParams;
-        batchWorkerTask.taskMessageType = taskMessageType;
+        batchWorkerTask.batchType = currentTask.batchType;
+        batchWorkerTask.targetPipe = currentTask.targetPipe;
+        batchWorkerTask.taskMessageParams = currentTask.taskMessageParams;
+        batchWorkerTask.taskMessageType = currentTask.taskMessageType;
         return batchWorkerTask;
     }
 

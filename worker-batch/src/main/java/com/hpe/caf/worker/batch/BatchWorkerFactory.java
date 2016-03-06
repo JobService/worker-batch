@@ -25,9 +25,10 @@ import java.util.concurrent.TimeoutException;
 
 public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfiguration, BatchWorkerTask> {
 
+    private static final Logger logger = Logger.getLogger(BatchWorkerFactory.class);
+
     private LoadingCache<String, Channel> channelCache;
     private Connection conn;
-    private static Logger logger = Logger.getLogger(BatchWorkerFactory.class);
     private String inputQueue;
     private Map<String, BatchWorkerPlugin> registeredPlugins = new HashMap<>();
 
@@ -107,13 +108,16 @@ public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfigu
 
     private void createChannelCache() {
         CacheLoader<String, Channel> cacheLoader = new CacheLoader<String, Channel>() {
+            @Override
             public Channel load(String key) throws IOException {
                 Channel channel = conn.createChannel();
                 RabbitUtil.declareWorkerQueue(channel, key);
                 return channel;
             }
         };
+
         RemovalListener<String, Channel> removalListener = new RemovalListener<String, Channel>() {
+            @Override
             public void onRemoval(RemovalNotification<String, Channel> removal) {
                 Channel channel = removal.getValue();
                 try {
@@ -123,6 +127,7 @@ public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfigu
                 }
             }
         };
+
         channelCache = CacheBuilder.newBuilder().concurrencyLevel(getWorkerThreads())
                 .maximumSize(100).expireAfterAccess(getConfiguration().getCacheExpireTime(), TimeUnit.SECONDS).removalListener(removalListener).build(
                         cacheLoader

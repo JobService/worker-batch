@@ -4,7 +4,6 @@ import com.google.common.cache.LoadingCache;
 import com.hpe.caf.api.Codec;
 import com.hpe.caf.api.worker.InvalidTaskException;
 import com.hpe.caf.api.worker.TaskFailedException;
-import com.hpe.caf.api.worker.TaskRejectedException;
 import com.hpe.caf.api.worker.WorkerResponse;
 import com.hpe.caf.worker.AbstractWorker;
 import com.rabbitmq.client.Connection;
@@ -13,8 +12,8 @@ import java.util.Map;
 
 public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResult> {
 
-    BatchWorkerServices batchWorkerServices;
-    private Map<String, BatchWorkerPlugin> registeredPlugins;
+    private final BatchWorkerServices batchWorkerServices;
+    private final Map<String, BatchWorkerPlugin> registeredPlugins;
 
     /**
      * Create a Worker. The input task will be validated.
