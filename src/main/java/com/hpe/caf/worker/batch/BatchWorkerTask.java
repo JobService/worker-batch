@@ -2,9 +2,6 @@ package com.hpe.caf.worker.batch;
 
 import java.util.Map;
 
-/**
- * Created by gibsodom on 22/02/2016.
- */
 public class BatchWorkerTask {
     private String batchDefinition;
     private String batchType;
@@ -56,4 +53,3 @@ public class BatchWorkerTask {
         this.targetPipe = targetPipe;
     }
 }
-

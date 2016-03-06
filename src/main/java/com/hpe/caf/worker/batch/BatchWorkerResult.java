@@ -1,8 +1,5 @@
 package com.hpe.caf.worker.batch;
 
-/**
- * Created by gibsodom on 22/02/2016.
- */
 public class BatchWorkerResult {
     private String batchTask;
 
