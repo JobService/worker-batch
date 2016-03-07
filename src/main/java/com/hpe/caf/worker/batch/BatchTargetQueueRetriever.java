@@ -26,11 +26,13 @@ public class BatchTargetQueueRetriever {
     private Channel channel;
     private Codec codec;
     private static Logger logger = Logger.getLogger(BatchTargetQueueRetriever.class);
+    private boolean debugEnabled;
 
     protected BatchTargetQueueRetriever() throws Exception {
         RabbitWorkerQueueConfiguration rabbitWorkerQueueConfiguration = WorkerServices.getDefault().getConfigurationSource().getConfiguration(RabbitWorkerQueueConfiguration.class);
         createRabbitConnection(rabbitWorkerQueueConfiguration);
         codec = WorkerServices.getDefault().getCodec();
+        debugEnabled = SettingsProvider.defaultProvider.getBooleanSetting(SettingNames.createDebugMessage,false);
     }
 
     public static BatchTargetQueueRetriever getInstance() throws Exception {
@@ -55,6 +57,9 @@ public class BatchTargetQueueRetriever {
             //retrieve next message or time out and stop loop
             channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
             delivery = consumer.nextDelivery(100);
+        }
+        if(debugEnabled){
+            publishDebugMessages(messages,targetQueue);
         }
         //Assume queue no longer needed
         purgeQueue(targetQueue);
@@ -85,6 +90,14 @@ public class BatchTargetQueueRetriever {
             logger.error("Failed to delete queue " + targetQueue, e);
         } catch (TimeoutException e) {
             logger.error("Failed to close channel", e);
+        }
+    }
+
+    private void publishDebugMessages(List<TaskMessage> messages, String targetQueue) throws IOException, CodecException {
+        String debugQueue = targetQueue + "-debug";
+        RabbitUtil.declareWorkerQueue(channel, debugQueue);
+        for (TaskMessage taskMessage : messages) {
+            channel.basicPublish("", debugQueue, MessageProperties.PERSISTENT_TEXT_PLAIN, codec.serialise(taskMessage));
         }
     }
 }
