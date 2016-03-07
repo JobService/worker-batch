@@ -347,14 +347,14 @@
                                             <fileSet>
                                                 <lineEnding>unix</lineEnding>
                                                 <includes>
-                                                    <include>*.sh</include>
+                                                    <include>worker.sh</include>
                                                 </includes>
                                                 <fileMode>0755</fileMode>
                                             </fileSet>
                                             <fileSet>
                                                 <lineEnding>unix</lineEnding>
                                                 <includes>
-                                                    <include>*.yaml</include>
+                                                    <include>worker.yaml</include>
                                                 </includes>
                                             </fileSet>
                                         </fileSets>
