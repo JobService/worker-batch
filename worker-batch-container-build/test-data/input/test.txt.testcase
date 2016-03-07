@@ -11,7 +11,7 @@ inputData:
   inputFile: "input/test.txt"
   task:
     batchDefinition: "a,b,c"
-    batchType: "BATCH_WORKER_TEST_IMPL"
+    batchType: "BatchPluginTestImpl"
     taskMessageType: "classname-of-worker-task"
     taskMessageParams:
       param1: "value1"
