@@ -101,7 +101,7 @@ public class BatchWorkerServicesTest {
         localTask.targetPipe = outputQueue;
         //Mock codec and recreate services localTask to used the new mocked codec.
         Codec codec = Mockito.mock(Codec.class);
-        services = new BatchWorkerServicesImpl(task, codec, channelCache, connection, inputQueue);
+        services = new BatchWorkerServicesImpl(localTask, codec, channelCache, connection, inputQueue);
         Mockito.when(codec.serialise(localTask)).thenThrow(CodecException.class);
         Boolean exceptionThrown = false;
         try {
