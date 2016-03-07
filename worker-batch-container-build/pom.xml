@@ -372,6 +372,9 @@
                                                 <includes>
                                                     <include>com.github.krallin:tini</include>
                                                 </includes>
+                                                <excludes>
+                                                    <exclude>com.hpe.caf.worker.batch.BatchPluginTestImpl</exclude>
+                                                </excludes>
                                             </dependencySet>
                                         </dependencySets>
                                     </inline>
