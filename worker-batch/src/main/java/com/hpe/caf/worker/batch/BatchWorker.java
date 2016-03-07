@@ -45,6 +45,9 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
         } catch (ReflectiveOperationException e) {
             throw new TaskFailedException("Invalid batch type  " + getTask().batchType);
         }
+        catch(BatchDefinitionException e){
+            throw new TaskFailedException("Failed to process batch", e);
+        }
 
         //todo When tracking info added, set to taskId
         BatchWorkerResult result = new BatchWorkerResult();

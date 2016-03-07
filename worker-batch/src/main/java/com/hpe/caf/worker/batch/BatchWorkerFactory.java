@@ -137,7 +137,7 @@ public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfigu
     private void registerPlugins() {
         List<BatchWorkerPlugin> pluginList = ModuleLoader.getServices(BatchWorkerPlugin.class);
         for (BatchWorkerPlugin plugin : pluginList) {
-            registeredPlugins.put(plugin.getIdentifier(), plugin);
+            registeredPlugins.put(plugin.getClass().getSimpleName(), plugin);
         }
     }
 }
