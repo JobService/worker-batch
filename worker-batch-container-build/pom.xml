@@ -292,15 +292,15 @@
                             <name>${project.artifactId}-test-plugins</name>
                             <build>
                                 <assembly>
-                                    <basedir>batch-plugins</basedir>
+                                    <basedir>/mnt/mesos/sandbox</basedir>
                                     <inline>
                                         <dependencySets>
                                             <dependencySet>
                                                 <includes>
                                                     <include>com.hpe.caf.worker.batch:worker-batch-test-plugin</include>
                                                 </includes>
-                                                <outputDirectory>/mnt/mesos/sandbox</outputDirectory>
-                                                <outputFileNameMapping>batch-plugins</outputFileNameMapping>
+                                                <outputDirectory>/</outputDirectory>
+                                                <!--<outputFileNameMapping>batch-plugins.tar.gz</outputFileNameMapping>-->
                                             </dependencySet>
                                         </dependencySets>
                                     </inline>
@@ -364,6 +364,7 @@
                                                 <scope>runtime</scope>
                                                 <excludes>
                                                     <exclude>com.github.krallin:tini</exclude>
+                                                    <exclude>com.hpe.caf.worker.batch:worker-batch-test-plugin</exclude>
                                                 </excludes>
                                             </dependencySet>
                                             <dependencySet>
@@ -372,9 +373,6 @@
                                                 <includes>
                                                     <include>com.github.krallin:tini</include>
                                                 </includes>
-                                                <excludes>
-                                                    <exclude>com.hpe.caf.worker.batch.BatchPluginTestImpl</exclude>
-                                                </excludes>
                                             </dependencySet>
                                         </dependencySets>
                                     </inline>
