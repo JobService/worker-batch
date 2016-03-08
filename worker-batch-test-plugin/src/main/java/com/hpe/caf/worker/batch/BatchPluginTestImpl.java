@@ -20,10 +20,6 @@ public class BatchPluginTestImpl implements BatchWorkerPlugin {
         }
     }
 
-    @Override
-    public String getIdentifier() {
-        return identifier;
-    }
 
 
 }
