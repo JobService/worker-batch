@@ -91,6 +91,8 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
     private void publishMessage(String targetPipe, TaskMessage taskMessage) throws CodecException, ExecutionException, IOException {
         logger.debug("Loading channel for " + targetPipe);
         Channel channel = channelCache.get(targetPipe);
+        logger.debug("Setting new task's destination as " + targetPipe);
+        taskMessage.setTo(targetPipe);
         logger.debug("Queueing new task with id " + taskMessage.getTaskId() + " on " + targetPipe);
         channel.basicPublish("", targetPipe, MessageProperties.PERSISTENT_TEXT_PLAIN, codec.serialise(taskMessage));
         logger.debug("Successfully published task" + taskMessage.getTaskId() + " to " + targetPipe);
