@@ -1,14 +1,14 @@
 ---
-tag: "input\\assetid-batch-plugin_1.txt"
+tag: "input/assetid-batch-plugin_1.txt"
 testCaseInformation:
   testCaseId: "input"
   associatedTickets: null
   description: null
-  comments: "input\\assetid-batch-plugin_1.txt"
+  comments: "input/assetid-batch-plugin_1.txt"
 inputData:
   useDataStore: true
   containerId: "0a1b8e24cc44490888b3d8d8ebba8309"
-  inputFile: "input\\assetid-batch-plugin_1.txt"
+  inputFile: "input/assetid-batch-plugin_1.txt"
   task:
     batchDefinition: "[\"aa\",\"bb\",\"cc\",\"dd\"]"
     batchType: "AssetIdBatchPlugin"
