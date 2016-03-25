@@ -318,7 +318,7 @@
                             <name>${project.artifactId}-test-plugins</name>
                             <build>
                                 <assembly>
-                                    <basedir>/mnt/mesos/sandbox/</basedir>
+                                    <basedir>/mnt/mesos/sandbox/batch-plugins</basedir>
                                     <inline>
                                         <dependencySets>
                                             <dependencySet>
@@ -330,7 +330,7 @@
                                         </dependencySets>
                                         <fileSets>
                                             <fileSet>
-                                                <directory>${project.build.directory}/worker-batch-plugins-package-unpacked</directory>
+                                                <directory>${project.build.directory}/worker-batch-plugins-package-unpacked/batch-plugins</directory>
                                                 <outputDirectory>/</outputDirectory>
                                                 <includes>
                                                     <include>*</include>
