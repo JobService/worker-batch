@@ -48,7 +48,7 @@
                             <goal>single</goal>
                         </goals>
                         <configuration>
-                            <finalName>worker-batch-plugins-package</finalName>
+                            <finalName>batch-plugins</finalName>
                             <descriptors>
                                 <descriptor>assembly.xml</descriptor>
                             </descriptors>
