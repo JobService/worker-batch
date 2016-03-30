@@ -14,7 +14,8 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import net.jodah.lyra.ConnectionOptions;
 import net.jodah.lyra.config.Config;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,8 +25,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfiguration, BatchWorkerTask> {
-
-    private static final Logger logger = Logger.getLogger(BatchWorkerFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(BatchWorkerFactory.class);
 
     private LoadingCache<String, Channel> channelCache;
     private Connection conn;
@@ -93,7 +93,7 @@ public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfigu
             conn.close();
             conn = null;
         } catch (IOException e) {
-            logger.error(e);
+            logger.error("Failed to close channel cache connection.", e);
         }
     }
 

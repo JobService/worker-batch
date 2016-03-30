@@ -9,7 +9,8 @@ import com.hpe.caf.api.worker.TaskStatus;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.MessageProperties;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import java.util.concurrent.ExecutionException;
 
 public class BatchWorkerServicesImpl implements BatchWorkerServices {
 
-    private static final Logger logger = Logger.getLogger(BatchWorkerServicesImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(BatchWorkerServicesImpl.class);
 
     private final Connection conn;
     private final LoadingCache<String, Channel> channelCache;
