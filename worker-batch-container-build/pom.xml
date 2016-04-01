@@ -127,7 +127,6 @@
                                 <id>start</id>
                                 <phase>pre-integration-test</phase>
                                 <goals>
-                                    <goal>build</goal>
                                     <goal>start</goal>
                                 </goals>
                             </execution>
@@ -250,6 +249,13 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>${docker.maven.version}</version>
                 <executions>
+                    <execution>
+                        <id>build-docker-container</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
                     <execution>
                         <id>upload-docker-container</id>
                         <phase>deploy</phase>
