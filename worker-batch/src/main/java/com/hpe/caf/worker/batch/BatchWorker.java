@@ -4,6 +4,7 @@ import com.google.common.cache.LoadingCache;
 import com.hpe.caf.api.Codec;
 import com.hpe.caf.api.worker.InvalidTaskException;
 import com.hpe.caf.api.worker.TaskFailedException;
+import com.hpe.caf.api.worker.TrackingInfo;
 import com.hpe.caf.api.worker.WorkerResponse;
 import com.hpe.caf.worker.AbstractWorker;
 import com.rabbitmq.client.Connection;
@@ -14,17 +15,20 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
 
     private final BatchWorkerServices batchWorkerServices;
     private final Map<String, BatchWorkerPlugin> registeredPlugins;
+    private final TrackingInfo tracking;
 
     /**
      * Create a Worker. The input task will be validated.
      *
      * @param task        the input task for this Worker to operate on
+     * @param tracking    additional fields used in tracking task messages
      * @param resultQueue the reference to the queue that should take results from this type of Worker
      * @param codec       used to serialising result data
      * @throws InvalidTaskException if the input task does not validate successfully
      */
-    public BatchWorker(BatchWorkerTask task, String resultQueue, Codec codec, LoadingCache channelCache, Connection conn, String inputQueue, Map<String, BatchWorkerPlugin> plugins) throws InvalidTaskException {
+    public BatchWorker(BatchWorkerTask task, TrackingInfo tracking, String resultQueue, Codec codec, LoadingCache channelCache, Connection conn, String inputQueue, Map<String, BatchWorkerPlugin> plugins) throws InvalidTaskException {
         super(task, resultQueue, codec);
+        this.tracking = tracking;
         batchWorkerServices = new BatchWorkerServicesImpl(task, getCodec(), channelCache, conn, inputQueue);
         registeredPlugins = plugins;
     }
