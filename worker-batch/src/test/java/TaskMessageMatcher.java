@@ -19,20 +19,26 @@ public class TaskMessageMatcher extends ArgumentMatcher<byte[]> {
         byte[] argBytes = (byte[]) argument;
         TaskMessage message = null;
         try {
-            message = codec.deserialise(argBytes,TaskMessage.class);
+            message = codec.deserialise(argBytes, TaskMessage.class);
         } catch (CodecException e) {
             e.printStackTrace();
         }
-        if(message.getTaskApiVersion() != expected.getTaskApiVersion()){
+        if (message.getTaskApiVersion() != expected.getTaskApiVersion()) {
             return false;
         }
-        if (!new String(message.getTaskData()).equalsIgnoreCase(new String(expected.getTaskData()))){
+        if (!new String(message.getTaskData()).equalsIgnoreCase(new String(expected.getTaskData()))) {
             return false;
         }
-        if (message.getContext().size() != expected.getContext().size()){
+        if (message.getContext().size() != expected.getContext().size()) {
             return false;
         }
-        if(message.getTaskStatus() != expected.getTaskStatus()){
+        if (message.getTaskStatus() != expected.getTaskStatus()) {
+            return false;
+        }
+        if(!message.getTo().equalsIgnoreCase(expected.getTo())){
+            return false;
+        }
+        if ((message.getTracking() == null && expected.getTracking() != null) || (message.getTracking() != null && expected.getTracking() == null)) {
             return false;
         }
         return true;

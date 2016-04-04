@@ -16,6 +16,7 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
     private final BatchWorkerServices batchWorkerServices;
     private final Map<String, BatchWorkerPlugin> registeredPlugins;
     private final TrackingInfo tracking;
+    private final BatchWorkerPublisher messagePublisher;
 
     /**
      * Create a Worker. The input task will be validated.
@@ -29,10 +30,17 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
     public BatchWorker(BatchWorkerTask task, TrackingInfo tracking, String resultQueue, Codec codec, LoadingCache channelCache, Connection conn, String inputQueue, Map<String, BatchWorkerPlugin> plugins) throws InvalidTaskException {
         super(task, resultQueue, codec);
         this.tracking = tracking;
-        batchWorkerServices = new BatchWorkerServicesImpl(task, getCodec(), channelCache, conn, inputQueue);
+        this.messagePublisher = new BatchWorkerPublisher(channelCache, codec);
+        batchWorkerServices = new BatchWorkerServicesImpl(task, getCodec(), channelCache, conn, inputQueue, tracking, messagePublisher);
         registeredPlugins = plugins;
     }
 
+    /**
+     * Process the BatchWorkerTask to create and publish sub-tasks.
+     *
+     * @return WorkerResponse.
+     * @throws InterruptedException
+     */
     @Override
     public WorkerResponse doWork() throws InterruptedException {
         try {
@@ -45,18 +53,20 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
                 batchWorkerPlugin = (BatchWorkerPlugin) pluginClass.newInstance();
             }
             batchWorkerPlugin.processBatch(batchWorkerServices, task.batchDefinition, task.taskMessageType, task.taskMessageParams);
+            if (!messagePublisher.isTaskMessageBufferEmpty()) {
+                messagePublisher.publishLastMessage();
+            }
 
+            BatchWorkerResult result = new BatchWorkerResult();
+            result.batchTask = tracking == null ? task.targetPipe : tracking.getJobId();
+            return createSuccessResult(result);
         } catch (ReflectiveOperationException e) {
             throw new TaskFailedException("Invalid batch type  " + getTask().batchType);
-        }
-        catch(BatchDefinitionException e){
+        } catch (BatchDefinitionException e) {
+            throw new TaskFailedException("Failed to process batch", e);
+        } catch (Throwable e) {
             throw new TaskFailedException("Failed to process batch", e);
         }
-
-        //todo When tracking info added, set to taskId
-        BatchWorkerResult result = new BatchWorkerResult();
-        result.batchTask = getTask().targetPipe;
-        return createSuccessResult(result);
     }
 
     @Override
