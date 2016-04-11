@@ -148,7 +148,7 @@
             </activation>
             <properties>
                 <caf.worker-store.impl>worker-store-fs</caf.worker-store.impl>
-                <worker-batch.container.name>caf/worker-batch-fs
+                <worker-batch.container.name>${docker.dev.repo}/caf/worker-batch-fs
                 </worker-batch.container.name>
                 <worker-batch.container.alias>batch-worker-fs</worker-batch.container.alias>
             </properties>
@@ -164,7 +164,7 @@
             </activation>
             <properties>
                 <caf.worker-store.impl>worker-store-cs</caf.worker-store.impl>
-                <worker-batch.container.name>caf/worker-batch
+                <worker-batch.container.name>${docker.dev.repo}/caf/worker-batch
                 </worker-batch.container.name>
                 <worker-batch.container.alias>batch-worker</worker-batch.container.alias>
 
@@ -263,7 +263,6 @@
                             <goal>push</goal>
                         </goals>
                         <configuration>
-                            <registry>${docker.dev.repo}</registry>
                             <image>${worker-batch.container.alias}</image>
                         </configuration>
                     </execution>
