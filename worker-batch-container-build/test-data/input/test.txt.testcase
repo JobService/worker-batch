@@ -1,10 +1,10 @@
 ---
-tag: "input\\test.txt"
+tag: "input/test.txt"
 testCaseInformation:
   testCaseId: "input"
   associatedTickets: null
   description: null
-  comments: "input\\test.txt"
+  comments: "input/test.txt"
 inputData:
   useDataStore: true
   containerId: "0a1b8e24cc44490888b3d8d8ebba8309"
