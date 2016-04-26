@@ -27,31 +27,31 @@
 #### config-uri
 - The folder container the configuration files of the workers. This must either contain complete configuration files or be the the configuration output folder of the Marathon Loader _(specified with the -co argument)_
 
-####storage_service-server
+#### storage_service-server
 - If using the CAF Storage Service Datastore, this property specifies the URL of the Storage Service. This will be used by all workers to send storage requests. **Note this value must be replaced.**
 
-####storage_service-port
+#### storage_service-port
 - If using the CAF Storage Service Datastore, this property specifies the port number of the storage Service. **Note this value must be replaced.**
 
-####storage_service-auth-server
+#### storage_service-auth-server
 - If using the CAF Storage Service Datastore, this property specifies the URL of the Storage Service authentication server. This is the authentication server from which tokens may be obtained for authentication with the Storage Service.**Note this value must be replaced.**
 
-####storage_service-auth-port
+#### storage_service-auth-port
 - If using the CAF Storage Service Datastore, this property specifies the port number of the Storage Service authentication server. **Note this value must be replaced.**
 
-####storage_service-auth-userName
+#### storage_service-auth-userName
 - If using the CAF Storage Service Datastore, this property specifies the user name to use when obtaining tokens from the Storage Service authentication server. **Note this value must be replaced.**
 
-####storage_service-auth-password
+#### storage_service-auth-password
 - If using the CAF Storage Service Datastore, this property specifies the password to use when obtaining tokens from the Storage Service authentication server. **Note this value must be replaced.**
 
-####storage_service-auth-clientName
+#### storage_service-auth-clientName
 - If using the CAF Storage Service Datastore, this property specifies the client name to use when obtaining tokens from the Storage Service authentication server. **Note this value must be replaced.**
 
-####storage_service-auth-clientSecret
+#### storage_service-auth-clientSecret
 - If using the CAF Storage Service Datastore, this property specifies the client secret to use when obtaining tokens from the Storage Service authentication server. **Note this value must be replaced.**
 
-####storage_service-auth-realm
+#### storage_service-auth-realm
 - If using the CAF Storage Service Datastore, this property specifies the realm to use when obtaining tokens from the Storage Service authentication server. **Note this value must be replaced.**
 
 ### Rabbit properties

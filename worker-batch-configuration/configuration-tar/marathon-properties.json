@@ -45,7 +45,7 @@
   "batch-healthcheck-intervalseconds": "120",
   "batch-healthcheck-maxconsecutivefailures": "5",
   "batch-healthcheck-timeoutseconds": "20",
-  "batch-version": "1.0-SNAPSHOT",
+  "batch-version": "1.1-SNAPSHOT",
   "batch-threads": "1",
   "batch-cache-expire": "120",
   "batch-plugin-location": "<MUST_REPLACE: Location of Batch Worker Plugins>"
