@@ -1,4 +1,5 @@
 {
+    "workerVersion": "${batch-version}",
     "outputQueue":"${marathon-group}-batch-out",
     "threads":"${batch-threads}",
     "cacheExpireTime": ${batch-cache-expire}
