@@ -1,11 +1,13 @@
 package com.hpe.caf.worker.batch;
 
+import com.hpe.caf.api.worker.WorkerConfiguration;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class BatchWorkerConfiguration {
+public class BatchWorkerConfiguration extends WorkerConfiguration {
 
     @NotNull
     @Size(min = 1)
