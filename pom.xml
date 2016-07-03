@@ -19,8 +19,6 @@
     <modules>
         <module>worker-batch-test-plugin</module>
         <module>worker-batch-container-build</module>
-        <module>worker-batch-configuration</module>
-        <module>worker-batch-container-documentation</module>
     </modules>
 
     <properties>
