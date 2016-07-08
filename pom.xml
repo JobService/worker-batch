@@ -13,7 +13,7 @@
 
     <groupId>com.hpe.caf.worker.batch</groupId>
     <artifactId>worker-batch-container</artifactId>
-    <version>1.7-SNAPSHOT</version>
+    <version>1.8-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -25,7 +25,7 @@
         <version.major>1-SNAPSHOT</version.major>
         <version.major.minor>${project.version}</version.major.minor>
 
-        <caf.worker-framework.version>10.11-SNAPSHOT</caf.worker-framework.version>
+        <caf.worker-framework.version>10.12-SNAPSHOT</caf.worker-framework.version>
         <caf.config.impl>config-file</caf.config.impl>
         <caf.codec.impl>codec-json</caf.codec.impl>
         <caf.worker-store.impl>worker-store-cs</caf.worker-store.impl>
