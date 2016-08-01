@@ -1,6 +1,8 @@
 import com.hpe.caf.worker.batch.BatchTestControllerProvider;
 import com.hpe.caf.worker.testing.TestControllerSingle;
 import com.hpe.caf.worker.testing.TestItem;
+import com.hpe.caf.worker.testing.UseAsTestName;
+import com.hpe.caf.worker.testing.UseAsTestName_TestBase;
 import com.hpe.caf.worker.testing.execution.TestControllerProvider;
 import com.hpe.caf.worker.testing.execution.TestRunnerSingle;
 import org.testng.annotations.*;
@@ -11,7 +13,7 @@ import java.util.Set;
 /**
  * Created by gibsodom on 26/02/2016.
  */
-public class BatchWorkerAcceptanceIT {
+public class BatchWorkerAcceptanceIT extends UseAsTestName_TestBase {
     TestControllerProvider testControllerProvider;
     TestControllerSingle controller;
 
@@ -33,8 +35,9 @@ public class BatchWorkerAcceptanceIT {
         return s.iterator();
     }
 
+    @UseAsTestName(idx = 1)
     @Test(dataProvider = "MainTest")
-    public void testWorker(TestItem testItem) throws Exception {
+    public void testWorker(TestItem testItem, String testName) throws Exception {
         controller.runTests(testItem);
     }
 }
