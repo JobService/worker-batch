@@ -5,7 +5,7 @@
     <parent>
         <artifactId>worker-batch-container</artifactId>
         <groupId>com.hpe.caf.worker.batch</groupId>
-        <version>1.8-SNAPSHOT</version>
+        <version>1.8.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -154,7 +154,7 @@
             </activation>
             <properties>
                 <caf.worker-store.impl>worker-store-fs</caf.worker-store.impl>
-                <worker-batch.container.name>${docker.dev.repo}/caf/worker-batch-fs
+                <worker-batch.container.name>${docker.dev.repo}/caf/worker-batch-fs:${project.version}
                 </worker-batch.container.name>
                 <worker-batch.container.alias>batch-worker-fs</worker-batch.container.alias>
             </properties>
@@ -170,7 +170,7 @@
             </activation>
             <properties>
                 <caf.worker-store.impl>worker-store-cs</caf.worker-store.impl>
-                <worker-batch.container.name>${docker.dev.repo}/caf/worker-batch
+                <worker-batch.container.name>${docker.dev.repo}/caf/worker-batch:${project.version}
                 </worker-batch.container.name>
                 <worker-batch.container.alias>batch-worker</worker-batch.container.alias>
 
@@ -364,13 +364,8 @@
                                     <port>8080</port>
                                     <port>8081</port>
                                 </ports>
-                                <tags>
-                                    <tag>${version.major}</tag>
-                                    <tag>${version.major.minor}</tag>
-                                    <tag>latest</tag>
-                                </tags>
                                 <labels>
-                                    <Build.Number>${version.major.minor}</Build.Number>
+                                    <Build.Number>${project.version}</Build.Number>
                                     <Build.Date>${maven.build.timestamp}</Build.Date>
                                     <Git.Branch>${git.branch}</Git.Branch>
                                     <Git.Commit>${git.revision}</Git.Commit>
