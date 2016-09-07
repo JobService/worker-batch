@@ -174,7 +174,7 @@
                 </worker-batch.container.name>
                 <worker-batch.container.alias>batch-worker</worker-batch.container.alias>
 
-                <datastore.container.id>2f0e1a924d954ed09966f91d726e4960</datastore.container.id>
+                <datastore.container.id>66d1c33ec8c74fee99d207e7521a93ec</datastore.container.id>
             </properties>
         </profile>
     </profiles>
