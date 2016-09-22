@@ -149,6 +149,19 @@
             </build>
         </profile>
         <profile>
+            <id>nightly-test</id>
+            <activation>
+                <property>
+                    <name>CAF_BUILD_TYPE</name>
+                    <value>nightly</value>
+                </property>
+            </activation>
+            <properties>
+                <test.data>${project.basedir}/../testcases/automated</test.data>
+                <failsafe.timeout>120000</failsafe.timeout>
+            </properties>
+        </profile>
+        <profile>
             <id>store-fs</id>
             <activation>
             </activation>
