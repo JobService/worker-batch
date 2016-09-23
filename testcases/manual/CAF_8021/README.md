@@ -1,4 +1,4 @@
-## CAF_8022 - Tag processed items with Worker name and version ##
+## CAF_8021 - Tag processed items with Worker name and version ##
 
 Verify that when an item is processed by the Batch worker it gets tagged with the name and version of the worker
 
