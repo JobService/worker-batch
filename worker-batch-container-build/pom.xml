@@ -15,8 +15,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.hpe.caf</groupId>
-            <artifactId>caf-api</artifactId>
+            <groupId>com.github.cafapi</groupId>
+             <artifactId>caf-api</artifactId>
+             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.hpe.caf.worker.batch</groupId>
@@ -38,8 +39,9 @@
             <artifactId>${caf.config.impl}</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.hpe.caf.worker</groupId>
+            <groupId>com.github.workerframework</groupId>
             <artifactId>worker-core</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.hpe.caf.worker</groupId>
@@ -73,21 +75,22 @@
         </dependency>
 
         <dependency>
-            <groupId>com.hpe.caf</groupId>
+            <groupId>com.github.cafapi</groupId>
             <artifactId>container-cert-script</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
             <type>tar.gz</type>
         </dependency>
 
         <dependency>
-            <groupId>com.hpe.caf.worker</groupId>
+            <groupId>com.github.workerframework</groupId>
             <artifactId>worker-testing-util</artifactId>
-            <version>2-SNAPSHOT</version>
+            <version>1.0.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.hpe.caf.worker</groupId>
+            <groupId>com.github.workerframework</groupId>
             <artifactId>worker-testing-integration</artifactId>
-            <version>2-SNAPSHOT</version>
+            <version>1.0.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -422,7 +425,7 @@
                                                 <excludes>
                                                     <exclude>com.github.krallin:tini</exclude>
                                                     <exclude>com.hpe.caf.worker.batch:worker-batch-test-plugin</exclude>
-                                                    <exclude>com.hpe.caf:container-cert-script</exclude>
+                                                    <exclude>com.github.cafapi:container-cert-script</exclude>
                                                 </excludes>
                                             </dependencySet>
                                             <dependencySet>
@@ -437,7 +440,7 @@
                                                 <useTransitiveFiltering>true</useTransitiveFiltering>
                                                 <unpack>true</unpack>
                                                 <includes>
-                                                    <include>com.hpe.caf:container-cert-script</include>
+                                                    <include>com.github.cafapi:container-cert-script</include>
                                                 </includes>
                                             </dependencySet>
                                         </dependencySets>
