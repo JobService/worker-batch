@@ -17,7 +17,6 @@
         <dependency>
             <groupId>com.github.cafapi</groupId>
              <artifactId>caf-api</artifactId>
-             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.hpe.caf.worker.batch</groupId>
@@ -25,7 +24,7 @@
             <version>1.1</version>
         </dependency>
         <dependency>
-            <groupId>com.hpe.caf.worker</groupId>
+            <groupId>com.github.workerframework</groupId>
             <artifactId>${caf.worker-store.impl}</artifactId>
             <exclusions>
                 <exclusion>
@@ -35,20 +34,19 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.hpe.caf.config</groupId>
+            <groupId>com.github.cafapi.config</groupId>
             <artifactId>${caf.config.impl}</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.workerframework</groupId>
             <artifactId>worker-core</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.hpe.caf.worker</groupId>
+            <groupId>com.github.workerframework</groupId>
             <artifactId>${caf.worker-queue.impl}</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.hpe.caf.codec</groupId>
+            <groupId>com.github.cafapi.codec</groupId>
             <artifactId>${caf.codec.impl}</artifactId>
         </dependency>
         <dependency>
@@ -77,20 +75,19 @@
         <dependency>
             <groupId>com.github.cafapi</groupId>
             <artifactId>container-cert-script</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
             <type>tar.gz</type>
         </dependency>
 
         <dependency>
             <groupId>com.github.workerframework</groupId>
             <artifactId>worker-testing-util</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+			<version>1.0.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.github.workerframework</groupId>
             <artifactId>worker-testing-integration</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+			<version>1.0.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
