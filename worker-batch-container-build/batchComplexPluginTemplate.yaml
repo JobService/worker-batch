@@ -1,0 +1,7 @@
+---
+batchType: com.hpe.caf.worker.batch.BatchComplexPluginTestImpl
+targetPipe: targetPipe
+taskMessageParams:
+      datastorePartialReference: test
+      action: REVERSE
+taskMessageType: classname-of-worker-task
