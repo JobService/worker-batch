@@ -11,7 +11,7 @@ public class BatchTestControllerProvider extends AbstractTestControllerProvider<
 
     @Override
     protected WorkerTaskFactory<BatchWorkerTask, BatchTestInput, BatchTestExpectation> getTaskFactory(TestConfiguration<BatchWorkerTask, BatchWorkerResult, BatchTestInput, BatchTestExpectation> configuration) throws Exception {
-        return new BatchTaskFactory(WorkerServices.getDefault(), configuration.getDataStoreContainerId(), configuration.getTestDataFolder());
+        return new BatchTaskFactory(configuration);
     }
 
     @Override
