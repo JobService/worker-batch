@@ -6,7 +6,7 @@ testCaseInformation:
   description: null
 inputData:
   useDataStore: true
-  containerId: "66d1c33ec8c74fee99d207e7521a93ec"
+  containerId: "b591d8c6615c4af99d7915719b01259c"
   inputFile: "input/batch-complex-plugin.txt"
   storageReference: null
   task:

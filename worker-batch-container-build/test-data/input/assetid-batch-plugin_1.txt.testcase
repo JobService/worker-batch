@@ -7,7 +7,7 @@ testCaseInformation:
   comments: "input/assetid-batch-plugin_1.txt"
 inputData:
   useDataStore: true
-  containerId: "c82335049236404ba86529e9afacba39"
+  containerId: "b591d8c6615c4af99d7915719b01259c"
   inputFile: "input/assetid-batch-plugin_1.txt"
   task:
     batchDefinition: "[\"aa\",\"bb\",\"cc\",\"dd\"]"
