@@ -163,8 +163,6 @@
         </profile>
         <profile>
             <id>store-fs</id>
-            <activation>
-            </activation>
             <properties>
                 <caf.worker-store.impl>worker-store-fs</caf.worker-store.impl>
                 <worker-batch.container.name>${docker.dev.repo}/caf/worker-batch-fs:${project.version}
