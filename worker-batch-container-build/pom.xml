@@ -175,7 +175,6 @@
             <activation>
                 <property>
                     <name>CAF_BUILD_TYPE</name>
-                    <value>official</value>
                 </property>
                 <activeByDefault>true</activeByDefault>
             </activation>
