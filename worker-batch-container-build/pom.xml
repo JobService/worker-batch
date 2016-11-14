@@ -184,12 +184,10 @@
                 <worker-batch.container.name>${docker.dev.repo}/caf/worker-batch:${project.version}
                 </worker-batch.container.name>
                 <worker-batch.container.alias>batch-worker</worker-batch.container.alias>
-
                 <datastore.container.id>b591d8c6615c4af99d7915719b01259c</datastore.container.id>
             </properties>
         </profile>
     </profiles>
-
 
     <build>
         <plugins>
