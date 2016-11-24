@@ -1,14 +1,14 @@
 ---
-tag: "CAF_8001/batch1.txt"
+tag: "CAF_8001/test.txt"
 testCaseInformation:
   testCaseId: "CAF_8001"
   associatedTickets: "CAF-597"
   description: "Generate input messages from a comma separated list"
-  comments: "CAF_8001/batch1.txt"
+  comments: "CAF_8001/test.txt"
 inputData:
   useDataStore: true
-  containerId: "0a1b8e24cc44490888b3d8d8ebba8309"
-  inputFile: "/mnt/test-sources/batch-test-data/CAF_8001/batch1.txt"
+  containerId: "b591d8c6615c4af99d7915719b01259c"
+  inputFile: "/mnt/test-sources/batch-test-data/CAF_8001/test.txt"
   task:
     batchDefinition: "a,b,c"
     batchType: "BatchPluginTestImpl"
@@ -19,21 +19,21 @@ inputData:
 expectedOutputData:
   subTasks:
   - version: 1
-    taskId: "487d3b2e-942e-40c1-b90c-cb736f4846f1"
+    taskId: "df18fba1-27b7-44d3-a7ff-4ed305099fec"
     taskClassifier: "Test task"
     taskApiVersion: 1
     taskData: "ImEi"
     taskStatus: "NEW_TASK"
     context: {}
   - version: 1
-    taskId: "75172ec0-3382-4861-bbd2-03b6254b4f2f"
+    taskId: "8cebc8e8-26a9-4e61-b8e3-c7a6ab2844b5"
     taskClassifier: "Test task"
     taskApiVersion: 1
     taskData: "ImIi"
     taskStatus: "NEW_TASK"
     context: {}
   - version: 1
-    taskId: "1c3c66b9-d23b-4971-ab64-4a04a8b450d9"
+    taskId: "99e4c297-d3db-4843-8af4-34d4127a2c10"
     taskClassifier: "Test task"
     taskApiVersion: 1
     taskData: "ImMi"
