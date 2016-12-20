@@ -1,0 +1,111 @@
+---
+tag: "CAF_8001/batch-complex-plugin.txt"
+testCaseInformation:
+  testCaseId: "CAF_8001"
+  associatedTickets: "CAF-597"
+  description: "Generate input messages from a comma separated list"
+inputData:
+  useDataStore: true
+  containerId: "b591d8c6615c4af99d7915719b01259c"
+  inputFile: "/mnt/test-sources/batch-test-data/CAF_8001/batch-complex-plugin.txt"
+  storageReference: null
+  task:
+    batchDefinition: "[[\"a,b,c\",\"d,e,f\"],[\"g,h,i\"]]"
+    batchType: "com.hpe.caf.worker.batch.BatchComplexPluginTestImpl"
+    taskMessageType: "classname-of-worker-task"
+    taskMessageParams:
+      datastorePartialReference: "test"
+      action: "REVERSE"
+    targetPipe: "targetPipe"
+expectedOutputData:
+  subTasks:
+  - version: 3
+    taskId: "3f56ad38-6ac9-4e45-b2a3-85295c56b176"
+    taskClassifier: "BatchComplexPluginTest"
+    taskApiVersion: 1
+    taskData: "Imci"
+    taskStatus: "NEW_TASK"
+    context: {}
+    to: "targetPipe"
+    tracking: null
+    sourceInfo: null
+  - version: 3
+    taskId: "06387879-3d4c-4464-95d1-788b4c74e039"
+    taskClassifier: "BatchComplexPluginTest"
+    taskApiVersion: 1
+    taskData: "Imgi"
+    taskStatus: "NEW_TASK"
+    context: {}
+    to: "targetPipe"
+    tracking: null
+    sourceInfo: null
+  - version: 3
+    taskId: "329fcd00-6e20-4db3-88c7-50cac406bd50"
+    taskClassifier: "BatchComplexPluginTest"
+    taskApiVersion: 1
+    taskData: "Imki"
+    taskStatus: "NEW_TASK"
+    context: {}
+    to: "targetPipe"
+    tracking: null
+    sourceInfo: null
+  - version: 3
+    taskId: "45784015-07b3-450a-9a53-8b3539a9090b"
+    taskClassifier: "BatchComplexPluginTest"
+    taskApiVersion: 1
+    taskData: "ImEi"
+    taskStatus: "NEW_TASK"
+    context: {}
+    to: "targetPipe"
+    tracking: null
+    sourceInfo: null
+  - version: 3
+    taskId: "2835186d-65a5-4dae-8318-e33875e89104"
+    taskClassifier: "BatchComplexPluginTest"
+    taskApiVersion: 1
+    taskData: "ImIi"
+    taskStatus: "NEW_TASK"
+    context: {}
+    to: "targetPipe"
+    tracking: null
+    sourceInfo: null
+  - version: 3
+    taskId: "d762ba4a-2595-4d56-be86-74f517c5a685"
+    taskClassifier: "BatchComplexPluginTest"
+    taskApiVersion: 1
+    taskData: "ImMi"
+    taskStatus: "NEW_TASK"
+    context: {}
+    to: "targetPipe"
+    tracking: null
+    sourceInfo: null
+  - version: 3
+    taskId: "07822171-95b0-4dd5-b6dd-3ca1e992f68e"
+    taskClassifier: "BatchComplexPluginTest"
+    taskApiVersion: 1
+    taskData: "ImQi"
+    taskStatus: "NEW_TASK"
+    context: {}
+    to: "targetPipe"
+    tracking: null
+    sourceInfo: null
+  - version: 3
+    taskId: "41d93016-2790-4605-ae62-3b5361d477f3"
+    taskClassifier: "BatchComplexPluginTest"
+    taskApiVersion: 1
+    taskData: "ImUi"
+    taskStatus: "NEW_TASK"
+    context: {}
+    to: "targetPipe"
+    tracking: null
+    sourceInfo: null
+  - version: 3
+    taskId: "65cebece-25f5-46c3-a93e-7dd5512dffe6"
+    taskClassifier: "BatchComplexPluginTest"
+    taskApiVersion: 1
+    taskData: "ImYi"
+    taskStatus: "NEW_TASK"
+    context: {}
+    to: "targetPipe"
+    tracking: null
+    sourceInfo: null

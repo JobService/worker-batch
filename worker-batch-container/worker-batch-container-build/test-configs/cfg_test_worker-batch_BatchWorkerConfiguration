@@ -1,0 +1,6 @@
+{
+        "workerVersion": "1.8.1-SNAPSHOT",
+        "outputQueue": "test-output-1",
+		"threads": 1,
+		"cacheExpireTime": 60
+}

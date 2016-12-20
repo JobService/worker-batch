@@ -1,0 +1,7 @@
+---
+batchType: ASSET_ID_BATCH_PLUGIN
+targetPipe: targetPipe
+taskMessageParams:
+      datastorePartialReference: test
+      action: REVERSE
+taskMessageType: ExampleWorkerTaskBuilder

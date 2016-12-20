@@ -1,0 +1,41 @@
+---
+tag: "CAF_8001/test-plugin-full-classname.txt"
+testCaseInformation:
+  testCaseId: "CAF_8001"
+  associatedTickets: "CAF-597"
+  description: "Generate input messages from a comma separated list"
+  comments: "CAF_8001/test-plugin-full-classname.txt"
+inputData:
+  useDataStore: true
+  containerId: "b591d8c6615c4af99d7915719b01259c"
+  inputFile: "/mnt/test-sources/batch-test-data/CAF_8001/test-plugin-full-classname.txt"
+  task:
+    batchDefinition: "x,y,z"
+    batchType: "com.hpe.caf.worker.batch.BatchPluginTestImpl"
+    taskMessageType: "classname-of-worker-task"
+    taskMessageParams:
+      param1: "value1"
+    targetPipe: "targetPipe"
+expectedOutputData:
+  subTasks:
+  - version: 1
+    taskId: "df18fba1-27b7-44d3-a7ff-4ed305099fec"
+    taskClassifier: "Test task"
+    taskApiVersion: 1
+    taskData: "Ingi"
+    taskStatus: "NEW_TASK"
+    context: {}
+  - version: 1
+    taskId: "8cebc8e8-26a9-4e61-b8e3-c7a6ab2844b5"
+    taskClassifier: "Test task"
+    taskApiVersion: 1
+    taskData: "Inki"
+    taskStatus: "NEW_TASK"
+    context: {}
+  - version: 1
+    taskId: "99e4c297-d3db-4843-8af4-34d4127a2c10"
+    taskClassifier: "Test task"
+    taskApiVersion: 1
+    taskData: "Inoi"
+    taskStatus: "NEW_TASK"
+    context: {}

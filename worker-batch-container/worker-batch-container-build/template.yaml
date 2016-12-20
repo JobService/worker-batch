@@ -1,0 +1,7 @@
+---
+batchType: BatchPluginTestImpl
+targetPipe: targetPipe
+taskMessageParams:
+      datastorePartialReference: test
+      action: REVERSE
+taskMessageType: classname-of-worker-task
