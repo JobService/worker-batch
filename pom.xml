@@ -19,10 +19,22 @@
     <modules>
         <module>worker-batch-shared</module>
         <module>worker-batch</module>
-        <module>worker-batch-container</module>
         <module>worker-batch-testing</module>
         <module>worker-batch-extensibility</module>
         <module>worker-batch-plugins-package</module>
+        <module>worker-batch-container</module>
     </modules>
-
+    
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.github.workerframework</groupId>
+                <artifactId>worker-framework</artifactId>
+                <version>1.0.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
 </project>
