@@ -1,0 +1,16 @@
+<assembly>
+    <id>bundle</id>
+    <formats>
+        <format>tar.gz</format>
+    </formats>
+    <baseDirectory>batch-plugins</baseDirectory>
+    <dependencySets>
+        <dependencySet>
+            <includes>
+                <include>*:*</include>
+            </includes>
+            <useTransitiveDependencies>true</useTransitiveDependencies>
+            <useTransitiveFiltering>true</useTransitiveFiltering>
+        </dependencySet>
+    </dependencySets>
+</assembly>
