@@ -21,6 +21,8 @@
         <module>worker-batch</module>
         <module>worker-batch-container</module>
         <module>worker-batch-testing</module>
+        <module>worker-batch-extensibility</module>
+        <module>worker-batch-plugins-package</module>
     </modules>
 
 </project>

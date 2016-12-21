@@ -39,9 +39,4 @@
         </dependencies>
     </dependencyManagement>
 
-    <ciManagement>
-        <system>hudson</system>
-        <url>http://cafbuilder.hpeswlab.net:8080/job/worker-batch-container/</url>
-    </ciManagement>
-
 </project>
