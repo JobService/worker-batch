@@ -11,7 +11,15 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <groupId>com.hpe.caf.worker.batch</groupId>
-    <artifactId>worker-batch-container-build</artifactId>
+    <artifactId>worker-batch-container-build-fs</artifactId>
+    
+    <properties>
+        <caf.worker-store.impl>worker-store-fs</caf.worker-store.impl>
+        <worker-batch.container.name>${docker.dev.repo}/caf/worker-batch-fs:${project.version}
+        </worker-batch.container.name>
+        <worker-batch.container.alias>batch-worker-fs</worker-batch.container.alias>
+        <test.data>${project.basedir}/test-data</test.data>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -25,7 +33,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.workerframework</groupId>
-            <artifactId>${caf.worker-store.impl}</artifactId>
+            <artifactId>worker-store-fs</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>com.sun.jersey</groupId>
@@ -95,17 +103,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <properties>
-        <container.directory>${project.basedir}/../worker-batch-container-build-fs</container.directory>
-        <caf.worker-store.impl>worker-store-cs</caf.worker-store.impl>
-        <worker-batch.container.name>${docker.dev.repo}/caf/worker-batch:${project.version}</worker-batch.container.name>
-        <worker-batch.container.alias>batch-worker</worker-batch.container.alias>
-        <datastore.container.id>b591d8c6615c4af99d7915719b01259c</datastore.container.id>
-        <!-- location of test data to be used by tests ran via worker-tester framework -->
-        <test.data>${container.directory}/test-data</test.data>
-    </properties>
-
 
     <profiles>
         <profile>
@@ -189,7 +186,6 @@
                 </plugins>
             </build>
         </profile>
-
     </profiles>
 
     <build>
@@ -206,12 +202,12 @@
                         <rabbitmq.ctrl.port>${rabbitmq.ctrl.port}</rabbitmq.ctrl.port>
                         <input.folder>${test.data}</input.folder>
                         <expected.folder>${test.data}</expected.folder>
-                        <datastore.container.id>${datastore.container.id}</datastore.container.id>
                         <datastore.enabled>false</datastore.enabled>
                     </systemPropertyVariables>
                     <environmentVariables>
                         <CAF_APPNAME>test/worker-batch</CAF_APPNAME>
-                        <CAF_CONFIG_PATH>${container.directory}/test-configs</CAF_CONFIG_PATH>
+                        <CAF_CONFIG_PATH>${project.basedir}/test-configs</CAF_CONFIG_PATH>
+                        <CAF_INTEGRATIONTESTS_FS_PATH>${CAF_INTEGRATIONTESTS_FS_LOCATION}/fsdatastore</CAF_INTEGRATIONTESTS_FS_PATH>
                         <!-- Environment variables needed for old style tests-->
                         <rabbit.port>${rabbitmq.node.port}</rabbit.port>
                         <rabbit.host>${docker.host.address}</rabbit.host>
@@ -323,7 +319,7 @@
                                     <inline>
                                         <fileSets>
                                             <fileSet>
-                                                <directory>${container.directory}/test-configs</directory>
+                                                <directory>test-configs</directory>
                                                 <outputDirectory>/</outputDirectory>
                                                 <includes>
                                                     <include>*</include>
@@ -401,8 +397,6 @@
                                     <inline>
                                         <fileSets>
                                             <fileSet>
-                                                <directory>${container.directory}</directory>
-                                                <outputDirectory>/</outputDirectory>
                                                 <lineEnding>unix</lineEnding>
                                                 <includes>
                                                     <include>worker.sh</include>
@@ -410,8 +404,6 @@
                                                 <fileMode>0755</fileMode>
                                             </fileSet>
                                             <fileSet>
-                                                <directory>${container.directory}</directory>
-                                                <outputDirectory>/</outputDirectory>
                                                 <lineEnding>unix</lineEnding>
                                                 <includes>
                                                     <include>worker.yaml</include>
@@ -461,6 +453,9 @@
                                         <image>config</image>
                                         <image>plugin</image>
                                     </from>
+                                    <bind>
+                                        <volume>/vagrant/fsdatastore:/vagrant/fsdatastore</volume>
+                                    </bind>
                                 </volumes>
                                 <links>
                                     <link>rabbitmq</link>
@@ -481,8 +476,8 @@
                     </images>
                 </configuration>
             </plugin>
+
         </plugins>
-        <testSourceDirectory>${container.directory}/src/test/java</testSourceDirectory>
     </build>
 
 </project>
