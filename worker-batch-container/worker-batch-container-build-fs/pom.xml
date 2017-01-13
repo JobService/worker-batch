@@ -118,8 +118,8 @@
             <id>integration-test</id>
             <activation>
                 <property>
-                    <name>CAF_BUILD_TYPE</name>
-                    <value>official</value>
+                    <name>RE_BUILD_TYPE</name>
+                    <value>continuous</value>
                 </property>
             </activation>
             <build>
@@ -152,8 +152,8 @@
             <id>nightly-test</id>
             <activation>
                 <property>
-                    <name>CAF_BUILD_TYPE</name>
-                    <value>nightly</value>
+                    <name>RE_BUILD_TYPE</name>
+                    <value>release</value>
                 </property>
             </activation>
             <properties>
