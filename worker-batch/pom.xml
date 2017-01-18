@@ -87,7 +87,7 @@
         <dependency>
             <groupId>com.hpe.caf.worker.batch</groupId>
             <artifactId>worker-batch-shared</artifactId>
-            <version>1.1.0</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.hpe.caf.worker.batch</groupId>
