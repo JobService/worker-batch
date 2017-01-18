@@ -22,7 +22,6 @@
     </modules>
 
     <properties>
-        <caf.worker-framework.version>1.0.0</caf.worker-framework.version>
         <caf.config.impl>config-file</caf.config.impl>
         <caf.codec.impl>codec-json</caf.codec.impl>
         <caf.worker-store.impl>worker-store-cs</caf.worker-store.impl>
