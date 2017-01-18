@@ -207,7 +207,7 @@
                     <environmentVariables>
                         <CAF_APPNAME>test/worker-batch</CAF_APPNAME>
                         <CAF_CONFIG_PATH>${project.basedir}/test-configs</CAF_CONFIG_PATH>
-                        <CAF_INTEGRATIONTESTS_FS_PATH>${CAF_INTEGRATIONTESTS_FS_LOCATION}/fsdatastore</CAF_INTEGRATIONTESTS_FS_PATH>
+                        <CAF_INTEGRATIONTESTS_FS_PATH>${caf.integrationtests.fs.path}</CAF_INTEGRATIONTESTS_FS_PATH>
                         <!-- Environment variables needed for old style tests-->
                         <rabbit.port>${rabbitmq.node.port}</rabbit.port>
                         <rabbit.host>${docker.host.address}</rabbit.host>
@@ -286,6 +286,34 @@
                     <autoPull>always</autoPull>
                     <logDate>default</logDate>
                     <images>
+                        <image>
+                            <alias>webdav</alias>
+                            <name>cloudesire/webdav</name>
+                            <run>
+                                <volumes>
+                                    <bind>
+                                        <volume>/srv/common/webdav</volume>
+                                    </bind>
+                                </volumes>
+                                <ports>
+                                    <port>${webdav.apache.port}:8080</port>
+                                </ports>
+                                <env>
+                                    <APACHE_PORT>8080</APACHE_PORT>
+                                </env>
+                                <wait>
+                                    <log>WebDAV Server startup complete</log>
+                                    <http>
+                                        <url>http://${docker.host.address}:${webdav.apache.port}</url>
+                                    </http>
+                                    <time>120000</time>
+                                    <shutdown>500</shutdown>
+                                </wait>
+                                <log>
+                                    <enabled>true</enabled>
+                                </log>
+                            </run>
+                        </image>
                         <!-- Start Rabbit image -->
                         <image>
                             <alias>rabbitmq</alias>
@@ -452,10 +480,8 @@
                                     <from>
                                         <image>config</image>
                                         <image>plugin</image>
+                                        <image>webdav</image>
                                     </from>
-                                    <bind>
-                                        <volume>/vagrant/fsdatastore:/vagrant/fsdatastore</volume>
-                                    </bind>
                                 </volumes>
                                 <links>
                                     <link>rabbitmq</link>
