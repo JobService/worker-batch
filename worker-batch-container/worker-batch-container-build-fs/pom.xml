@@ -19,8 +19,6 @@
         </worker-batch.container.name>
         <worker-batch.container.alias>batch-worker-fs</worker-batch.container.alias>
         <test.data>${project.basedir}/test-data</test.data>
-        <maven.install.skip>true</maven.install.skip>
-        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
     <dependencies>
@@ -215,6 +213,7 @@
                         <rabbit.host>${docker.host.address}</rabbit.host>
                     </environmentVariables>
                     <!--<debugForkedProcess>true</debugForkedProcess>-->
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
 

@@ -104,8 +104,6 @@
         <datastore.container.id>b591d8c6615c4af99d7915719b01259c</datastore.container.id>
         <!-- location of test data to be used by tests ran via worker-tester framework -->
         <test.data>${container.directory}/test-data</test.data>
-        <maven.install.skip>true</maven.install.skip>
-        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
 
@@ -219,6 +217,7 @@
                         <rabbit.host>${docker.host.address}</rabbit.host>
                     </environmentVariables>
                     <!--<debugForkedProcess>true</debugForkedProcess>-->
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
 
