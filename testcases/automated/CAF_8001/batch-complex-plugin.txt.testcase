@@ -7,7 +7,7 @@ testCaseInformation:
 inputData:
   useDataStore: true
   containerId: "b591d8c6615c4af99d7915719b01259c"
-  inputFile: "/mnt/test-sources/batch-test-data/CAF_8001/batch-complex-plugin.txt"
+  inputFile: "CAF_8001/batch-complex-plugin.txt"
   storageReference: null
   task:
     batchDefinition: "[[\"a,b,c\",\"d,e,f\"],[\"g,h,i\"]]"

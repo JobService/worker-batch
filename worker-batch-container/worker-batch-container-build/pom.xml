@@ -104,6 +104,7 @@
         <datastore.container.id>b591d8c6615c4af99d7915719b01259c</datastore.container.id>
         <!-- location of test data to be used by tests ran via worker-tester framework -->
         <test.data>${container.directory}/test-data</test.data>
+        <tests.binary.content.location>${test.data}</tests.binary.content.location>
     </properties>
 
 
@@ -161,6 +162,9 @@
             </activation>
             <properties>
                 <test.data>${project.basedir}/../../testcases/automated</test.data>
+                <!-- A property is created by the windows or linux nightly tests profiles to allow the nightly tests to pick
+                up binary content files from a remote location e.g. test.binary.content.basedir=/mnt/test-sources/ -->
+                <test.binary.content.location>${test.binary.content.basedir}batch-test-data</test.binary.content.location>
                 <failsafe.timeout>120000</failsafe.timeout>
             </properties>
             <build>
@@ -206,6 +210,7 @@
                         <rabbitmq.ctrl.port>${rabbitmq.ctrl.port}</rabbitmq.ctrl.port>
                         <input.folder>${test.data}</input.folder>
                         <expected.folder>${test.data}</expected.folder>
+                        <test.sourcefile.base.folder>${test.binary.content.location}</test.sourcefile.base.folder>
                         <datastore.container.id>${datastore.container.id}</datastore.container.id>
                         <datastore.enabled>false</datastore.enabled>
                     </systemPropertyVariables>

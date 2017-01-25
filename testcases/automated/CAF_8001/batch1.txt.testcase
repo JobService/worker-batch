@@ -8,7 +8,7 @@ testCaseInformation:
 inputData:
   useDataStore: true
   containerId: "0a1b8e24cc44490888b3d8d8ebba8309"
-  inputFile: "/mnt/test-sources/batch-test-data/CAF_8001/batch1.txt"
+  inputFile: "CAF_8001/batch1.txt"
   task:
     batchDefinition: "a,b,c"
     batchType: "BatchPluginTestImpl"

@@ -19,6 +19,7 @@
         </worker-batch.container.name>
         <worker-batch.container.alias>batch-worker-fs</worker-batch.container.alias>
         <test.data>${project.basedir}/test-data</test.data>
+        <tests.binary.content.location>${test.data}</tests.binary.content.location>
     </properties>
 
     <dependencies>
@@ -158,6 +159,9 @@
             </activation>
             <properties>
                 <test.data>${project.basedir}/../../testcases/automated</test.data>
+                <!-- A property is created by the windows or linux nightly tests profiles to allow the nightly tests to pick
+                up binary content files from a remote location e.g. test.binary.content.basedir=/mnt/test-sources/ -->
+                <test.binary.content.location>${test.binary.content.basedir}batch-test-data</test.binary.content.location>
                 <failsafe.timeout>120000</failsafe.timeout>
             </properties>
             <build>
@@ -202,6 +206,7 @@
                         <rabbitmq.ctrl.port>${rabbitmq.ctrl.port}</rabbitmq.ctrl.port>
                         <input.folder>${test.data}</input.folder>
                         <expected.folder>${test.data}</expected.folder>
+                        <test.sourcefile.base.folder>${test.binary.content.location}</test.sourcefile.base.folder>
                         <datastore.enabled>false</datastore.enabled>
                     </systemPropertyVariables>
                     <environmentVariables>
