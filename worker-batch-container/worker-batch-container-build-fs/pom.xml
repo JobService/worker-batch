@@ -216,6 +216,7 @@
                         <!-- Environment variables needed for old style tests-->
                         <rabbit.port>${rabbitmq.node.port}</rabbit.port>
                         <rabbit.host>${docker.host.address}</rabbit.host>
+                        <!--<task.template>${project.basedir}/assetIdPluginTemplate.yaml</task.template>-->
                     </environmentVariables>
                     <!--<debugForkedProcess>true</debugForkedProcess>-->
                     <skipTests>true</skipTests>

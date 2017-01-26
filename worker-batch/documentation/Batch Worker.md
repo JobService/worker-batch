@@ -14,6 +14,10 @@ class with the following options:
 *   `outputQueue`: the name of the queue to put results on. _(Required)_
 *   `threads`: the maximum number of threads the worker can run. _(Required)_
 *   `cacheExpireTime`: the time in seconds for the worker to maintain a channel to a queue. _(Required)_
+*   `returnValueBehaviour`: enumeration defining the worker response behaviour
+    * `RETURN_ALL`: all results are returned to the output queue.
+    * `RETURN_NONE`: no results except exceptions are returned to the output queue.
+    * `RETURN_ONLY_IF_ZERO_SUBTASKS`: returns no results unless an exception or zero sub tasks are present for the batch definition.
 
 # Batch Worker API
 

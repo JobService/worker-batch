@@ -20,6 +20,8 @@ public class BatchWorkerConfiguration extends WorkerConfiguration {
     @Min(1)
     private int cacheExpireTime;
 
+    private ReturnValueBehaviour returnValueBehaviour;
+
     public String getOutputQueue() {
         return outputQueue;
     }
@@ -42,5 +44,13 @@ public class BatchWorkerConfiguration extends WorkerConfiguration {
 
     public void setCacheExpireTime(int cacheExpireTime) {
         this.cacheExpireTime = cacheExpireTime;
+    }
+
+    public ReturnValueBehaviour getReturnValueBehaviour() {
+        return returnValueBehaviour;
+    }
+
+    public void setReturnValueBehaviour(ReturnValueBehaviour returnValueBehaviour) {
+        this.returnValueBehaviour = returnValueBehaviour;
     }
 }

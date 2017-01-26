@@ -33,6 +33,7 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
     private final BatchWorkerPublisher batchWorkerPublisher;
 
     private int subtaskCount;
+    private boolean hasSubtasks;
 
     /**
      * Constructor for BatchWorkerServiceImpl.
@@ -54,6 +55,7 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
         this.subtaskCount = 0;
         this.tracking = trackingInfo;
         this.batchWorkerPublisher = batchWorkerPublisher;
+        this.hasSubtasks = false;
     }
 
     /**
@@ -109,6 +111,7 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
      * @return The TaskId for the subtask.
      */
     private String incrementTaskId() {
+        hasSubtasks = true;
         if (tracking == null) {
             return UUID.randomUUID().toString();
         }
@@ -161,5 +164,15 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
         trackingInfo.setTrackingPipe(trackingInfoToCopy.getTrackingPipe());
         trackingInfo.setTrackTo(trackingInfoToCopy.getTrackTo());
         return trackingInfo;
+    }
+
+    /**
+     * Return whether this batch has sub tasks.
+     * If registerBatchSubtask() or registerItemSubtask() is called, the subtaskCount will be incremented (if tracking info is present).
+     *
+     * @return whether the batch has sub tasks.
+     */
+    public boolean hasSubtasks() {
+        return hasSubtasks;
     }
 }

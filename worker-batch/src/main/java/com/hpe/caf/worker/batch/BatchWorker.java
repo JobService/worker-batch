@@ -13,22 +13,27 @@ import java.util.Map;
 
 public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResult> {
 
-    private final BatchWorkerServices batchWorkerServices;
+    private final BatchWorkerServicesImpl batchWorkerServices;
     private final Map<String, BatchWorkerPlugin> registeredPlugins;
     private final TrackingInfo tracking;
     private final BatchWorkerPublisher messagePublisher;
+    private final BatchWorkerConfiguration configuration;
 
     /**
      * Create a Worker. The input task will be validated.
      *
-     * @param task        the input task for this Worker to operate on
-     * @param tracking    additional fields used in tracking task messages
-     * @param resultQueue the reference to the queue that should take results from this type of Worker
-     * @param codec       used to serialising result data
+     * @param task the input task for this Worker to operate on
+     * @param tracking additional fields used in tracking task messages
+     * @param configuration the batch worker configuration
+     * @param codec used to serialising result data
      * @throws InvalidTaskException if the input task does not validate successfully
      */
-    public BatchWorker(BatchWorkerTask task, TrackingInfo tracking, String resultQueue, Codec codec, LoadingCache channelCache, Connection conn, String inputQueue, Map<String, BatchWorkerPlugin> plugins) throws InvalidTaskException {
-        super(task, resultQueue, codec);
+    public BatchWorker(BatchWorkerTask task, TrackingInfo tracking, BatchWorkerConfiguration configuration, Codec codec,
+                       LoadingCache channelCache, Connection conn, String inputQueue, Map<String, BatchWorkerPlugin> plugins)
+        throws InvalidTaskException
+    {
+        super(task, configuration.getOutputQueue(), codec);
+        this.configuration = configuration;
         this.tracking = tracking;
         this.messagePublisher = new BatchWorkerPublisher(channelCache, codec);
         batchWorkerServices = new BatchWorkerServicesImpl(task, getCodec(), channelCache, conn, inputQueue, tracking, messagePublisher);
@@ -59,7 +64,32 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
 
             BatchWorkerResult result = new BatchWorkerResult();
             result.batchTask = tracking == null ? task.targetPipe : tracking.getJobId();
-            return createSuccessResult(result);
+
+            // Read configuration entry for return value behaviour
+            if(configuration.getReturnValueBehaviour()==null) {
+                return createSuccessResult(result);
+            }
+
+            switch(configuration.getReturnValueBehaviour())
+            {
+                case RETURN_ALL:
+                    // We return all results to the output queue
+                    return createSuccessResult(result);
+                case RETURN_NONE:
+                    // If there are no errors then no output needs to be output
+                    return createSuccessNoOutputToQueue();
+                case RETURN_ONLY_IF_ZERO_SUBTASKS:
+                    // We only return a result to the output queue if there were zero subfiles with the batch
+                    if(batchWorkerServices.hasSubtasks()) {
+                        // If there are subtasks, don't send to output queue
+                        return createSuccessNoOutputToQueue();
+                    } else {
+                        // If there are no subtasks, sent to output queue
+                        return createSuccessResult(result);
+                    }
+                default:
+                    return createSuccessResult(result);
+            }
         } catch (ReflectiveOperationException e) {
             throw new TaskFailedException("Invalid batch type  " + getTask().batchType);
         } catch (BatchDefinitionException e) {

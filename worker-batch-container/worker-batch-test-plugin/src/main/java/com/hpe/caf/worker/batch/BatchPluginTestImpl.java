@@ -10,10 +10,13 @@ import java.util.Map;
  */
 public class BatchPluginTestImpl implements BatchWorkerPlugin {
     @Override
-    public void processBatch(BatchWorkerServices batchWorkerServices, String batchDefinition, String taskMessageType, Map<String, String> taskMessageParams) {
+    public void processBatch(BatchWorkerServices batchWorkerServices, String batchDefinition, String taskMessageType,
+                             Map<String, String> taskMessageParams) {
         List<String> items = Arrays.asList(batchDefinition.split("\\s*,\\s*"));
-        for(String subItem:items) {
-            batchWorkerServices.registerItemSubtask("Test task", 1, subItem);
+        for(String subItem : items) {
+            if(!subItem.equals("")){
+                batchWorkerServices.registerItemSubtask("Test task", 1, subItem);
+            }
         }
     }
 }

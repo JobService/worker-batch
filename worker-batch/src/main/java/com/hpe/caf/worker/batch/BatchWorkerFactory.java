@@ -67,7 +67,7 @@ public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfigu
 
     @Override
     protected Worker createWorker(BatchWorkerTask task, TrackingInfo tracking) throws TaskRejectedException, InvalidTaskException {
-        return new BatchWorker(task, tracking, getConfiguration().getOutputQueue(), getCodec(), channelCache, conn, inputQueue, registeredPlugins);
+        return new BatchWorker(task, tracking, getConfiguration(), getCodec(), channelCache, conn, inputQueue, registeredPlugins);
     }
 
     @Override

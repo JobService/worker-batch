@@ -1,10 +1,7 @@
 import com.google.common.cache.LoadingCache;
 import com.hpe.caf.api.Codec;
 import com.hpe.caf.api.CodecException;
-import com.hpe.caf.api.worker.TaskFailedException;
-import com.hpe.caf.api.worker.TaskMessage;
-import com.hpe.caf.api.worker.TaskStatus;
-import com.hpe.caf.api.worker.TrackingInfo;
+import com.hpe.caf.api.worker.*;
 import com.hpe.caf.codec.JsonCodec;
 import com.hpe.caf.worker.batch.*;
 import com.rabbitmq.client.Channel;
@@ -20,10 +17,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -59,6 +53,55 @@ public class BatchWorkerServicesTest {
         taskData = codec.serialise(task);
         taskMessageSerialized = codec.serialise(new TaskMessage(UUID.randomUUID().toString(), BatchWorkerConstants.WORKER_NAME,
                 BatchWorkerConstants.WORKER_API_VERSION, taskData, TaskStatus.NEW_TASK, new HashMap<>(),outputQueue,null));
+    }
+
+    @Test
+    public void testNoOutputSwitch() throws IOException, ExecutionException, CodecException, BatchDefinitionException, InvalidTaskException, InterruptedException
+    {
+        // Set up some mocked method classes and calls
+        String taskId = "J1";
+        Mockito.when(connection.createChannel()).thenReturn(outputChannel);
+        Mockito.when(channelCache.get(outputQueue)).thenReturn(outputChannel);
+        BatchWorkerPublisher batchWorkerPublisher = Mockito.mock(BatchWorkerPublisher.class);
+        PublishAnswer answer = new PublishAnswer();
+        Mockito.doAnswer(answer).when(batchWorkerPublisher).storeInMessageBuffer(Mockito.anyString(), Mockito.any());
+
+        // Set up our task for this test
+        BatchWorkerTask localTask = new BatchWorkerTask();
+        localTask.targetPipe = outputQueue;
+        localTask.batchDefinition = "";
+        localTask.batchType = "com.hpe.caf.worker.batch.BatchPluginTestImpl";
+
+        // Set up tracking info for this test
+        TrackingInfo trackingInfo = new TrackingInfo();
+        trackingInfo.setJobTaskId(taskId);
+
+        // Can be empty as we will be defaulting to the test plugin when no match is found
+        Map<String, BatchWorkerPlugin> plugins = new HashMap<>();
+        BatchWorkerConfiguration configuration = new BatchWorkerConfiguration();
+        configuration.setReturnValueBehaviour(ReturnValueBehaviour.RETURN_ONLY_IF_ZERO_SUBTASKS);
+        BatchWorker batchWorker = new BatchWorker(localTask, trackingInfo, configuration, codec, channelCache, connection, inputQueue, plugins);
+
+        // We can assert the data of the response WITH ZERO SUBTASKS is not empty as we do want to return a result here
+        WorkerResponse workerResponseZeroSubtasks = batchWorker.doWork();
+        Assert.assertTrue(workerResponseZeroSubtasks.getTaskStatus().equals(TaskStatus.RESULT_SUCCESS));
+        Assert.assertTrue(workerResponseZeroSubtasks.getData().length > 0); // there is output data
+
+        // We can assert the data of the response WITH SUBTASKS is empty as we don't want to return a result here
+        configuration.setReturnValueBehaviour(ReturnValueBehaviour.RETURN_NONE);
+        localTask.batchDefinition = "abc";
+        batchWorker = new BatchWorker(localTask, trackingInfo, configuration, codec, channelCache, connection, inputQueue, plugins);
+        WorkerResponse workerResponseReturnNone = batchWorker.doWork();
+        Assert.assertTrue(workerResponseReturnNone.getTaskStatus().equals(TaskStatus.RESULT_SUCCESS));
+        Assert.assertTrue(workerResponseReturnNone.getData().length == 0); // there is no output data
+
+        // We can assert the data of the response WITH SUBTASKS is empty as we don't want to return a result here
+        configuration.setReturnValueBehaviour(ReturnValueBehaviour.RETURN_ALL);
+        localTask.batchDefinition = "abc";
+        batchWorker = new BatchWorker(localTask, trackingInfo, configuration, codec, channelCache, connection, inputQueue, plugins);
+        WorkerResponse workerResponseReturnAll = batchWorker.doWork();
+        Assert.assertTrue(workerResponseReturnAll.getTaskStatus().equals(TaskStatus.RESULT_SUCCESS));
+        Assert.assertTrue(workerResponseReturnAll.getData().length > 0); // there is no output data
     }
 
     @Test
