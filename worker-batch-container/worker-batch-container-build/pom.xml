@@ -105,6 +105,7 @@
         <!-- location of test data to be used by tests ran via worker-tester framework -->
         <test.data>${container.directory}/test-data</test.data>
         <tests.binary.content.location>${test.data}</tests.binary.content.location>
+        <skipTests>true</skipTests>
     </properties>
 
 
@@ -120,12 +121,6 @@
 
         <profile>
             <id>integration-test</id>
-            <activation>
-                <property>
-                    <name>RE_BUILD_TYPE</name>
-                    <value>continuous</value>
-                </property>
-            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -154,12 +149,6 @@
         </profile>
         <profile>
             <id>nightly-test</id>
-            <activation>
-                <property>
-                    <name>RE_BUILD_TYPE</name>
-                    <value>release</value>
-                </property>
-            </activation>
             <properties>
                 <test.data>${project.basedir}/../../testcases/automated</test.data>
                 <!-- A property is created by the windows or linux nightly tests profiles to allow the nightly tests to pick
