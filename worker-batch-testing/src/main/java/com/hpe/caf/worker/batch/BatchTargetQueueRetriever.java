@@ -48,7 +48,28 @@ public class BatchTargetQueueRetriever {
         }
         List<TaskMessage> messages = new ArrayList<>();
         QueueingConsumer consumer = new QueueingConsumer(channel);
-        channel.basicConsume(targetQueue, false, consumer);
+
+        // Avoid ShutdownSignalException where targetQueue has yet to be initialised and populated.
+        final int numberOfRetries = 5;
+        final long timeToWait = 1000;
+        for (int i=0; i<numberOfRetries; i++) {
+            try {
+                channel.basicConsume(targetQueue, false, consumer);
+                break;
+            } catch (IOException ioe) {
+                //  Log exception.
+                logger.error(ioe.getMessage());
+
+                if (i < numberOfRetries) {
+                    //  Wait until targetQueue has been initialised and populated.
+                    Thread.sleep(timeToWait);
+                } else {
+                    //  If retry count has exceeded, then re-throw.
+                    throw ioe;
+                }
+            }
+        }
+
         //get first message from queue
         QueueingConsumer.Delivery delivery = consumer.nextDelivery(100);
         while (delivery != null) {

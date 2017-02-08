@@ -223,7 +223,6 @@
                         <!--<task.template>${container.directory}/assetIdPluginTemplate.yaml</task.template>-->
                     </environmentVariables>
                     <!--<debugForkedProcess>true</debugForkedProcess>-->
-                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
 

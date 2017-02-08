@@ -19,6 +19,7 @@ public class BatchResultValidationProcessor implements ResultProcessor {
             BatchWorkerTask inputTask = testInput.getTask();
             List<TaskMessage> subTasks = BatchTargetQueueRetriever.getInstance().retrieveMessages(inputTask.targetPipe);
             if (subTasks.size() != testOuput.getSubTasks().size()) {
+                System.out.println("Sub tasks count mismatch - actual (" + subTasks.size() + ") : expected (" + testOuput.getSubTasks().size() + ")");
                 return false;
             }
             compareSubTasks(testOuput.getSubTasks(),subTasks);

@@ -20,11 +20,16 @@ public class BatchWorkerAcceptanceIT extends UseAsTestName_TestBase {
     @BeforeClass
     public void setUp() throws Exception {
         testControllerProvider = new BatchTestControllerProvider();
+
+    }
+
+    @BeforeMethod
+    public void setUpMethod() throws Exception {
         controller =  TestRunnerSingle.getTestController(testControllerProvider, false);
         controller.initialise();
     }
 
-    @AfterClass
+    @AfterMethod
     public void tearDown() throws Exception{
         controller.close();
     }
