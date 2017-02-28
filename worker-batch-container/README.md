@@ -1,4 +1,4 @@
-# Batch Worker Container [![Build Status](http://cafbuilder.hpswlabs.hp.com:8080/buildStatus/icon?job=worker-batch-container)](http://cafbuilder.hpswlabs.hp.com:8080/job/worker-batch-container)
+# Batch Worker Container
 
 This is a docker container for the Batch Worker. It consists of the Batch Worker which can be ran by passing in the required configuration files to the container. It uses the 'java:8' base image.
 
