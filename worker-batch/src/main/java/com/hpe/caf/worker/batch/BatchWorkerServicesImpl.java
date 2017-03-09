@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -35,6 +36,8 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
     private int subtaskCount;
     private boolean hasSubtasks;
 
+    private final Map<Class, Object> serviceMap;
+
     /**
      * Constructor for BatchWorkerServiceImpl.
      *
@@ -56,6 +59,7 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
         this.tracking = trackingInfo;
         this.batchWorkerPublisher = batchWorkerPublisher;
         this.hasSubtasks = false;
+        this.serviceMap = new HashMap<>();
     }
 
     /**
@@ -102,6 +106,27 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
         } catch (Throwable e) { //Catch everything else.
             throw new TaskFailedException(e.getMessage(), e);
         }
+    }
+
+    /**
+     * A get method for retrieving a service registered with BatchWorkerServices
+     *
+     * @param service the interface or abstract class representing the service
+     * @return the service provider
+     */
+    @Override
+    public <S> S getService(Class<S> service) {
+        return (S) serviceMap.get(service);
+    }
+
+    /**
+     * A method for registering a service with BatchWorkerServices
+     *
+     * @param service the interface or abstract class representing the service
+     * @param serviceProvider the instance of the service to register
+     */
+    public <S> void register(final Class<S> service, final S serviceProvider) {
+        serviceMap.put(service, serviceProvider);
     }
 
     /**

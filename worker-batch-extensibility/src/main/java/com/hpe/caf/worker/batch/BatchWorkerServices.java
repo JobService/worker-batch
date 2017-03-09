@@ -21,4 +21,13 @@ public interface BatchWorkerServices {
      * @param taskData       Object containing the constructed task data for task message type
      */
     void registerItemSubtask(String taskClassifier, int taskApiVersion, Object taskData);
+
+    /**
+     * Returns the specified service, or {@code null} if the service has not been registered.
+     *
+     * @param <S> the type of the service to be returned
+     * @param service the interface or abstract class representing the service
+     * @return the service provider
+     */
+    <S> S getService(Class<S> service);
 }

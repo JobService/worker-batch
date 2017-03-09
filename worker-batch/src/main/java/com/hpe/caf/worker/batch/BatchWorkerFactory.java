@@ -42,10 +42,13 @@ public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfigu
      * @param taskClass          the worker task class
      * @throws WorkerException if the factory cannot be instantiated
      */
-    public BatchWorkerFactory(ConfigurationSource configSource, DataStore dataStore, Codec codec, Class<BatchWorkerConfiguration> configurationClass, Class<BatchWorkerTask> taskClass) throws WorkerException {
+    public BatchWorkerFactory(ConfigurationSource configSource, DataStore dataStore, Codec codec,
+                              Class<BatchWorkerConfiguration> configurationClass,
+                              Class<BatchWorkerTask> taskClass) throws WorkerException {
         super(configSource, dataStore, codec, configurationClass, taskClass);
         try {
-            RabbitWorkerQueueConfiguration rabbitWorkerQueueConfiguration = configSource.getConfiguration(RabbitWorkerQueueConfiguration.class);
+            RabbitWorkerQueueConfiguration rabbitWorkerQueueConfiguration =
+                    configSource.getConfiguration(RabbitWorkerQueueConfiguration.class);
             createRabbitConnection(rabbitWorkerQueueConfiguration);
             inputQueue = rabbitWorkerQueueConfiguration.getInputQueue();
             createChannelCache();
@@ -66,8 +69,10 @@ public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfigu
     }
 
     @Override
-    protected Worker createWorker(BatchWorkerTask task, TrackingInfo tracking) throws TaskRejectedException, InvalidTaskException {
-        return new BatchWorker(task, tracking, getConfiguration(), getCodec(), channelCache, conn, inputQueue, registeredPlugins);
+    protected Worker createWorker(BatchWorkerTask task, TrackingInfo tracking) throws TaskRejectedException,
+            InvalidTaskException {
+        return new BatchWorker(task, tracking, getConfiguration(), getCodec(), channelCache, conn, inputQueue,
+                registeredPlugins, getDataStore());
     }
 
     @Override
@@ -102,10 +107,12 @@ public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfigu
         }
     }
 
-    private void createRabbitConnection(RabbitWorkerQueueConfiguration rabbitWorkerConfiguration) throws IOException, TimeoutException {
+    private void createRabbitConnection(RabbitWorkerQueueConfiguration rabbitWorkerConfiguration) throws IOException,
+            TimeoutException {
         RabbitConfiguration rabbitConfiguration = rabbitWorkerConfiguration.getRabbitConfiguration();
         ConnectionOptions lyraOpts = RabbitUtil.createLyraConnectionOptions(rabbitConfiguration.getRabbitHost(),
-                rabbitConfiguration.getRabbitPort(), rabbitConfiguration.getRabbitUser(), rabbitConfiguration.getRabbitPassword());
+                rabbitConfiguration.getRabbitPort(), rabbitConfiguration.getRabbitUser(),
+                rabbitConfiguration.getRabbitPassword());
         Config lyraConfig = RabbitUtil.createLyraConfig(rabbitConfiguration.getBackoffInterval(),
                 rabbitConfiguration.getMaxBackoffInterval(), -1);
         conn = RabbitUtil.createRabbitConnection(lyraOpts, lyraConfig);
@@ -134,9 +141,8 @@ public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfigu
         };
 
         channelCache = CacheBuilder.newBuilder().concurrencyLevel(getWorkerThreads())
-                .maximumSize(100).expireAfterAccess(getConfiguration().getCacheExpireTime(), TimeUnit.SECONDS).removalListener(removalListener).build(
-                        cacheLoader
-                );
+                .maximumSize(100).expireAfterAccess(getConfiguration().getCacheExpireTime(),
+                        TimeUnit.SECONDS).removalListener(removalListener).build(cacheLoader);
     }
 
     private void registerPlugins() {

@@ -17,8 +17,11 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BatchWorkerServicesTest {
@@ -56,6 +59,20 @@ public class BatchWorkerServicesTest {
     }
 
     @Test
+    public void testGetRegisteredServiceFromBatchWorkerServices() throws DataStoreException {
+        // Mock DataStore and register it with the BatchWorkerServices
+        String mockRefId = "mockRefId";
+        DataStore mockDataStore = mock(DataStore.class);
+        when(mockDataStore.store(any(Path.class), any(String.class)))
+                .thenReturn(mockRefId);
+        services.register(DataStore.class, mockDataStore);
+
+        // Assert that the DataStore stored as a service can be called from the service register
+        Path mockFilePath = null;
+        Assert.assertEquals(mockRefId, services.getService(DataStore.class).store(mockFilePath, "mockDsRef"));
+    }
+
+    @Test
     public void testNoOutputSwitch() throws IOException, ExecutionException, CodecException, BatchDefinitionException, InvalidTaskException, InterruptedException
     {
         // Set up some mocked method classes and calls
@@ -80,7 +97,7 @@ public class BatchWorkerServicesTest {
         Map<String, BatchWorkerPlugin> plugins = new HashMap<>();
         BatchWorkerConfiguration configuration = new BatchWorkerConfiguration();
         configuration.setReturnValueBehaviour(ReturnValueBehaviour.RETURN_ONLY_IF_ZERO_SUBTASKS);
-        BatchWorker batchWorker = new BatchWorker(localTask, trackingInfo, configuration, codec, channelCache, connection, inputQueue, plugins);
+        BatchWorker batchWorker = new BatchWorker(localTask, trackingInfo, configuration, codec, channelCache, connection, inputQueue, plugins, null);
 
         // We can assert the data of the response WITH ZERO SUBTASKS is not empty as we do want to return a result here
         WorkerResponse workerResponseZeroSubtasks = batchWorker.doWork();
@@ -90,7 +107,7 @@ public class BatchWorkerServicesTest {
         // We can assert the data of the response WITH SUBTASKS is empty as we don't want to return a result here
         configuration.setReturnValueBehaviour(ReturnValueBehaviour.RETURN_NONE);
         localTask.batchDefinition = "abc";
-        batchWorker = new BatchWorker(localTask, trackingInfo, configuration, codec, channelCache, connection, inputQueue, plugins);
+        batchWorker = new BatchWorker(localTask, trackingInfo, configuration, codec, channelCache, connection, inputQueue, plugins, null);
         WorkerResponse workerResponseReturnNone = batchWorker.doWork();
         Assert.assertTrue(workerResponseReturnNone.getTaskStatus().equals(TaskStatus.RESULT_SUCCESS));
         Assert.assertTrue(workerResponseReturnNone.getData().length == 0); // there is no output data
@@ -98,7 +115,7 @@ public class BatchWorkerServicesTest {
         // We can assert the data of the response WITH SUBTASKS is empty as we don't want to return a result here
         configuration.setReturnValueBehaviour(ReturnValueBehaviour.RETURN_ALL);
         localTask.batchDefinition = "abc";
-        batchWorker = new BatchWorker(localTask, trackingInfo, configuration, codec, channelCache, connection, inputQueue, plugins);
+        batchWorker = new BatchWorker(localTask, trackingInfo, configuration, codec, channelCache, connection, inputQueue, plugins, null);
         WorkerResponse workerResponseReturnAll = batchWorker.doWork();
         Assert.assertTrue(workerResponseReturnAll.getTaskStatus().equals(TaskStatus.RESULT_SUCCESS));
         Assert.assertTrue(workerResponseReturnAll.getData().length > 0); // there is no output data
