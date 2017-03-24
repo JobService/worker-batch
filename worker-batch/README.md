@@ -7,13 +7,19 @@ When the Batch Worker receives a batch to process, it constructs an instance of 
 
 ## Configuration 
 
-This worker uses the standard `caf-api` system of `ConfigurationSource` only. The configuration is contained in the `com.hpe.caf.worker.batch.BatchWorkerConfiguration`
-class with the following options:
+This worker is configured by setting the following environment variables:
 
-*   `workerVersion`: the version number of the worker
-*   `outputQueue`: the name of the queue to put results on. _(Required)_
-*   `threads`: the maximum number of threads the worker can run. _(Required)_
-*   `cacheExpireTime`: the time in seconds for the worker to maintain a channel to a queue. _(Required)_
+ - `CAF_BATCH_WORKER_CACHE_EXPIRE_TIME`  
+    Default: `120`  
+    Length of time, in seconds, the connection to a queue is maintained
+
+ - `CAF_BATCH_WORKER_ERROR_QUEUE`  
+    Default: `batch-worker-err`  
+    Sets the queue name where errors are reported
+
+ - `CAF_WORKER_THREADS`  
+    Default: `1`  
+    Specifies the number of threads used for parallel processing
 
 # Batch Worker API
 
