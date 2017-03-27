@@ -16,7 +16,7 @@ public class BatchTestControllerProvider extends AbstractTestControllerProvider<
 
     @Override
     protected ResultProcessor getTestResultProcessor(TestConfiguration<BatchWorkerTask, BatchWorkerResult, BatchTestInput, BatchTestExpectation> configuration, WorkerServices workerServices) {
-        return new BatchResultValidationProcessor();
+        return new BatchResultValidationProcessor(workerServices.getCodec(), workerServices.getDataStore());
     }
 
     @Override
