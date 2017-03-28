@@ -190,8 +190,14 @@ public class BatchResultValidationProcessor implements ResultProcessor {
                         expectedListOfDocumentWorkerFieldValuesIter.remove();
                         break;
                     } else if (!expectedListOfDocumentWorkerFieldValuesIter.hasNext()) {
-                        assertTrue(result, "Expected DocumentWorkerFieldValue to actual DocumentWorkerFieldValue " +
-                                "mismatch");
+                        assertTrue(result, "Expected DocumentWorkerFieldValue (data: "
+                                + expectedDocumentWorkerFieldValue.data
+                                + " encoding: "
+                                + expectedDocumentWorkerFieldValue.encoding
+                                + ") mismatched actual DocumentWorkerFieldValue (data: "
+                                + actualDocumentWorkerFieldValue.data
+                                + " encoding: "
+                                + actualDocumentWorkerFieldValue.encoding + ")");
                     }
                 } catch (DataStoreException e) {
                     System.out.println("DataStoreException thrown: " + e.getMessage());
