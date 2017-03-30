@@ -12,10 +12,7 @@ import com.hpe.caf.worker.document.DocumentWorkerTask;
 import com.hpe.caf.worker.testing.ResultProcessor;
 import com.hpe.caf.worker.testing.TestItem;
 import org.apache.commons.io.IOUtils;
-
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.assertNotNull;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -24,6 +21,8 @@ import java.util.*;
 public class BatchResultValidationProcessor implements ResultProcessor {
 
     private final Codec codec;
+
+    private static Logger logger = Logger.getLogger(BatchResultValidationProcessor.class);
 
     private final DataStore dataStore;
 
@@ -45,8 +44,7 @@ public class BatchResultValidationProcessor implements ResultProcessor {
                         + testOuput.getSubTasks().size() + ")");
                 return false;
             }
-            compareSubTasks(testOuput.getSubTasks(), subTasks);
-            return true;
+            return compareSubTasks(testOuput.getSubTasks(), subTasks);
         } else {
             return false;
         }
@@ -57,26 +55,86 @@ public class BatchResultValidationProcessor implements ResultProcessor {
         return message.getTaskId();
     }
 
-    private void compareSubTasks(final List<TaskMessage>expectedSubTasks, final List<TaskMessage> actualSubTasks)
+    public boolean compareSubTasks(final List<TaskMessage> expectedSubTasks, final List<TaskMessage> actualSubTasks)
             throws CodecException {
-        for (int i = 0; i < actualSubTasks.size(); i++) {
-            final String actualSubTaskClassifier = actualSubTasks.get(i).getTaskClassifier();
-            assertEquals(actualSubTaskClassifier, expectedSubTasks.get(i).getTaskClassifier(),
-                    "Subtasks classifier should match");
-            assertEquals(actualSubTasks.get(i).getTaskApiVersion(), expectedSubTasks.get(i).getTaskApiVersion(),
-                    "Subtasks task API version should match");
-            assertEquals(actualSubTasks.get(i).getTaskStatus(), expectedSubTasks.get(i).getTaskStatus(),
-                    "Subtasks task status should match");
-            final byte[] expectedTaskData = expectedSubTasks.get(i).getTaskData();
-            final byte[] actualTaskData = actualSubTasks.get(i).getTaskData();
-            final boolean taskDataMatched = Arrays.equals(expectedTaskData, actualTaskData);
-            if (!taskDataMatched && actualSubTaskClassifier.equals("DocumentWorker")) {
+
+        Iterator<TaskMessage> actualListOfTaskMessagesLinkedListIter = actualSubTasks.iterator();
+
+        while (actualListOfTaskMessagesLinkedListIter.hasNext()) {
+            final TaskMessage actualTaskMessage = actualListOfTaskMessagesLinkedListIter.next();
+            Iterator<TaskMessage> expectedListOfTaskMessagesLinkedListIter = expectedSubTasks.iterator();
+            while (expectedListOfTaskMessagesLinkedListIter.hasNext()) {
+                final TaskMessage expectedTaskMessage = expectedListOfTaskMessagesLinkedListIter.next();
+
+                // Validate the task message classifier
+                final String actualSubTaskClassifier = actualTaskMessage.getTaskClassifier();
+                boolean taskMessageVariablesMatched =
+                        actualSubTaskClassifier.equals(expectedTaskMessage.getTaskClassifier());
+                if (!taskMessageVariablesMatched && expectedListOfTaskMessagesLinkedListIter.hasNext()) {
+                    logger.debug("Actual and Expected Task Message Task Classifiers mismatched. Attempting to match " +
+                            "with the next expected Task Message.");
+                    continue;
+                } else if (!taskMessageVariablesMatched && !expectedListOfTaskMessagesLinkedListIter.hasNext()) {
+                    logger.debug("Actual and Expected Task Message Task Classifiers mismatched. There are no more " +
+                            "expected Task Messages to attempt to validate against.");
+                    return false;
+                }
+
+                // Validate the task message api version
+                taskMessageVariablesMatched =
+                        actualTaskMessage.getTaskApiVersion() == expectedTaskMessage.getTaskApiVersion();
+                if (!taskMessageVariablesMatched && expectedListOfTaskMessagesLinkedListIter.hasNext()) {
+                    logger.debug("Actual and Expected Task Message Task API Versions mismatched. Attempting to match " +
+                            "with the next expected Task Message.");
+                    continue;
+                } else if (!taskMessageVariablesMatched && !expectedListOfTaskMessagesLinkedListIter.hasNext()) {
+                    logger.debug("Actual and Expected Task Message Task API Versions mismatched. There are no more " +
+                            "expected Task Messages to attempt to validate against.");
+                    return false;
+                }
+
+                // Validate the task message task status
+                taskMessageVariablesMatched =
+                        actualTaskMessage.getTaskStatus().equals(expectedTaskMessage.getTaskStatus());
+                if (!taskMessageVariablesMatched && expectedListOfTaskMessagesLinkedListIter.hasNext()) {
+                    logger.debug("Actual and Expected Task Message Task Statuses mismatched. Attempting to match " +
+                            "with the next expected Task Message.");
+                    continue;
+                } else if (!taskMessageVariablesMatched && !expectedListOfTaskMessagesLinkedListIter.hasNext()) {
+                    logger.debug("Actual and Expected Task Message Task Statuses mismatched. There are no more " +
+                            "expected Task Messages to attempt to validate against.");
+                    return false;
+                }
+
+                final byte[] expectedTaskData = expectedTaskMessage.getTaskData();
+                final byte[] actualTaskData = actualTaskMessage.getTaskData();
+                boolean taskDataMatched = Arrays.equals(expectedTaskData, actualTaskData);
+
                 // Expected and Actual taskData byte arrays do not match so perform additional validation
-                compareDocumentWorkerTaskData(expectedTaskData, actualTaskData);
-            } else {
-                assertTrue(taskDataMatched, "Task data should match");
+                if (!taskDataMatched && actualSubTaskClassifier.equals("DocumentWorker")) {
+                    taskDataMatched = compareDocumentWorkerTaskData(expectedTaskData, actualTaskData);
+                }
+
+                // If the taskData did not match and there is still another expected TaskMessage to match against
+                // continue to the next expected message for matching.
+                if (!taskDataMatched && expectedListOfTaskMessagesLinkedListIter.hasNext()) {
+                    logger.debug("Task Message returned from worker did not match with Expected Task Message. " +
+                            "Attempting to match with the next expected Task Message.");
+                    continue;
+                }
+
+                // If actual and expected task messages matched, remove them from their lists and break out of the loop
+                if (taskDataMatched) {
+                    logger.info("Task Message returned from worker matched with Expected Task Message.");
+                    actualListOfTaskMessagesLinkedListIter.remove();
+                    expectedListOfTaskMessagesLinkedListIter.remove();
+                    break;
+                }
             }
         }
+
+        // If there are no more actual and expected subtasks, validation succeeded, return true
+        return actualSubTasks.size() == 0 && expectedSubTasks.size() == 0;
     }
 
     /**
@@ -84,8 +142,9 @@ public class BatchResultValidationProcessor implements ResultProcessor {
      *
      * @param expectedTaskData the expected taskData byte array to match against
      * @param actualTaskData the actual taskData byte array to match against
+     * @return result of comparison
      */
-    public void compareDocumentWorkerTaskData(final byte[] expectedTaskData,
+    public boolean compareDocumentWorkerTaskData(final byte[] expectedTaskData,
                                               final byte[] actualTaskData) throws CodecException {
         // Use the codec to deserialise the taskDatas into DocumentWorkerTask objects
         final DocumentWorkerTask expectedDocumentWorkerTaskData = codec.deserialise(expectedTaskData,
@@ -93,9 +152,12 @@ public class BatchResultValidationProcessor implements ResultProcessor {
         final DocumentWorkerTask actualDocumentWorkerTaskData = codec.deserialise(actualTaskData,
                 DocumentWorkerTask.class);
         // Validate that the expected and actual task data custom data match
-        validateTaskDataCustomData(expectedDocumentWorkerTaskData, actualDocumentWorkerTaskData);
-        // Validate that the expected and actual task data fields match
-        validateTaskDataFields(expectedDocumentWorkerTaskData, actualDocumentWorkerTaskData);
+        if (validateTaskDataCustomData(expectedDocumentWorkerTaskData, actualDocumentWorkerTaskData)) {
+            // Validate that the expected and actual task data fields match
+            return validateTaskDataFields(expectedDocumentWorkerTaskData, actualDocumentWorkerTaskData);
+        }
+
+        return false;
     }
 
     /**
@@ -103,15 +165,21 @@ public class BatchResultValidationProcessor implements ResultProcessor {
      *
      * @param expectedDocumentWorkerTaskData the expected DocumentWorkerTask containing customData to match against
      * @param actualDocumentWorkerTaskData the actual DocumentWorkerTask containing customData to match against
+     * @return result of comparison
      */
-    private void validateTaskDataCustomData(final DocumentWorkerTask expectedDocumentWorkerTaskData,
+    private boolean validateTaskDataCustomData(final DocumentWorkerTask expectedDocumentWorkerTaskData,
                                           final DocumentWorkerTask actualDocumentWorkerTaskData) {
         final Map<String, String> actualDocumentWorkerTaskDataCustomData = actualDocumentWorkerTaskData.customData;
         final Map<String, String> expectedDocumentWorkerTaskDataCustomData = expectedDocumentWorkerTaskData.customData;
 
-        assertEquals(actualDocumentWorkerTaskDataCustomData, expectedDocumentWorkerTaskDataCustomData,
-                "Expected DocumentWorkerTask TaskData Custom Data should contain Actual DocumentWorkerTask TaskData " +
-                        "Custom Data under test");
+        boolean customDataCompareResult =
+                expectedDocumentWorkerTaskDataCustomData.equals(actualDocumentWorkerTaskDataCustomData);
+
+        if (!customDataCompareResult) {
+            logger.debug("Custom Data Field mismatching between Actual and Expected DocumentWorkerTaskData");
+        }
+
+        return customDataCompareResult;
     }
 
     /**
@@ -119,17 +187,19 @@ public class BatchResultValidationProcessor implements ResultProcessor {
      *
      * @param expectedDocumentWorkerTaskData the expected DocumentWorkerTask containing fields to match against
      * @param actualDocumentWorkerTaskData the actual DocumentWorkerTask containing fields to match against
+     * @return result of comparison
      */
-    private void validateTaskDataFields(final DocumentWorkerTask expectedDocumentWorkerTaskData,
+    private boolean validateTaskDataFields(final DocumentWorkerTask expectedDocumentWorkerTaskData,
                                       final DocumentWorkerTask actualDocumentWorkerTaskData) {
         final Map<String, List<DocumentWorkerFieldValue>> actualDocumentWorkerTaskDataFields =
                 actualDocumentWorkerTaskData.fields;
         final Map<String, List<DocumentWorkerFieldValue>> expectedDocumentWorkerTaskDataFields =
                 expectedDocumentWorkerTaskData.fields;
-        // Compare expected with actual
-        validateDocumentWorkerTaskDataFields(expectedDocumentWorkerTaskDataFields, actualDocumentWorkerTaskDataFields);
-        // Compare actual with expected
-        validateDocumentWorkerTaskDataFields(actualDocumentWorkerTaskDataFields, expectedDocumentWorkerTaskDataFields);
+        // Compare expected with actual and actual with expected and return the result
+        return validateDocumentWorkerTaskDataFields(expectedDocumentWorkerTaskDataFields,
+                actualDocumentWorkerTaskDataFields)
+                && validateDocumentWorkerTaskDataFields(actualDocumentWorkerTaskDataFields,
+                expectedDocumentWorkerTaskDataFields);
     }
 
     /**
@@ -137,19 +207,28 @@ public class BatchResultValidationProcessor implements ResultProcessor {
      * List<DocumentWorkerFieldValue> Value pair Map
      * @param lHSDocumentWorkerTaskDataFields left hand side Map of fields of DocumentWorkerFieldValues
      * @param rHSDocumentWorkerTaskDataFields right hand side Map of fields of DocumentWorkerFieldValues
+     * @return result of comparison
      */
-    private void validateDocumentWorkerTaskDataFields(
+    private boolean validateDocumentWorkerTaskDataFields(
             final Map<String, List<DocumentWorkerFieldValue>> lHSDocumentWorkerTaskDataFields,
             final Map<String, List<DocumentWorkerFieldValue>> rHSDocumentWorkerTaskDataFields) {
-        lHSDocumentWorkerTaskDataFields.entrySet().stream().forEach(stringListEntry -> {
-            final List<DocumentWorkerFieldValue> listOfLHSDocumentWorkerFieldValues = stringListEntry.getValue();
+        boolean result = false;
+        for (final Map.Entry<String, List<DocumentWorkerFieldValue>> lHSDocumentWorkerTaskDataField :
+                lHSDocumentWorkerTaskDataFields.entrySet()) {
+            final List<DocumentWorkerFieldValue> listOfLHSDocumentWorkerFieldValues =
+                    lHSDocumentWorkerTaskDataField.getValue();
             final List<DocumentWorkerFieldValue> listOfRHSDocumentWorkerFieldValues =
-                    rHSDocumentWorkerTaskDataFields.get(stringListEntry.getKey());
-            assertNotNull(listOfRHSDocumentWorkerFieldValues, "Map of right handside fields should contain key from " +
-                    "left handside map.");
-            compareListsOfDocumentWorkerFieldValues(listOfLHSDocumentWorkerFieldValues,
-                    listOfRHSDocumentWorkerFieldValues);
-        });
+                    rHSDocumentWorkerTaskDataFields.get(lHSDocumentWorkerTaskDataField.getKey());
+            // Map of right handside fields should contain key from left handside map, if so compare them.
+            if (listOfRHSDocumentWorkerFieldValues != null) {
+                result = compareListsOfDocumentWorkerFieldValues(listOfLHSDocumentWorkerFieldValues,
+                        listOfRHSDocumentWorkerFieldValues);
+            } else {
+                logger.debug("Map of right handside fields does not contain key from left handside map.");
+                return false;
+            }
+        }
+        return result;
     }
 
     /**
@@ -159,19 +238,23 @@ public class BatchResultValidationProcessor implements ResultProcessor {
      *                                                match against
      * @param actualListOfDocumentWorkerFieldValues list of actual DocumentWorkerFieldValues containing data to match
      *                                              against
+     * @return result of comparison
      */
-    private void compareListsOfDocumentWorkerFieldValues(
+    private boolean compareListsOfDocumentWorkerFieldValues(
             final List<DocumentWorkerFieldValue> expectedListOfDocumentWorkerFieldValues,
             final List<DocumentWorkerFieldValue> actualListOfDocumentWorkerFieldValues) {
 
-        assertEquals(actualListOfDocumentWorkerFieldValues.size(), expectedListOfDocumentWorkerFieldValues.size(),
-                "DocumentWorkerFieldValue Lists should be of the same length");
+        boolean result = false;
+
+        if (expectedListOfDocumentWorkerFieldValues.size() != actualListOfDocumentWorkerFieldValues.size()) {
+            logger.debug("Expected and Actual DocumentWorkerFieldValue Lists are not of the same length");
+            return result;
+        }
 
         final LinkedList<DocumentWorkerFieldValue> expectedListOfDocumentWorkerFieldValuesLinkedList =
                 new LinkedList<>(expectedListOfDocumentWorkerFieldValues);
 
         for (final DocumentWorkerFieldValue actualDocumentWorkerFieldValue : actualListOfDocumentWorkerFieldValues) {
-            boolean result;
             Iterator<DocumentWorkerFieldValue> expectedListOfDocumentWorkerFieldValuesIter =
                     expectedListOfDocumentWorkerFieldValuesLinkedList.iterator();
 
@@ -185,19 +268,18 @@ public class BatchResultValidationProcessor implements ResultProcessor {
 
                     result = Arrays.equals(expectedDocumentWorkerFieldValueBytes, actualDocumentWorkerFieldValueBytes);
                     // If there was a match remove that element from the linked list else if there are no more elements
-                    // to compare against in the linked list assert the result
+                    // to compare against in the linked list return false
                     if (result) {
                         expectedListOfDocumentWorkerFieldValuesIter.remove();
+                        result = true;
                         break;
                     } else if (!expectedListOfDocumentWorkerFieldValuesIter.hasNext()) {
-                        assertTrue(result, "Expected DocumentWorkerFieldValue (data: "
-                                + expectedDocumentWorkerFieldValue.data
-                                + " encoding: "
-                                + expectedDocumentWorkerFieldValue.encoding
+                        logger.warn("Expected DocumentWorkerFieldValue (data: " + expectedDocumentWorkerFieldValue.data
+                                + " encoding: " + expectedDocumentWorkerFieldValue.encoding
                                 + ") mismatched actual DocumentWorkerFieldValue (data: "
-                                + actualDocumentWorkerFieldValue.data
-                                + " encoding: "
+                                + actualDocumentWorkerFieldValue.data + " encoding: "
                                 + actualDocumentWorkerFieldValue.encoding + ")");
+                        return false;
                     }
                 } catch (DataStoreException e) {
                     System.out.println("DataStoreException thrown: " + e.getMessage());
@@ -208,6 +290,7 @@ public class BatchResultValidationProcessor implements ResultProcessor {
                 }
             }
         }
+        return result;
     }
 
     private byte[] getBytes(final DocumentWorkerFieldValue value) throws DataStoreException, IOException {
