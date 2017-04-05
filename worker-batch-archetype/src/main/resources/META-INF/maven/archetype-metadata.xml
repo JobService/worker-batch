@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-descriptor xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd" name="worker-globfilter-aggregator"
+    xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <requiredProperties>
+    <requiredProperty key="workerName">
+      <defaultValue>AssetIdWorker</defaultValue>
+    </requiredProperty>
+  </requiredProperties>
+  <fileSets>
+    <fileSet encoding="UTF-8">
+      <directory></directory>
+      <includes>
+        <include>README.md</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+  <modules>
+    <module id="{rootArtifactId}-batch-plugin" dir="__rootArtifactId__-batch-plugin" name="__rootArtifactId__-batch-plugin">
+      <fileSets>
+        <fileSet filtered="true" packaged="true" encoding="UTF-8">
+          <directory>src/main/java</directory>
+          <includes>
+            <include>**/*.java</include>
+          </includes>
+        </fileSet>
+        <fileSet filtered="true" encoding="UTF-8">
+          <directory>src/main/resources</directory>
+          <includes>
+            <include>**/*.BatchWorkerPlugin</include>
+          </includes>
+        </fileSet>
+        <fileSet filtered="true" packaged="true" encoding="UTF-8">
+          <directory>src/test/java</directory>
+          <includes>
+            <include>**/*.java</include>
+          </includes>
+        </fileSet>
+      </fileSets>
+    </module>
+    <module id="{rootArtifactId}-container" dir="__rootArtifactId__-container" name="__rootArtifactId__-container">
+      <fileSets>
+        <fileSet filtered="true" encoding="UTF-8">
+          <directory>src/main/config</directory>
+          <includes>
+            <include>**/*.js</include>
+          </includes>
+        </fileSet>
+        <fileSet filtered="true" encoding="UTF-8">
+          <directory>src/test/java</directory>
+          <includes>
+            <include>**/*.java</include>
+          </includes>
+        </fileSet>
+        <fileSet encoding="UTF-8">
+          <directory>test-data/input</directory>
+          <includes>
+            <include>**/*.txt</include>
+          </includes>
+        </fileSet>
+        <fileSet filtered="true" encoding="UTF-8">
+          <directory>test-data/input</directory>
+          <includes>
+            <include>**/*.testcase</include>
+          </includes>
+        </fileSet>
+        <fileSet encoding="UTF-8">
+            <directory>test-configs</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+        <fileSet encoding="UTF-8">
+          <directory></directory>
+          <includes>
+            <include>FileSystemActivator.txt</include>
+          </includes>
+        </fileSet>
+        <fileSet filtered="true" encoding="UTF-8">
+          <directory></directory>
+          <includes>
+            <include>README.md</include>
+            <include>template.yaml</include>
+            <include>worker.yaml</include>
+          </includes>
+        </fileSet>
+          <fileSet encoding="UTF-8">
+              <directory></directory>
+              <includes>
+                  <include>test-generation.sh</include>
+                  <include>worker.sh</include>
+              </includes>
+          </fileSet>
+      </fileSets>
+    </module>
+  </modules>
+</archetype-descriptor>

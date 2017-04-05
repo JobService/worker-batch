@@ -23,6 +23,8 @@
         <module>worker-batch-extensibility</module>
         <module>worker-batch-plugins-package</module>
         <module>worker-batch-container</module>
+        <module>worker-batch-framework</module>
+        <module>worker-batch-archetype</module>
     </modules>
     
     <dependencyManagement>
