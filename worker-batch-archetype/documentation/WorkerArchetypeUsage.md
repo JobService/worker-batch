@@ -21,16 +21,16 @@ The following modules are required to create a Batch worker. Each contains its o
 and plugins:
 
 **These modules are generated from the worker-batch-archetype:**
-- `worker-<artifactId>-batch-plugin` module contains the worker itself and an md documentation explaining the service
-use of the worker.
-	1. **\<workerName>BatchPlugin** – responsible for doing the work. This class implements the BatchWorkerPlugin
+- `worker-<artifactId>` aggregator project that contains the following modules:
+    - `worker-<artifactId>-batch-plugin` module contains the batch worker plugin.
+	    - **\<workerName>BatchPlugin** – responsible for doing the work. This class implements the BatchWorkerPlugin
 	interface.
-- `worker-<artifactId>-container` module is for building the Docker image of the worker and pushing the image to Docker.
+    - `worker-<artifactId>-container` module is for building the Docker image of the worker and pushing the image to Docker.
 The module starts a container for RabbitMQ, webdav, test-configs, the worker and runs worker acceptance integration
 testcases.
-	1. **\<workerName>AcceptanceIT** – calls the `worker-batch-testing` dependency's BatchTestControllerProvider class
+	    - **\<workerName>AcceptanceIT** – calls the `worker-batch-testing` dependency's BatchTestControllerProvider class
 	to generate or run worker integration testing testcase files.
-	2. **pom.xml** – specifies the Docker Maven plugin configurations to build the image for the worker, and Maven
+	    - **pom.xml** – specifies the Docker Maven plugin configurations to build the image for the worker, and Maven
 	compiler and failsafe plugin for compiling and running integration tests.
 
 ## Using the Batch Worker Archetype
