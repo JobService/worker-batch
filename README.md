@@ -13,12 +13,6 @@ More information on the functioning of the Batch Worker is available [here](http
 - This project contains the implementation of the batch worker api.
 - More information on this project can be found [here](https://github.hpe.com/caf/worker-batch/tree/develop/worker-batch)
 
-### worker-batch-container
-
-- This is a docker container for the Batch Worker. It consists of the Batch Worker which can be ran by passing in the required configuration files to the container. It uses the 'java:8' base image.
-
-More information on the functioning of the Batch Worker is available [here](https://github.hpe.com/caf/worker-batch/tree/develop/worker-batch).
-
 ##### Container Configuration
 
 Configuration details can be found [here](https://github.hpe.com/caf/chateau/tree/develop/services/batch-worker/configuration-files).
@@ -36,3 +30,11 @@ The testing for the Batch Worker is defined [here](https://github.hpe.com/caf/wo
 
 ### worker-batch-plugins
 - Collects plugins and message builder implementations for use with worker-batch together into a single aggregated tar.gz.
+
+### worker-batch-framework
+
+This project is used for centralizing dependency information for a Batch Worker. The project can be found in [worker-batch-framework](worker-batch-framework).
+
+### worker-batch-archetype
+
+This repository is a Maven Archetype template for the generation of a generic Batch Worker project. Generation of a worker project with the Maven Archetype will produce a Batch Worker that splits references into messages. The project can be found in [worker-batch-archetype](worker-batch-archetype).
