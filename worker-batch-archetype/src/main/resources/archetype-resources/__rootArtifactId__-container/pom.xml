@@ -41,7 +41,7 @@
             <artifactId>caf-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.hpe.caf.worker.batch</groupId>
+            <groupId>com.github.jobservice</groupId>
             <artifactId>worker-batch</artifactId>
         </dependency>
         <dependency>
@@ -92,7 +92,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.hpe.caf.worker.batch</groupId>
+            <groupId>com.github.jobservice</groupId>
             <artifactId>worker-batch-testing</artifactId>
             <scope>test</scope>
         </dependency>
