@@ -157,7 +157,7 @@ The foundations for your new Batch Worker is now set up. The generated project w
 
 ## Further Information
 
-Information on worker-batch and its modules that the archetype utilizes can be found [here](https://github.com/jobservice/worker-batch/tree/develop/worker-batch/README.md).
+Information on worker-batch and its modules that the archetype utilizes can be found [here](https://github.com/jobservice/worker-batch/blob/develop/README.md).
 
 At the time this guide was written with:
 
