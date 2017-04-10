@@ -1,11 +1,7 @@
 ---
 batchType: ${workerName}BatchPlugin
 targetPipe: targetPipe
-batchDefinition: sub-dir/**.txt
+batchDefinition: [\"aa\",\"bb\",\"cc\",\"dd\"]
 taskMessageParams:
-      pi:datastorePartialReference: test-datastore-partial-reference
-      cd:aCustomDataField: aCustomDataFieldValue
-      newField:aNewField: aNewFieldValue
-      field:fileName: CUSTOM_FILE_NAME
-      field:binaryFile: CUSTOM_CONTENT
+      referenceFieldName: REFERENCE
 taskMessageType: DocumentMessage

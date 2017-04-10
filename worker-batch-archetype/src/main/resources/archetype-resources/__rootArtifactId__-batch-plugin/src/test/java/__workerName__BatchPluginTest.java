@@ -33,16 +33,16 @@ public class ${workerName}BatchPluginTest
     public void testSimpleBatch() throws JsonProcessingException, BatchDefinitionException
     {
         Collection<TaskMessage> constructedTaskMessages = new ArrayList<>();
-        ArrayList<String> testReferences = createReferencesList("aa", "bb", "cc", "esgesges/adawf");
+        ArrayList<String> testContents = createContentsList("aa", "bb", "cc", "esgesges/adawf");
         int expectedSubBatchCount = 6;
 
         testWorkerServices = createTestBatchWorkerServices(constructedTaskMessages);
 
-        String referenceFieldNameParamKey = "referenceFieldName";
-        String referenceFieldNameParamValue = "REFERENCE";
+        String contentFieldNameParamKey = "contentFieldName";
+        String contentFieldNameParamValue = "CONTENT";
         testTaskMessageParams = createTaskMessageParams(
-                new AbstractMap.SimpleEntry<>(referenceFieldNameParamKey, referenceFieldNameParamValue));
-        String batchDefinition = mapper.writeValueAsString(testReferences);
+                new AbstractMap.SimpleEntry<>(contentFieldNameParamKey, contentFieldNameParamValue));
+        String batchDefinition = mapper.writeValueAsString(testContents);
         taskMessageType = "DocumentMessage";
 
         ${workerName}BatchPlugin plugin = new ${workerName}BatchPlugin();
@@ -53,8 +53,8 @@ public class ${workerName}BatchPluginTest
                 expectedSubBatchCount, subBatchCount);
 
         // Verify that expected number of messages were registered
-        Assert.assertEquals("Expecting same number of task messages generated as references we had on batch " +
-                "definition.", testReferences.size(), constructedTaskMessages.size());
+        Assert.assertEquals("Expecting same number of task messages generated as contents we had in batch " +
+                "definition.", testContents.size(), constructedTaskMessages.size());
 
         for(TaskMessage returnedMessage: constructedTaskMessages){
             checkClassifierAndApiVersion(returnedMessage);
@@ -62,15 +62,15 @@ public class ${workerName}BatchPluginTest
             DocumentWorkerTask returnedTaskData = (DocumentWorkerTask) returnedMessage.getTaskData();
             Assert.assertNotNull("Expecting task data returned to not be null.", returnedTaskData);
 
-            String returnedReferenceFieldDocumentWorkerFieldValueData =
-                    returnedTaskData.fields.get(referenceFieldNameParamValue).get(0).data;
-            DocumentWorkerFieldEncoding returnedReferenceFieldDocumentWorkerFieldValueEncoding =
-                    returnedTaskData.fields.get(referenceFieldNameParamValue).get(0).encoding;
+            String returnedContentFieldDocumentWorkerFieldValueData =
+                    returnedTaskData.fields.get(contentFieldNameParamValue).get(0).data;
+            DocumentWorkerFieldEncoding returnedContentFieldDocumentWorkerFieldValueEncoding =
+                    returnedTaskData.fields.get(contentFieldNameParamValue).get(0).encoding;
 
             Assert.assertEquals("Expected encoding to be set to utf8", DocumentWorkerFieldEncoding.utf8,
-                    returnedReferenceFieldDocumentWorkerFieldValueEncoding);
-            Assert.assertTrue("Expecting the reference value to be the reference on the batch definition we passed " +
-                    "in.", testReferences.contains(returnedReferenceFieldDocumentWorkerFieldValueData));
+                    returnedContentFieldDocumentWorkerFieldValueEncoding);
+            Assert.assertTrue("Expecting the content value to be the content on the batch definition we passed " +
+                    "in.", testContents.contains(returnedContentFieldDocumentWorkerFieldValueData));
         }
     }
 
@@ -82,13 +82,13 @@ public class ${workerName}BatchPluginTest
                 DocumentWorkerConstants.WORKER_NAME, returnedMessage.getTaskClassifier());
     }
 
-    private ArrayList<String> createReferencesList(String... references)
+    private ArrayList<String> createContentsList(String... contents)
     {
-        ArrayList<String> testReferences = new ArrayList<>();
-        for(String reference: references){
-            testReferences.add(reference);
+        ArrayList<String> testContents = new ArrayList<>();
+        for(String content: contents){
+        testContents.add(content);
         }
-        return testReferences;
+        return testContents;
     }
 
     private Map<String, String> createTaskMessageParams(Map.Entry<String, String>... entries)

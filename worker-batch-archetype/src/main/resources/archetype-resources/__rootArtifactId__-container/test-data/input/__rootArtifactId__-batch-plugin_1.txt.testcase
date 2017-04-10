@@ -14,7 +14,7 @@ inputData:
     batchType: "${workerName}BatchPlugin"
     targetPipe: "targetPipe"
     taskMessageParams:
-      referenceFieldName: "REFERENCE"
+      contentFieldName: "REFERENCE"
     taskMessageType: "DocumentMessage"
     targetPipe: "targetPipe"
   useDataStore: true

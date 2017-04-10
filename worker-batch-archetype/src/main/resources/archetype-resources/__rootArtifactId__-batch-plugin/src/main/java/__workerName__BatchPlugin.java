@@ -29,29 +29,29 @@ public class ${workerName}BatchPlugin implements BatchWorkerPlugin
         throws BatchDefinitionException
     {
         // Expecting batch definition to be in the form of a serialized json array of string values.
-        final String[] references;
+        final String[] contents;
         try {
-            references = mapper.readValue(batchDefinition, String[].class);
+            contents = mapper.readValue(batchDefinition, String[].class);
         } catch (IOException e) {
             // Failed to process the batch
-            throw new BatchDefinitionException("Unable to convert batch definition to array of references.", e);
+            throw new BatchDefinitionException("Unable to convert batch definition to array of contents.", e);
         }
-        if (references == null || references.length == 0) {
-            throw new BatchDefinitionException("No asset ids passed in on batch definition.");
+        if (contents == null || contents.length == 0) {
+            throw new BatchDefinitionException("No contents passed in on batch definition.");
         }
 
         if (!Objects.equals(taskMessageType, "DocumentMessage")) {
             throw new BatchDefinitionException("Unknown Task Message Type: " + taskMessageType);
         }
 
-        //  Get reference length as we intend to split the list into sub-batches.
-        final int referencesLength = references.length;
+        //  Get content length as we intend to split the list into sub-batches.
+        final int contentsLength = contents.length;
 
-        if (referencesLength > 1) {
+        if (contentsLength > 1) {
 
             //  Split the list and create sub-batches.
-            final String[] subBatchArrayA = Arrays.copyOfRange(references, 0, referencesLength/2);
-            final String[] subBatchArrayB = Arrays.copyOfRange(references, (referencesLength/2), referencesLength);
+            final String[] subBatchArrayA = Arrays.copyOfRange(contents, 0, contentsLength/2);
+            final String[] subBatchArrayB = Arrays.copyOfRange(contents, (contentsLength/2), contentsLength);
 
             final String subBatchArrayAString;
             final String subBatchArrayBString;
@@ -65,23 +65,23 @@ public class ${workerName}BatchPlugin implements BatchWorkerPlugin
             batchWorkerServices.registerBatchSubtask(subBatchArrayAString);
             batchWorkerServices.registerBatchSubtask(subBatchArrayBString);
         } else {
-            for (final String reference : references) {
+            for (final String content : contents) {
                 // Build a Document Worker Task Message that contains taskData 
-                // containing a field with the reference to the item
+                // containing a field with the content to the item
                 final DocumentWorkerTask taskData = new DocumentWorkerTask();
                 taskData.fields = new HashMap<>();
 
-                final DocumentWorkerFieldValue referenceFieldValue = new DocumentWorkerFieldValue();
-                referenceFieldValue.data = reference;
-                referenceFieldValue.encoding = DocumentWorkerFieldEncoding.utf8;
+                final DocumentWorkerFieldValue contentFieldValue = new DocumentWorkerFieldValue();
+                contentFieldValue.data = content;
+                contentFieldValue.encoding = DocumentWorkerFieldEncoding.utf8;
 
-                String referenceFieldName = taskMessageParams.get("referenceFieldName");
-                // If the name of the field was not specified in the task message params, default to STORAGE_REFERENCE
-                if (referenceFieldName == null) {
-                    referenceFieldName = "storageReference";
+                String contentFieldName = taskMessageParams.get("contentFieldName");
+                // If the name of the field was not specified in the task message params, default to CONTENT
+                if (contentFieldName == null) {
+                    contentFieldName = "CONTENT";
                 }
 
-                taskData.fields.put(referenceFieldName, Arrays.asList(referenceFieldValue));
+                taskData.fields.put(contentFieldName, Arrays.asList(contentFieldValue));
 
                 // Register item to send with BatchWorkerServices
                 batchWorkerServices.registerItemSubtask(DocumentWorkerConstants.WORKER_NAME,
