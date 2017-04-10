@@ -76,17 +76,4 @@
       </plugin>
       </plugins>
   </build>
-
-  <distributionManagement>
-    <repository>
-      <id>HPEreleases</id>
-      <name>HPE Sunnyvale Artifactory Releases</name>
-      <url>http://rh7-artifactory.svs.hpeswlab.net:8081/artifactory/libs-release-local</url>
-    </repository>
-    <snapshotRepository>
-      <id>HPEsnapshots</id>
-      <name>HPE Sunnyvale Artifactory Snapshots</name>
-      <url>http://rh7-artifactory.svs.hpeswlab.net:8081/artifactory/libs-snapshot-local</url>
-    </snapshotRepository>
-  </distributionManagement>
 </project>
