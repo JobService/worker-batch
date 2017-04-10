@@ -9,6 +9,12 @@
 
   <name>worker-batch-archetype</name>
 
+    <parent>
+        <groupId>com.github.jobservice</groupId>
+        <artifactId>worker-batch-aggregator</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+    </parent>
+
   <build>
       <extensions>
           <extension>
