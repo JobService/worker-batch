@@ -11,16 +11,26 @@ The following are prerequisite components required for the generation of a Batch
 
 ## Introduction
 
+This is a guide on how to use the `worker-batch-archetype` to generate a Batch Worker project that contains plugin
+and container components. It covers archetype generation with Maven CLI, NetBeans and IntelliJ.
+
+### Batch Worker Overview
+
 Stateless Workers are microservices that can be scaled up or down to meet demand. In essence, a Worker should not be
 aware (or need to be aware) of any other Worker or its surrounding system. This way additional "clones" of a Worker can
 be created or destroyed at will to provide scaling without affecting other Workers.
 
-### Components Generated from the Archetype
+Batch Workers are used to create and send multiple task messages to another worker.
 
-The following modules are required to create a Batch worker. Each contains its own pom.xml with its own dependencies
+When a Batch Worker receives a batch definition to process, it recursively breaks it down into smaller batches of work
+and then ultimately individual tasks, which are sent to a worker.
+
+### Project Generated from the Archetype
+
+The following project structure is generated from the Batch Worker archetype. Each contains its own pom.xml with its own dependencies
 and plugins:
 
-**These modules are generated from the worker-batch-archetype:**
+**This project structure is generated from the worker-batch-archetype:**
 
 - `worker-<artifactId>` aggregator project that contains the following modules:
     - `worker-<artifactId>-batch-plugin` module contains the batch worker plugin.
@@ -43,13 +53,12 @@ Excerpt from [Apache Maven Archetype Introduction](https://maven.apache.org/guid
 <pre>"Archetype is a Maven project templating toolkit.
 An archetype is defined as an original pattern or model from which all other things of the same kind are made."</pre>
 
-### Maven Archetype for Batch Worker projects
-
-You can create the foundations of a new Batch Worker project by using the `worker-batch-archetype` project.
+You can create the foundations of a new Batch Worker project with the use of the `worker-batch-archetype` project.
 
 The generation of a new project from the Batch Worker Archetype will contain some basic functionality.
 
-It takes in a batch definition in the form of a JSON array and splits that into sub batches and then individual strings to use in creating Document Worker Tasks.
+It takes in a batch definition in the form of a JSON array and splits that into sub batches which are then split into individual strings.
+A task message is created for each string and the string is used as the content that the downstream worker uses.
 
 ### Creating a new Batch Worker from Batch Worker Archetype
 
