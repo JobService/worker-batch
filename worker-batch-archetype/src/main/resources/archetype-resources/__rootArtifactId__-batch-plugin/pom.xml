@@ -16,7 +16,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.hpe.caf.worker.batch</groupId>
+            <groupId>com.github.jobservice</groupId>
             <artifactId>worker-batch-extensibility</artifactId>
             <scope>provided</scope>
         </dependency>
