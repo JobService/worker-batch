@@ -2,6 +2,8 @@
 
 ## Prerequisites
 
+The following are prerequisite components required for the generation of a Batch Worker project from the archetype:
+
 - Refer to the correct Maven Settings found
 [here](https://github.hpe.com/caf/caf-development/tree/master/environment/maven-settings).
 - Maven
@@ -15,30 +17,30 @@ Stateless Workers are microservices that can be scaled up or down to meet demand
 aware (or need to be aware) of any other Worker or its surrounding system. This way additional "clones" of a Worker can
 be created or destroyed at will to provide scaling without affecting other Workers.
 
-### Components of a Batch Worker
+### Components Generated from the Archetype
 
 The following modules are required to create a Batch worker. Each contains its own pom.xml with its own dependencies
 and plugins:
 
 **These modules are generated from the worker-batch-archetype:**
+
 - `worker-<artifactId>` aggregator project that contains the following modules:
     - `worker-<artifactId>-batch-plugin` module contains the batch worker plugin.
-	    - **\<workerName>BatchPlugin** – responsible for doing the work. This class implements the BatchWorkerPlugin
+	    - **<workerName\>BatchPlugin** – responsible for doing the work. This class implements the BatchWorkerPlugin
 	interface.
     - `worker-<artifactId>-container` module is for building the Docker image of the worker and pushing the image to Docker.
 The module starts a container for RabbitMQ, webdav, test-configs, the worker and runs worker acceptance integration
 testcases.
-	    - **\<workerName>AcceptanceIT** – calls the `worker-batch-testing` dependency's BatchTestControllerProvider class
+	    - **<workerName\>AcceptanceIT** – calls the `worker-batch-testing` dependency's BatchTestControllerProvider class
 	to generate or run worker integration testing testcase files.
-	    - **pom.xml** – specifies the Docker Maven plugin configurations to build the image for the worker, and Maven
+	    - **pom.xml** – specifies the Docker Maven Plugin configurations to build the image for the worker, and Maven
 	compiler and failsafe plugin for compiling and running integration tests.
 
 ## Using the Batch Worker Archetype
 
 A Maven Archetype is a template which you can base a project on.
 
-Excerpt from
-[Apache Maven Archetype Introduction](https://maven.apache.org/guides/introduction/introduction-to-archetypes.html) :
+Excerpt from [Apache Maven Archetype Introduction](https://maven.apache.org/guides/introduction/introduction-to-archetypes.html) :
 
 <pre>"Archetype is a Maven project templating toolkit.
 An archetype is defined as an original pattern or model from which all other things of the same kind are made."</pre>
@@ -49,8 +51,7 @@ You can create the foundations of a new Batch Worker project by using the `worke
 
 The generation of a new project from the Batch Worker Archetype will contain some basic functionality.
 
-It takes in a batch definition in the form of a JSON array and splits that into individual references to use in
-creating Document Worker Tasks.
+It takes in a batch definition in the form of a JSON array and splits that into sub batches and then individual strings to use in creating Document Worker Tasks.
 
 ### Creating a new Batch Worker from Batch Worker Archetype
 
@@ -65,8 +66,7 @@ shared between its submodules:
 
 The following subsections provide instructions on how you can use Maven Command Line Interface (CLI),
 IntelliJ Integrated Development Environment (IDE) or NetBeans IDE to create the components of a Batch Worker from the
-Batch Worker Archetype. *Note: You must replace __WORKER-BATCH-ARCHETYPE-VERSION__ with a valid version of
-Worker-Batch-Archetype.*
+Batch Worker Archetype. *Note: You must replace __WORKER-BATCH-ARCHETYPE-VERSION__ with a valid version of `worker-batch-archetype`.*
 
 #### Maven CLI
 
@@ -111,14 +111,14 @@ Generate the new Batch Worker Aggregator from the `worker-batch-archetype` by fo
 - Select the added 'com.hpe.caf.worker.batch:worker-batch-archetype' archetype > Click 'Next'
 - Enter GroupId, ArtifactId and Version of your Worker project > Click 'Next', e.g:
 	- GroupId : com.hpe.caf.worker.batch.plugins
-	- ArtifactId : worker-assetid
+	- ArtifactId : worker-batchsplit
 	- Version : 1.0.0-SNAPSHOT
 - Add each of the following properties (Alt+Insert) and replace the example values with your project specific values > Click 'Next':
-	- package : com.hpe.caf.worker.batch.plugins.assetid
-	- workerName : AssetIdWorker
+	- package : com.hpe.caf.worker.batch.plugins.batchsplit
+	- workerName : BatchSplitWorker
 - Name the Project after its ArtifactId and specify the location of the project > Click 'Finish', e.g:
-	- Project name : worker-assetid
-	- Project location : C:\MyWorkerProjects\worker-assetid
+	- Project name : worker-batchsplit
+	- Project location : C:\MyWorkerProjects\worker-batchsplit
 
 The foundations for your new Batch Worker is now set up. The generated project will contain the following submodules:
 
@@ -142,13 +142,13 @@ Generate the new Batch Worker Aggregator from the `worker-batch-archetype` by fo
 	- Repository : http://rh7-artifactory.svs.hpeswlab.net:8081/artifactory/hpe-mirror
 	- Click 'Next >'
 - Enter Project Name, Project Location, GroupId, Version and Package of your Worker project, e.g:
-	- Project Name : worker-assetid
+	- Project Name : worker-batchsplit
 	- Project Location : C:\MyWorkerProjects
 	- GroupId : com.hpe.caf.worker.batch.plugins
 	- Version : 1.0.0-SNAPSHOT
-	- Package : com.hpe.caf.worker.batch.plugins.assetid
+	- Package : com.hpe.caf.worker.batch.plugins.batchsplit
 - Set workerName property > Click 'Finish', e.g:
-	- workerName : AssetIdWorker
+	- workerName : BatchSplitWorker
 
 The foundations for your new Batch Worker is now set up. The generated project will contain the following submodules:
 
