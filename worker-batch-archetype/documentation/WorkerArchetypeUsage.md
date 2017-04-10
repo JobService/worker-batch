@@ -4,8 +4,6 @@
 
 The following are prerequisite components required for the generation of a Batch Worker project from the archetype:
 
-- Refer to the correct Maven Settings found
-[here](https://github.hpe.com/caf/caf-development/tree/master/environment/maven-settings).
 - Maven
 - Docker VM
 - IntelliJ (Optional)
@@ -76,7 +74,7 @@ command. The location where you run the command will be where the project is cre
 ##### Generate the New Batch Worker Aggregator
 
 Generate the new Batch Worker Aggregator from the `worker-batch-archetype` with the following Maven command:
-<pre>mvn archetype:generate -DarchetypeRepository=http://rh7-artifactory.svs.hpeswlab.net:8081/artifactory/hpe-mirror -DarchetypeVersion=WORKER-BATCH-ARCHETYPE-VERSION -DarchetypeArtifactId=worker-batch-archetype -DarchetypeGroupId=com.hpe.caf.worker.batch</pre>
+<pre>mvn archetype:generate -DarchetypeVersion=WORKER-BATCH-ARCHETYPE-VERSION -DarchetypeArtifactId=worker-batch-archetype -DarchetypeGroupId=com.hpe.caf.worker.batch</pre>
 
 The CLI will prompt you for artifactId, groupId, version (default suggestion is 1.0-SNAPSHOT), package (default suggestion is the
 groupId, you should however adjust this to include the worker's purpose) and workerName properties required for the new Batch Worker
@@ -106,7 +104,6 @@ Generate the new Batch Worker Aggregator from the `worker-batch-archetype` by fo
 	- GroupId : com.hpe.caf.worker.batch
 	- ArtifactId : worker-batch-archetype
 	- Version : *WORKER-BATCH-ARCHETYPE-VERSION*
-	- Repository : http://rh7-artifactory.svs.hpeswlab.net:8081/artifactory/hpe-mirror
 	- Click 'OK'
 - Select the added 'com.hpe.caf.worker.batch:worker-batch-archetype' archetype > Click 'Next'
 - Enter GroupId, ArtifactId and Version of your Worker project > Click 'Next', e.g:
@@ -139,7 +136,6 @@ Generate the new Batch Worker Aggregator from the `worker-batch-archetype` by fo
 	- GroupId : com.hpe.caf.worker.batch
 	- ArtifactId : worker-batch-archetype
 	- Version : *WORKER-BATCH-ARCHETYPE-VERSION*
-	- Repository : http://rh7-artifactory.svs.hpeswlab.net:8081/artifactory/hpe-mirror
 	- Click 'Next >'
 - Enter Project Name, Project Location, GroupId, Version and Package of your Worker project, e.g:
 	- Project Name : worker-batchsplit
@@ -157,7 +153,7 @@ The foundations for your new Batch Worker is now set up. The generated project w
 
 ## Further Information
 
-Information on worker-batch and its modules that the archetype utilizes can be found [here](https://github.com/jobservice/worker-batch/blob/develop/README.md).
+Information on worker-batch and its modules that the archetype utilizes can be found [here](https://github.com/JobService/worker-batch/blob/develop/worker-batch/README.md).
 
 At the time this guide was written with:
 
