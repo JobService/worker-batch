@@ -83,7 +83,7 @@ command. The location where you run the command will be where the project is cre
 ##### Generate the New Batch Worker Aggregator
 
 Generate the new Batch Worker Aggregator from the `worker-batch-archetype` with the following Maven command:
-<pre>mvn archetype:generate -DarchetypeVersion=WORKER-BATCH-ARCHETYPE-VERSION -DarchetypeArtifactId=worker-batch-archetype -DarchetypeGroupId=com.hpe.caf.worker.batch</pre>
+<pre>mvn archetype:generate -DarchetypeVersion=WORKER-BATCH-ARCHETYPE-VERSION -DarchetypeArtifactId=worker-batch-archetype -DarchetypeGroupId=com.github.jobservice</pre>
 
 The CLI will prompt you for artifactId, groupId, version (default suggestion is 1.0-SNAPSHOT), package (default suggestion is the
 groupId, you should however adjust this to include the worker's purpose) and workerName properties required for the new Batch Worker
@@ -110,11 +110,11 @@ Generate the new Batch Worker Aggregator from the `worker-batch-archetype` by fo
 - 'File > New > Project...'
 - Select Maven from the left-hand pane > Tick 'Create from archetype' > Click 'Add Archetype...'
 - Specify the details of the 'worker-batch-archetype'
-	- GroupId : com.hpe.caf.worker.batch
+	- GroupId : com.github.jobservice
 	- ArtifactId : worker-batch-archetype
 	- Version : *WORKER-BATCH-ARCHETYPE-VERSION*
 	- Click 'OK'
-- Select the added 'com.hpe.caf.worker.batch:worker-batch-archetype' archetype > Click 'Next'
+- Select the added 'com.github.jobservice:worker-batch-archetype' archetype > Click 'Next'
 - Enter GroupId, ArtifactId and Version of your Worker project > Click 'Next', e.g:
 	- GroupId : com.hpe.caf.worker.batch.plugins
 	- ArtifactId : worker-batchsplit
@@ -142,7 +142,7 @@ Generate the new Batch Worker Aggregator from the `worker-batch-archetype` by fo
 - 'File > New Project...'
 - From the Categories Pane select Maven > From the Select Pane select 'Project from Archetype' > Click 'Next >'
 - Specify the details of the 'worker-batch-archetype'
-	- GroupId : com.hpe.caf.worker.batch
+	- GroupId : com.github.jobservice
 	- ArtifactId : worker-batch-archetype
 	- Version : *WORKER-BATCH-ARCHETYPE-VERSION*
 	- Click 'Next >'
