@@ -109,7 +109,8 @@ public class ${workerName}BatchPluginTest
         return testContents;
     }
 
-    private Map<String, String> createTaskMessageParams(Map.Entry<String, String>... entries)
+    @SafeVarargs
+    private final Map<String, String> createTaskMessageParams(Map.Entry<String, String>... entries)
     {
         Map<String, String> testTaskMessageParams = new HashMap<>();
         for(Map.Entry<String, String> entry: entries){
