@@ -15,7 +15,7 @@ More information on the functioning of the Batch Worker is available [here](http
 
 ##### Container Configuration
 
-Configuration details can be found [here](https://github.hpe.com/caf/chateau/tree/develop/services/batch-worker/configuration-files).
+Configuration details can be found [here](https://github.houston.softwaregrp.net/caf/chateau/tree/develop/services/batch-worker/configuration-files).
 
 ##### Feature Testing
 The testing for the Batch Worker is defined [here](https://github.com/jobservice/worker-batch/tree/develop/testcases)
