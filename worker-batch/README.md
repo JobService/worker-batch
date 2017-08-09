@@ -77,15 +77,15 @@ The `BatchWorkerResponse` has the following properties:
     </tr>
 </table>
 
-##Health Check
+## Health Check
 
 This worker has no dependency on external components and so does not supply any additional health checks beyond the one supplied by the CAF framework.
 
-##Failure Modes
+## Failure Modes
 
 *   Configuration Errors: these will cause the worker to fail on start up. The cause should be output in the logs.
 
-####Maintainers
+#### Maintainers
 
 The following people are contacts for developing and maintaining this module:
 
