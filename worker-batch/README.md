@@ -23,7 +23,7 @@ This worker is configured by setting the following environment variables:
 
 # Batch Worker API
 
-##Input Task Message Format
+## Input Task Message Format
 
 The `BatchWorkerTask` has the following properties: 
 
