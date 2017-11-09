@@ -44,7 +44,6 @@
         <maven.failsafe.version>2.19</maven.failsafe.version>
         <maven.compiler.version>3.3</maven.compiler.version>
         <fabric8.docker.maven.version>0.16.7</fabric8.docker.maven.version>
-        <tini.version>0.9.0</tini.version>
     </properties>
 
     <dependencies>
@@ -82,20 +81,8 @@
             <artifactId>decoder-js</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.krallin</groupId>
-            <artifactId>tini</artifactId>
-            <scope>runtime</scope>
-            <type>exe</type>
-        </dependency>
-        <dependency>
             <groupId>com.github.workerframework</groupId>
             <artifactId>worker-store-fs</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.cafapi</groupId>
-            <artifactId>container-cert-script</artifactId>
-            <type>tar.gz</type>
         </dependency>
 
         <dependency>
@@ -346,7 +333,7 @@
                             <alias>${${rootArtifactId}.container.alias}</alias>
                             <name>${${rootArtifactId}.container.name}</name>
                             <build>
-                                <from>java:8</from>
+                                <from>cafapi/opensuse-jre8:1.1</from>
                                 <maintainer>joe.blogs@joesblog.net</maintainer>
                                 <ports>
                                     <port>8080</port>
@@ -358,13 +345,6 @@
                                     <caf.worker-batch-framework.version>${caf.worker-batch-framework.version}
                                     </caf.worker-batch-framework.version>
                                 </labels>
-                                <entryPoint>
-                                    <exec>
-                                        <args>/maven/tini-${tini.version}.exe</args>
-                                        <args>-v</args>
-                                        <args>--</args>
-                                    </exec>
-                                </entryPoint>
                                 <cmd>/maven/worker.sh</cmd>
                                 <assembly>
                                     <mode>tar</mode>
@@ -392,25 +372,6 @@
                                             <dependencySet>
                                                 <useProjectArtifact>false</useProjectArtifact>
                                                 <scope>runtime</scope>
-                                                <excludes>
-                                                    <exclude>com.github.krallin:tini</exclude>
-                                                    <exclude>com.github.cafapi:container-cert-script</exclude>
-                                                </excludes>
-                                            </dependencySet>
-                                            <dependencySet>
-                                                <useProjectArtifact>false</useProjectArtifact>
-                                                <fileMode>0755</fileMode>
-                                                <includes>
-                                                    <include>com.github.krallin:tini</include>
-                                                </includes>
-                                            </dependencySet>
-                                            <dependencySet>
-                                                <useProjectArtifact>false</useProjectArtifact>
-                                                <useTransitiveFiltering>true</useTransitiveFiltering>
-                                                <unpack>true</unpack>
-                                                <includes>
-                                                    <include>com.github.cafapi:container-cert-script</include>
-                                                </includes>
                                             </dependencySet>
                                         </dependencySets>
                                     </inline>
