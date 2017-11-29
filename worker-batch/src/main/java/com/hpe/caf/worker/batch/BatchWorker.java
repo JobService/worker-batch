@@ -20,7 +20,6 @@ import com.hpe.caf.api.Codec;
 import com.hpe.caf.api.worker.*;
 import com.hpe.caf.worker.AbstractWorker;
 import com.rabbitmq.client.Connection;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 
@@ -91,21 +90,18 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
                     // We return all results to the output queue
                     return createSuccessResult(result);
                 case RETURN_NONE:
-                    //  If there are no errors then no output needs to be output.
-                    //  Also reset the 'trackTo' field on the tracking information but only if there are no
-                    //  subtasks.
+                    //  Return nothing to the output queue.
                     if (batchWorkerServices.hasSubtasks()) {
-                        return createSuccessNoOutputToQueue(tracking == null ? StringUtils.EMPTY : tracking.getTrackTo());
+                        return createSuccessNoOutputToQueue();
                     } else {
-                        return createSuccessNoOutputToQueue(null);
+                        //  Given no sub tasks, ensure the job is marked as completed.
+                        return createTaskCompleteResponse();
                     }
                 case RETURN_ONLY_IF_ZERO_SUBTASKS:
-                    // We only return a result to the output queue if there were zero subfiles with the batch
+                    // We only return a result to the output queue if there were zero sub files with the batch
                     if(batchWorkerServices.hasSubtasks()) {
-                        // If there are sub tasks, don't send to output queue
-                        return createSuccessNoOutputToQueue(tracking == null ? StringUtils.EMPTY : tracking.getTrackTo());
+                        return createSuccessNoOutputToQueue();
                     } else {
-                        // If there are no sub tasks, sent to output queue
                         return createSuccessResult(result);
                     }
                 default:
