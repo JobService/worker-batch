@@ -90,15 +90,18 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
                     // We return all results to the output queue
                     return createSuccessResult(result);
                 case RETURN_NONE:
-                    // If there are no errors then no output needs to be output
-                    return createSuccessNoOutputToQueue();
-                case RETURN_ONLY_IF_ZERO_SUBTASKS:
-                    // We only return a result to the output queue if there were zero subfiles with the batch
-                    if(batchWorkerServices.hasSubtasks()) {
-                        // If there are subtasks, don't send to output queue
+                    //  Return nothing to the output queue.
+                    if (batchWorkerServices.hasSubtasks()) {
                         return createSuccessNoOutputToQueue();
                     } else {
-                        // If there are no subtasks, sent to output queue
+                        //  Given no sub tasks, ensure the job is marked as completed.
+                        return createTaskCompleteResponse();
+                    }
+                case RETURN_ONLY_IF_ZERO_SUBTASKS:
+                    // We only return a result to the output queue if there were zero sub files with the batch
+                    if(batchWorkerServices.hasSubtasks()) {
+                        return createSuccessNoOutputToQueue();
+                    } else {
                         return createSuccessResult(result);
                     }
                 default:
