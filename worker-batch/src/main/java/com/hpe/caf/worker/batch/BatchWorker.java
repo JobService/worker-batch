@@ -111,9 +111,12 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
             throw new TaskFailedException("Invalid batch type  " + getTask().batchType);
         } catch (BatchDefinitionException e) {
             throw new TaskFailedException("Failed to process batch", e);
+        } catch(BatchWorkerTransientException e) {
+            //TODO: retry?
+            throw new TaskFailedException("Failed to process batch, retry", e);
         } catch (Throwable e) {
             throw new TaskFailedException("Failed to process batch", e);
-        }
+        } 
     }
 
     @Override
