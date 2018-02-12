@@ -61,7 +61,7 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
      * @throws InterruptedException
      */
     @Override
-    public WorkerResponse doWork() throws InterruptedException {
+    public WorkerResponse doWork() throws InterruptedException, TaskRejectedException {
         try {
             checkIfInterrupted();
             BatchWorkerTask task = getTask();
@@ -112,8 +112,7 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
         } catch (BatchDefinitionException e) {
             throw new TaskFailedException("Failed to process batch", e);
         } catch(BatchWorkerTransientException e) {
-            //TODO: retry?
-            throw new TaskFailedException("Failed to process batch, retry", e);
+            throw new TaskRejectedException("Failed to process batch", e);
         } catch (Throwable e) {
             throw new TaskFailedException("Failed to process batch", e);
         } 
