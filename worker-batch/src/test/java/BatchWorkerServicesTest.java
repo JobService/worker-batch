@@ -88,7 +88,8 @@ public class BatchWorkerServicesTest {
     }
 
     @Test
-    public void testNoOutputSwitch() throws IOException, ExecutionException, CodecException, BatchDefinitionException, InvalidTaskException, InterruptedException
+    public void testNoOutputSwitch() throws IOException, ExecutionException, CodecException, BatchDefinitionException, InvalidTaskException, InterruptedException, 
+                                     TaskRejectedException
     {
         // Set up some mocked method classes and calls
         String taskId = "J1";
