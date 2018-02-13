@@ -115,7 +115,7 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
             throw new TaskRejectedException("Failed to process batch", e);
         } catch (Throwable e) {
             throw new TaskFailedException("Failed to process batch", e);
-        } 
+        }
     }
 
     @Override

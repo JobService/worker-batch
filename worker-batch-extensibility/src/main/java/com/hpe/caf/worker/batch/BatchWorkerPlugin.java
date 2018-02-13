@@ -35,8 +35,8 @@ public interface BatchWorkerPlugin {
      *                        on
      * @param taskMessageParams Map containing additional task message parameters
      * 
-     * @throws BatchDefinitionException if the batch could not be processed
-     * @throws BatchWorkerTransientException if the batch could not be processed because of a transient error 
+     * @throws BatchDefinitionException thrown if the batch definition is invalid
+     * @throws BatchWorkerTransientException thrown if the batch could not be processed because of a transient error 
      *                                       and indicates the batch processing can be retried
      */
     void processBatch(BatchWorkerServices batchWorkerServices, String batchDefinition, String taskMessageType,

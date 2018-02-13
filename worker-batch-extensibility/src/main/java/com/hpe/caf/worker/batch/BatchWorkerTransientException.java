@@ -25,7 +25,7 @@ public class BatchWorkerTransientException extends Exception {
      *
      * @param message a description of the exception
      */
-    public BatchWorkerTransientException(String message)
+    public BatchWorkerTransientException(final String message)
     {
         super(message);
     }
@@ -36,7 +36,7 @@ public class BatchWorkerTransientException extends Exception {
      * @param message a description of the exception
      * @param cause the underlying reason for this exception
      */
-    public BatchWorkerTransientException(String message, Throwable cause)
+    public BatchWorkerTransientException(final String message, final Throwable cause)
     {
         super(message, cause);
     }
@@ -46,7 +46,7 @@ public class BatchWorkerTransientException extends Exception {
      *
      * @param cause the underlying reason for this exception
      */
-    public BatchWorkerTransientException(Throwable cause)
+    public BatchWorkerTransientException(final Throwable cause)
     {
         super(cause);
     }
