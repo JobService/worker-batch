@@ -32,8 +32,8 @@
 
     <parent>
         <groupId>com.github.cafapi</groupId>
-        <artifactId>caf-common</artifactId>
-        <version>1.14.0-1</version>
+        <artifactId>caf-common-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <organization>
@@ -56,7 +56,7 @@
             <dependency>
                 <groupId>com.github.workerframework</groupId>
                 <artifactId>worker-framework</artifactId>
-                <version>2.4.0-342</version>
+                <version>3.0.0-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
