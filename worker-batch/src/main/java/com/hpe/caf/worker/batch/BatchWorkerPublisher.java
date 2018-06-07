@@ -79,10 +79,9 @@ public class BatchWorkerPublisher {
         Channel channel = channelCache.get(targetPipe);
         logger.debug("Setting new task's destination as " + targetPipe);
         taskMessage.setTo(targetPipe);
-        String outputQueue = getOutputQueue(taskMessage.getTracking(), targetPipe);
-        logger.debug("Queueing new task with id " + taskMessage.getTaskId() + " on " + outputQueue);
-        channel.basicPublish("", outputQueue, MessageProperties.PERSISTENT_TEXT_PLAIN, codec.serialise(taskMessage));
-        logger.debug("Successfully published task" + taskMessage.getTaskId() + " to " + outputQueue);
+        logger.debug("Queueing new task with id " + taskMessage.getTaskId() + " on " + targetPipe);
+        channel.basicPublish("", targetPipe, MessageProperties.PERSISTENT_TEXT_PLAIN, codec.serialise(taskMessage));
+        logger.debug("Successfully published task" + taskMessage.getTaskId() + " to " + targetPipe);
     }
 
     /**
@@ -115,12 +114,5 @@ public class BatchWorkerPublisher {
             return true;
         }
         return false;
-    }
-
-    private String getOutputQueue(TrackingInfo trackingInfo, String targetPipe) {
-        if (trackingInfo == null) {
-            return targetPipe;
-        }
-        return trackingInfo.getTrackingPipe() == null || trackingInfo.getTrackingPipe().equalsIgnoreCase(targetPipe) ? targetPipe : trackingInfo.getTrackingPipe();
     }
 }
