@@ -26,7 +26,7 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
     private final BatchWorkerServicesImpl batchWorkerServices;
     private final Map<String, BatchWorkerPlugin> registeredPlugins;
     private final BatchWorkerConfiguration configuration;
-    private String jobId;
+    private final String jobId;
 
     /**
      * Create a Worker. The input task will be validated.
@@ -48,12 +48,7 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
         batchWorkerServices = new BatchWorkerServicesImpl(task, getCodec(), workerTaskData.getTo(), workerTaskData);
         batchWorkerServices.register(DataStore.class, dataStore);
         registeredPlugins = plugins;
-        try {
-            final TrackingInfo trackingInfo = workerTaskData.getTrackingInfo();
-            jobId = trackingInfo.getJobId();
-        } catch (final Exception ex) {
-            jobId = task.targetPipe;
-        }
+        jobId = getJobId(workerTaskData.getTrackingInfo(), task);
     }
 
     /**
@@ -122,5 +117,14 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
     @Override
     public int getWorkerApiVersion() {
         return BatchWorkerConstants.WORKER_API_VERSION;
+    }
+
+    private static String getJobId(final TrackingInfo trackingInfo, final BatchWorkerTask task)
+    {
+        try {
+            return trackingInfo.getJobId();
+        } catch (final Exception ex) {
+            return task.targetPipe;
+        }
     }
 }
