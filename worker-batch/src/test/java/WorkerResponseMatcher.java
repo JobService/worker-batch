@@ -14,46 +14,45 @@
  * limitations under the License.
  */
 import com.hpe.caf.api.CodecException;
-import com.hpe.caf.api.DecodeMethod;
-import com.hpe.caf.api.worker.TaskMessage;
+import com.hpe.caf.api.worker.WorkerResponse;
 import com.hpe.caf.codec.JsonCodec;
 import org.mockito.ArgumentMatcher;
 
-public class TaskMessageMatcher extends ArgumentMatcher<byte[]> {
+public class WorkerResponseMatcher extends ArgumentMatcher<byte[]>
+{
 
     private JsonCodec codec = new JsonCodec();
-    private TaskMessage expected;
+    private WorkerResponse expected;
 
-    public TaskMessageMatcher(byte[] expected) throws CodecException {
+    public WorkerResponseMatcher(WorkerResponse expected) throws CodecException
+    {
 
-        this.expected = codec.deserialise(expected, TaskMessage.class, DecodeMethod.LENIENT);
+        this.expected = expected;
     }
 
     @Override
-    public boolean matches(Object argument) {
-        byte[] argBytes = (byte[]) argument;
-        TaskMessage message = null;
+    public boolean matches(Object argument)
+    {
+        final byte[] argBytes = (byte[]) argument;
+        WorkerResponse message = null;
         try {
-            message = codec.deserialise(argBytes, TaskMessage.class);
-        } catch (CodecException e) {
+            message = codec.deserialise(argBytes, WorkerResponse.class);
+        } catch (final CodecException e) {
             e.printStackTrace();
         }
-        if (message.getTaskApiVersion() != expected.getTaskApiVersion()) {
+        if (message.getApiVersion() != expected.getApiVersion()) {
             return false;
         }
-        if (!new String(message.getTaskData()).equalsIgnoreCase(new String(expected.getTaskData()))) {
+        if (!new String(message.getData()).equalsIgnoreCase(new String(expected.getData()))) {
             return false;
         }
-        if (message.getContext().size() != expected.getContext().size()) {
+        if (message.getContext().length != expected.getContext().length) {
             return false;
         }
         if (message.getTaskStatus() != expected.getTaskStatus()) {
             return false;
         }
-        if(!message.getTo().equalsIgnoreCase(expected.getTo())){
-            return false;
-        }
-        if ((message.getTracking() == null && expected.getTracking() != null) || (message.getTracking() != null && expected.getTracking() == null)) {
+        if (!message.getTrackTo().equalsIgnoreCase(expected.getTrackTo())) {
             return false;
         }
         return true;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.hpe.caf.api.worker.TaskMessage;
+import com.hpe.caf.api.worker.WorkerResponse;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -25,11 +25,11 @@ import java.util.List;
  */
 public class PublishAnswer implements Answer {
 
-    public List<TaskMessage> messageList = new ArrayList<>();
+    public List<WorkerResponse> messageList = new ArrayList<>();
 
     @Override
     public Object answer(InvocationOnMock invocation) throws Throwable {
-        messageList.add((TaskMessage) invocation.getArguments()[1]);
+        messageList.add((WorkerResponse) invocation.getArguments()[1]);
         return invocation.getArguments()[1];
     }
 }
