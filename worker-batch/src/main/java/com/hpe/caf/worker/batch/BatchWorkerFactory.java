@@ -15,37 +15,22 @@
  */
 package com.hpe.caf.worker.batch;
 
-import com.google.common.cache.*;
 import com.hpe.caf.api.Codec;
 import com.hpe.caf.api.ConfigurationSource;
 import com.hpe.caf.api.HealthResult;
 import com.hpe.caf.api.worker.*;
-import com.hpe.caf.configs.RabbitConfiguration;
 import com.hpe.caf.util.ModuleLoader;
-import com.hpe.caf.util.rabbitmq.RabbitUtil;
 import com.hpe.caf.worker.AbstractWorkerFactory;
-import com.hpe.caf.worker.queue.rabbit.RabbitWorkerQueueConfiguration;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import net.jodah.lyra.ConnectionOptions;
-import net.jodah.lyra.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfiguration, BatchWorkerTask> {
     private static final Logger logger = LoggerFactory.getLogger(BatchWorkerFactory.class);
-
-    private LoadingCache<String, Channel> channelCache;
-    private Connection conn;
-    private String inputQueue;
-    private Map<String, BatchWorkerPlugin> registeredPlugins = new HashMap<>();
+    private final Map<String, BatchWorkerPlugin> registeredPlugins = new HashMap<>();
 
     /**
      * Instantiates a new DefaultWorkerFactory.
@@ -57,19 +42,10 @@ public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfigu
      * @param taskClass          the worker task class
      * @throws WorkerException if the factory cannot be instantiated
      */
-    public BatchWorkerFactory(ConfigurationSource configSource, DataStore dataStore, Codec codec,
-                              Class<BatchWorkerConfiguration> configurationClass,
-                              Class<BatchWorkerTask> taskClass) throws WorkerException {
+    public BatchWorkerFactory(final ConfigurationSource configSource, final DataStore dataStore, final Codec codec,
+                              final Class<BatchWorkerConfiguration> configurationClass,
+                              final Class<BatchWorkerTask> taskClass) throws WorkerException {
         super(configSource, dataStore, codec, configurationClass, taskClass);
-        try {
-            RabbitWorkerQueueConfiguration rabbitWorkerQueueConfiguration =
-                    configSource.getConfiguration(RabbitWorkerQueueConfiguration.class);
-            createRabbitConnection(rabbitWorkerQueueConfiguration);
-            inputQueue = rabbitWorkerQueueConfiguration.getInputQueue();
-            createChannelCache();
-        } catch (Exception e) {
-            throw new WorkerException("Failed to create worker factory", e);
-        }
         registerPlugins();
     }
 
@@ -84,15 +60,9 @@ public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfigu
     }
 
     @Override
-    protected Worker createWorker(BatchWorkerTask task, TrackingInfo tracking) throws TaskRejectedException,
+    protected Worker createWorker(final BatchWorkerTask task, final WorkerTaskData workerTaskData) throws TaskRejectedException,
             InvalidTaskException {
-        return new BatchWorker(task, tracking, getConfiguration(), getCodec(), channelCache, conn, inputQueue,
-                registeredPlugins, getDataStore());
-    }
-
-    @Override
-    protected Worker createWorker(BatchWorkerTask task) throws TaskRejectedException, InvalidTaskException {
-        return createWorker(task, null);
+        return new BatchWorker(task, getConfiguration(), getCodec(), registeredPlugins, getDataStore(), workerTaskData);
     }
 
     @Override
@@ -110,59 +80,9 @@ public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfigu
         return HealthResult.RESULT_HEALTHY;
     }
 
-    @Override
-    public void shutdown() {
-        channelCache.invalidateAll();
-        channelCache = null;
-        try {
-            conn.close();
-            conn = null;
-        } catch (IOException e) {
-            logger.error("Failed to close channel cache connection.", e);
-        }
-    }
-
-    private void createRabbitConnection(RabbitWorkerQueueConfiguration rabbitWorkerConfiguration) throws IOException,
-            TimeoutException {
-        RabbitConfiguration rabbitConfiguration = rabbitWorkerConfiguration.getRabbitConfiguration();
-        ConnectionOptions lyraOpts = RabbitUtil.createLyraConnectionOptions(rabbitConfiguration.getRabbitHost(),
-                rabbitConfiguration.getRabbitPort(), rabbitConfiguration.getRabbitUser(),
-                rabbitConfiguration.getRabbitPassword());
-        Config lyraConfig = RabbitUtil.createLyraConfig(rabbitConfiguration.getBackoffInterval(),
-                rabbitConfiguration.getMaxBackoffInterval(), -1);
-        conn = RabbitUtil.createRabbitConnection(lyraOpts, lyraConfig);
-    }
-
-    private void createChannelCache() {
-        CacheLoader<String, Channel> cacheLoader = new CacheLoader<String, Channel>() {
-            @Override
-            public Channel load(String key) throws IOException {
-                Channel channel = conn.createChannel();
-                RabbitUtil.declareWorkerQueue(channel, key);
-                return channel;
-            }
-        };
-
-        RemovalListener<String, Channel> removalListener = new RemovalListener<String, Channel>() {
-            @Override
-            public void onRemoval(RemovalNotification<String, Channel> removal) {
-                Channel channel = removal.getValue();
-                try {
-                    channel.close();
-                } catch (Exception e) {
-                    logger.error(e.getMessage());
-                }
-            }
-        };
-
-        channelCache = CacheBuilder.newBuilder().concurrencyLevel(getWorkerThreads())
-                .maximumSize(100).expireAfterAccess(getConfiguration().getCacheExpireTime(),
-                        TimeUnit.SECONDS).removalListener(removalListener).build(cacheLoader);
-    }
-
     private void registerPlugins() {
-        List<BatchWorkerPlugin> pluginList = ModuleLoader.getServices(BatchWorkerPlugin.class);
-        for (BatchWorkerPlugin plugin : pluginList) {
+        final List<BatchWorkerPlugin> pluginList = ModuleLoader.getServices(BatchWorkerPlugin.class);
+        for (final BatchWorkerPlugin plugin : pluginList) {
             registeredPlugins.put(plugin.getClass().getSimpleName(), plugin);
         }
     }

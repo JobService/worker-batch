@@ -15,22 +15,15 @@
  */
 package com.hpe.caf.worker.batch;
 
-import com.google.common.cache.LoadingCache;
 import com.hpe.caf.api.Codec;
 import com.hpe.caf.api.CodecException;
 import com.hpe.caf.api.worker.TaskFailedException;
-import com.hpe.caf.api.worker.TaskMessage;
 import com.hpe.caf.api.worker.TaskStatus;
-import com.hpe.caf.api.worker.TrackingInfo;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.hpe.caf.api.worker.WorkerResponse;
+import com.hpe.caf.api.worker.WorkerTaskData;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 /**
  * An implementation of the BatchWorkerServices interface.
@@ -38,17 +31,11 @@ import java.util.concurrent.ExecutionException;
  */
 public class BatchWorkerServicesImpl implements BatchWorkerServices {
 
-    private static final Logger logger = LoggerFactory.getLogger(BatchWorkerServicesImpl.class);
-
-    private final Connection conn;
-    private final LoadingCache<String, Channel> channelCache;
     private final Codec codec;
     private final String inputQueue;
     private final BatchWorkerTask currentTask;
-    private final TrackingInfo tracking;
-    private final BatchWorkerPublisher batchWorkerPublisher;
+    private final WorkerTaskData workerTaskData;
 
-    private int subtaskCount;
     private boolean hasSubtasks;
 
     private final Map<Class, Object> serviceMap;
@@ -56,25 +43,20 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
     /**
      * Constructor for BatchWorkerServiceImpl.
      *
-     * @param task                 The current BatchWorkerTask.
-     * @param codec                A Codec implementation.
-     * @param channelCache         A cache of Rabbitmq Channels to send subtasks to.
-     * @param conn                 The Connection to the  Rabbitmq Server.
-     * @param inputQueue           The BatchWorker's input queue.
-     * @param trackingInfo         The Job Serivce TrackingInfo to be passed to all subtasks.
-     * @param batchWorkerPublisher A utility object that handles that actual publishing of subtasks.
+     * @param task The current BatchWorkerTask.
+     * @param codec A Codec implementation.
+     * @param inputQueue The input pipe for batch messages
+     * @param workerTaskData The worker task data to operate on when issuing responses
      */
-    public BatchWorkerServicesImpl(BatchWorkerTask task, Codec codec, LoadingCache<String, Channel> channelCache, Connection conn, String inputQueue, TrackingInfo trackingInfo, BatchWorkerPublisher batchWorkerPublisher) {
-        this.conn = conn;
-        this.channelCache = channelCache;
+    public BatchWorkerServicesImpl(final BatchWorkerTask task, final Codec codec, final String inputQueue,
+                                   final WorkerTaskData workerTaskData)
+    {
         this.codec = codec;
         this.currentTask = task;
         this.inputQueue = inputQueue;
-        this.subtaskCount = 0;
-        this.tracking = trackingInfo;
-        this.batchWorkerPublisher = batchWorkerPublisher;
         this.hasSubtasks = false;
         this.serviceMap = new HashMap<>();
+        this.workerTaskData = workerTaskData;
     }
 
     /**
@@ -83,16 +65,11 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
      * @param batchDefinition String containing the new batch definition
      */
     @Override
-    public void registerBatchSubtask(String batchDefinition) {
+    public void registerBatchSubtask(final String batchDefinition) {
         try {
-            String currentTaskId = incrementTaskId();
-            BatchWorkerTask subtask = createBatchWorkerTask(batchDefinition);
-            byte[] serializedTask = codec.serialise(subtask);
-            TaskMessage taskMessage = new TaskMessage(currentTaskId, BatchWorkerConstants.WORKER_NAME,
-                    BatchWorkerConstants.WORKER_API_VERSION, serializedTask, TaskStatus.NEW_TASK, new HashMap<>(), inputQueue, getTracking(currentTaskId));
-            batchWorkerPublisher.storeInMessageBuffer(inputQueue, taskMessage);
-        } catch (ExecutionException e) {
-            throw new TaskFailedException("Failed to retrieve or load queue channel from cache", e);
+            issueResponse(inputQueue, TaskStatus.NEW_TASK, codec.serialise(createBatchWorkerTask(batchDefinition)),
+                                               BatchWorkerConstants.WORKER_NAME, BatchWorkerConstants.WORKER_API_VERSION);
+            hasSubtasks = true;
         } catch (CodecException e) {
             throw new TaskFailedException("Failed to serialize", e);
         } catch (Throwable e) { //Catch everything else.
@@ -108,14 +85,11 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
      * @param taskData       Object containing the constructed task data for the task message type.
      */
     @Override
-    public void registerItemSubtask(String taskClassifier, int taskApiVersion, Object taskData) {
+    public void registerItemSubtask(final String taskClassifier, final int taskApiVersion, final Object taskData) {
         try {
-            String currentTaskId = incrementTaskId();
-            TaskMessage message = new TaskMessage(currentTaskId, taskClassifier, taskApiVersion,
-                    codec.serialise(taskData), TaskStatus.NEW_TASK, new HashMap<>(), currentTask.targetPipe, getTracking(currentTaskId));
-            batchWorkerPublisher.storeInMessageBuffer(currentTask.targetPipe, message);
-        } catch (ExecutionException e) {
-            throw new TaskFailedException("Failed to retrieve or load queue channel from cache", e);
+            issueResponse(currentTask.targetPipe, TaskStatus.NEW_TASK, codec.serialise(taskData), taskClassifier,
+                                               taskApiVersion);
+           hasSubtasks = true;
         } catch (CodecException e) {
             throw new TaskFailedException("Failed to serialize", e);
         } catch (Throwable e) { //Catch everything else.
@@ -145,21 +119,6 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
     }
 
     /**
-     * Increments the current TaskId for each subtask. If the batch was not sent by the Job Service (i.e no trackingInfo)
-     * a UUID is used instead.
-     *
-     * @return The TaskId for the subtask.
-     */
-    private String incrementTaskId() {
-        hasSubtasks = true;
-        if (tracking == null) {
-            return UUID.randomUUID().toString();
-        }
-        subtaskCount++;
-        return tracking.getJobTaskId() + "." + subtaskCount;
-    }
-
-    /**
      * Creates a new BatchWorkerTask for a sub-batch.
      *
      * @param batchDefinition The sub-batch definition to process.
@@ -176,37 +135,6 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
     }
 
     /**
-     * Constructs the TrackingInfo for the current subtask.
-     *
-     * @param currentTaskId The current subtask's Id.
-     * @return TrackingInfo.
-     */
-    private TrackingInfo getTracking(String currentTaskId) {
-        if (tracking == null) {
-            return null;
-        }
-        TrackingInfo trackingInfo = deepCopyTracking(tracking);
-        trackingInfo.setJobTaskId(currentTaskId);
-        return trackingInfo;
-    }
-
-    /**
-     * Method to deep copy the TrackingInfo for each subtask to avoid overwriting any buffered subtasks TrackingInfo.
-     *
-     * @param trackingInfoToCopy
-     * @return
-     */
-    private TrackingInfo deepCopyTracking(TrackingInfo trackingInfoToCopy) {
-        TrackingInfo trackingInfo = new TrackingInfo();
-        trackingInfo.setJobTaskId(trackingInfoToCopy.getJobTaskId());
-        trackingInfo.setStatusCheckTime(trackingInfoToCopy.getStatusCheckTime());
-        trackingInfo.setStatusCheckUrl(trackingInfoToCopy.getStatusCheckUrl());
-        trackingInfo.setTrackingPipe(trackingInfoToCopy.getTrackingPipe());
-        trackingInfo.setTrackTo(trackingInfoToCopy.getTrackTo());
-        return trackingInfo;
-    }
-
-    /**
      * Return whether this batch has sub tasks.
      * If registerBatchSubtask() or registerItemSubtask() is called, the subtaskCount will be incremented (if tracking info is present).
      *
@@ -214,5 +142,21 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
      */
     public boolean hasSubtasks() {
         return hasSubtasks;
+    }
+    
+    /**
+     * Issues a response for the current subtask to the target queue.
+     *
+     * @param targetPipe The queue to publish to
+     * @param taskStatus Status of task being published
+     * @param taskData Task's data represented by a byte[]
+     * @param taskClassifier Task's classifier
+     * @param taskApiVersion Tasks API version
+     */
+    private void issueResponse(final String targetPipe, final TaskStatus taskStatus, final byte[] taskData, final String taskClassifier,
+                                final int taskApiVersion)
+    {
+        final WorkerResponse response = new WorkerResponse(targetPipe, taskStatus, taskData, taskClassifier, taskApiVersion, null);
+        workerTaskData.addResponse(response, false);
     }
 }
