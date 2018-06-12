@@ -19,8 +19,8 @@ import com.hpe.caf.api.Codec;
 import com.hpe.caf.api.CodecException;
 import com.hpe.caf.api.worker.TaskFailedException;
 import com.hpe.caf.api.worker.TaskStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.hpe.caf.api.worker.WorkerResponse;
+import com.hpe.caf.api.worker.WorkerTaskData;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,11 +31,10 @@ import java.util.Map;
  */
 public class BatchWorkerServicesImpl implements BatchWorkerServices {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BatchWorkerServicesImpl.class);
     private final Codec codec;
     private final String inputQueue;
     private final BatchWorkerTask currentTask;
-    private final BatchWorkerPublisher batchWorkerPublisher;
+    private final WorkerTaskData workerTaskData;
 
     private boolean hasSubtasks;
 
@@ -46,18 +45,18 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
      *
      * @param task The current BatchWorkerTask.
      * @param codec A Codec implementation.
-     * @param batchWorkerPublisher A utility object that handles that actual publishing of subtasks.
-     * @param batchInputPipe The input pipe for batch messages
+     * @param inputQueue The input pipe for batch messages
+     * @param workerTaskData The worker task data to operate on when issuing responses
      */
-    public BatchWorkerServicesImpl(final BatchWorkerTask task, final Codec codec, final BatchWorkerPublisher batchWorkerPublisher,
-                                   final String batchInputPipe)
+    public BatchWorkerServicesImpl(final BatchWorkerTask task, final Codec codec, final String inputQueue,
+                                   final WorkerTaskData workerTaskData)
     {
         this.codec = codec;
         this.currentTask = task;
-        this.inputQueue = batchInputPipe;
-        this.batchWorkerPublisher = batchWorkerPublisher;
+        this.inputQueue = inputQueue;
         this.hasSubtasks = false;
         this.serviceMap = new HashMap<>();
+        this.workerTaskData = workerTaskData;
     }
 
     /**
@@ -68,9 +67,9 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
     @Override
     public void registerBatchSubtask(final String batchDefinition) {
         try {
-            batchWorkerPublisher.issueResponse(inputQueue, TaskStatus.NEW_TASK, codec.serialise(createBatchWorkerTask(batchDefinition)),
+            issueResponse(inputQueue, TaskStatus.NEW_TASK, codec.serialise(createBatchWorkerTask(batchDefinition)),
                                                BatchWorkerConstants.WORKER_NAME, BatchWorkerConstants.WORKER_API_VERSION);
-            hasSubtasks = !hasSubtasks ? true : hasSubtasks;
+            hasSubtasks = true;
         } catch (CodecException e) {
             throw new TaskFailedException("Failed to serialize", e);
         } catch (Throwable e) { //Catch everything else.
@@ -88,9 +87,9 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
     @Override
     public void registerItemSubtask(final String taskClassifier, final int taskApiVersion, final Object taskData) {
         try {
-            batchWorkerPublisher.issueResponse(currentTask.targetPipe, TaskStatus.NEW_TASK, codec.serialise(taskData), taskClassifier,
+            issueResponse(currentTask.targetPipe, TaskStatus.NEW_TASK, codec.serialise(taskData), taskClassifier,
                                                taskApiVersion);
-           hasSubtasks = !hasSubtasks ? true : hasSubtasks;
+           hasSubtasks = true;
         } catch (CodecException e) {
             throw new TaskFailedException("Failed to serialize", e);
         } catch (Throwable e) { //Catch everything else.
@@ -143,5 +142,21 @@ public class BatchWorkerServicesImpl implements BatchWorkerServices {
      */
     public boolean hasSubtasks() {
         return hasSubtasks;
+    }
+    
+    /**
+     * Issues a response for the current subtask to the target queue.
+     *
+     * @param targetPipe The queue to publish to
+     * @param taskStatus Status of task being published
+     * @param taskData Task's data represented by a byte[]
+     * @param taskClassifier Task's classifier
+     * @param taskApiVersion Tasks API version
+     */
+    private void issueResponse(final String targetPipe, final TaskStatus taskStatus, final byte[] taskData, final String taskClassifier,
+                                final int taskApiVersion)
+    {
+        final WorkerResponse response = new WorkerResponse(targetPipe, taskStatus, taskData, taskClassifier, taskApiVersion, null);
+        workerTaskData.addResponse(response, false);
     }
 }

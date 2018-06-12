@@ -60,9 +60,9 @@ public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfigu
     }
 
     @Override
-    protected Worker createWorker(final BatchWorkerTask task) throws TaskRejectedException,
+    protected Worker createWorker(final BatchWorkerTask task, final WorkerTaskData workerTaskData) throws TaskRejectedException,
             InvalidTaskException {
-        return new BatchWorker(task, getConfiguration(), getCodec(), registeredPlugins, getDataStore(), getWorkerTaskData());
+        return new BatchWorker(task, getConfiguration(), getCodec(), registeredPlugins, getDataStore(), workerTaskData);
     }
 
     @Override

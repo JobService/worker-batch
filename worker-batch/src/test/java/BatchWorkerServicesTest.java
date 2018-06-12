@@ -44,7 +44,6 @@ public class BatchWorkerServicesTest
     private BatchWorkerServicesImpl services;
     private byte[] taskData;
     private BatchWorkerTask task;
-    private BatchWorkerPublisher batchWorkerPublisher;
 
     @Before
     public void setup() throws Exception
@@ -54,9 +53,8 @@ public class BatchWorkerServicesTest
         this.workerTaskData = Mockito.mock(WorkerTaskData.class);
         doNothing().when(this.workerTaskData).addResponse(eq(any(WorkerResponse.class)), false);
         task.targetPipe = outputQueue;
-        batchWorkerPublisher = new BatchWorkerPublisher(workerTaskData);
         taskData = CODEC.serialise(task);
-        services = new BatchWorkerServicesImpl(task, CODEC, batchWorkerPublisher, "testPipe");
+        services = new BatchWorkerServicesImpl(task, CODEC, "testPipe", workerTaskData);
     }
 
     @Test
@@ -138,7 +136,7 @@ public class BatchWorkerServicesTest
         localTask.targetPipe = outputQueue;
         //Mock codec and recreate services localTask to used the new mocked codec.
         final Codec codec = Mockito.mock(Codec.class);
-        services = new BatchWorkerServicesImpl(localTask, codec, batchWorkerPublisher, "testPipe");
+        services = new BatchWorkerServicesImpl(localTask, codec, "testPipe", workerTaskData);
         Mockito.when(codec.serialise(localTask)).thenThrow(CodecException.class);
         services.registerItemSubtask(BatchWorkerConstants.WORKER_NAME, BatchWorkerConstants.WORKER_API_VERSION, localTask);
     }

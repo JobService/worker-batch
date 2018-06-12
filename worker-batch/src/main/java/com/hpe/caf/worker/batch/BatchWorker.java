@@ -25,7 +25,6 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
 
     private final BatchWorkerServicesImpl batchWorkerServices;
     private final Map<String, BatchWorkerPlugin> registeredPlugins;
-    private final BatchWorkerPublisher messagePublisher;
     private final BatchWorkerConfiguration configuration;
     private String jobId;
 
@@ -44,10 +43,9 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
                        final Map<String, BatchWorkerPlugin> plugins, final DataStore dataStore, final WorkerTaskData workerTaskData)
         throws InvalidTaskException
     {
-        super(task, configuration.getOutputQueue(), codec);
+        super(task, configuration.getOutputQueue(), codec, workerTaskData);
         this.configuration = configuration;
-        this.messagePublisher = new BatchWorkerPublisher(workerTaskData);
-        batchWorkerServices = new BatchWorkerServicesImpl(task, getCodec(), messagePublisher, workerTaskData.getTo());
+        batchWorkerServices = new BatchWorkerServicesImpl(task, getCodec(), workerTaskData.getTo(), workerTaskData);
         batchWorkerServices.register(DataStore.class, dataStore);
         registeredPlugins = plugins;
         try {
@@ -82,14 +80,14 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
 
             // Read configuration entry for return value behaviour
             if(configuration.getReturnValueBehaviour()==null) {
-                return createSuccessResult(result);
+                return createSuccessAndCompleteResponse(result);
             }
 
             switch(configuration.getReturnValueBehaviour())
             {
                 case RETURN_ALL:
                     // We return all results to the output queue
-                    return createSuccessResult(result);
+                    return createSuccessAndCompleteResponse(result);
                 case RETURN_NONE:
                     //  Return nothing to the output queue.
                     if (batchWorkerServices.hasSubtasks()) {
@@ -103,10 +101,10 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
                     if(batchWorkerServices.hasSubtasks()) {
                         return createSuccessNoOutputToQueue();
                     } else {
-                        return createSuccessResult(result);
+                        return createSuccessAndCompleteResponse(result);
                     }
                 default:
-                    return createSuccessResult(result);
+                    return createSuccessAndCompleteResponse(result);
             }
         } catch (final ReflectiveOperationException e) {
             throw new TaskFailedException("Invalid batch type  " + getTask().batchType);
