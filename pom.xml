@@ -36,11 +36,6 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <organization>
-        <name>EntIT Software LLC, a Micro Focus company</name>
-        <url>https://www.microfocus.com</url>
-    </organization>
-
     <modules>
         <module>worker-batch-shared</module>
         <module>worker-batch</module>
