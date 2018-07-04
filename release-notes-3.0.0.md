@@ -1,11 +1,12 @@
-!not-ready-for-release!
 
 #### Version Number
 ${version-number}
 
 #### New Features
+- None
 
 #### Known Issues
+- None
 
 #### Breaking Changes
 - [SCMOD-4072](https://jira.autonomy.com/browse/SCMOD-4072): Updated to use latest version of worker framework
