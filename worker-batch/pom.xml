@@ -134,11 +134,11 @@
             <groupId>com.github.jobservice</groupId>
             <artifactId>worker-batch-extensibility</artifactId>
         </dependency>
-<!--        <dependency>
+        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>4.2.0.Final</version>
-        </dependency>-->
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.hpe.caf.worker.batch</groupId>
             <artifactId>worker-batch-test-plugin</artifactId>
