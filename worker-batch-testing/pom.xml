@@ -33,17 +33,14 @@
         <dependency>
             <groupId>com.github.cafdataprocessing</groupId>
             <artifactId>worker-document-shared</artifactId>
-            <version>2.0.0-5</version>
         </dependency>
         <dependency>
             <groupId>com.github.jobservice</groupId>
             <artifactId>worker-batch</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.jobservice</groupId>
             <artifactId>worker-batch-shared</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.workerframework</groupId>
