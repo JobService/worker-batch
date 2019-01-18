@@ -49,6 +49,7 @@
     <properties>
         <copyrightYear>2018</copyrightYear>
         <copyrightNotice>Copyright ${project.inceptionYear}-${copyrightYear} Micro Focus or one of its affiliates.</copyrightNotice>
+        <enforceCorrectDependencies>true</enforceCorrectDependencies>
     </properties>
 
     <dependencyManagement>
@@ -59,6 +60,56 @@
                 <version>3.1.0-490</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.github.cafdataprocessing</groupId>
+                <artifactId>worker-document-shared</artifactId>
+                <version>2.0.0-5</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.jobservice</groupId>
+                <artifactId>worker-batch</artifactId>
+                <version>3.2.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.jobservice</groupId>
+                <artifactId>worker-batch-extensibility</artifactId>
+                <version>3.2.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.jobservice</groupId>
+                <artifactId>worker-batch-shared</artifactId>
+                <version>3.2.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.workerframework.messagebuilder</groupId>
+                <artifactId>worker-example-message-builder</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.hpe.caf.worker.batch</groupId>
+                <artifactId>worker-batch-test-plugin</artifactId>
+                <version>1.11.0-16</version>
+            </dependency>
+            <dependency>
+                <groupId>com.hpe.caf.worker.batch.plugins</groupId>
+                <artifactId>assetid-batch-plugin</artifactId>
+                <version>1.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.el</groupId>
+                <artifactId>javax.el-api</artifactId>
+                <version>2.2.4</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.web</groupId>
+                <artifactId>javax.el</artifactId>
+                <version>2.2.4</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>5.4.2.Final</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

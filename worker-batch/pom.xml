@@ -83,10 +83,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.workerframework</groupId>
-            <artifactId>worker-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.github.cafapi</groupId>
             <artifactId>caf-api</artifactId>
         </dependency>
@@ -95,46 +91,34 @@
             <artifactId>worker-caf</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.cafapi.util</groupId>
-            <artifactId>util-ref</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.github.jobservice</groupId>
             <artifactId>worker-batch-shared</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.hpe.caf.worker.batch</groupId>
-            <artifactId>worker-batch-test-plugin</artifactId>
-            <version>1.11.0-16</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.jobservice</groupId>
-            <artifactId>worker-batch-extensibility</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.workerframework</groupId>
-            <artifactId>util-rabbitmq</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.workerframework</groupId>
-            <artifactId>worker-queue-rabbit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cafapi.config</groupId>
-            <artifactId>config-system</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.cafapi.util</groupId>
             <artifactId>util-moduleloader</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
+            <groupId>com.github.cafapi.codec</groupId>
+            <artifactId>codec-json</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.github.workerframework</groupId>
+            <artifactId>worker-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.jobservice</groupId>
+            <artifactId>worker-batch-extensibility</artifactId>
+        </dependency>
+        <!-- Test Dependencies -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
@@ -143,7 +127,6 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -152,9 +135,29 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.cafapi.codec</groupId>
-            <artifactId>codec-json</artifactId>
-            <!--<scope>test</scope>-->
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>javax.el-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>javax.el</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.hpe.caf.worker.batch</groupId>
+            <artifactId>worker-batch-test-plugin</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
