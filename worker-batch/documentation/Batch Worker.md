@@ -82,9 +82,3 @@ This worker has no dependency on external components and so does not supply any 
 ## Failure Modes
 
 *   Configuration Errors: these will cause the worker to fail on start up. The cause should be output in the logs.
-
-#### Maintainers
-
-The following people are contacts for developing and maintaining this module:
-
-*   Dominic Gibson (Belfast, UK, dominic.joh.gibson@hpe.com)
