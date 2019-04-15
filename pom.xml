@@ -41,7 +41,6 @@
         <module>worker-batch</module>
         <module>worker-batch-testing</module>
         <module>worker-batch-extensibility</module>
-        <module>worker-batch-plugins-package</module>
         <module>worker-batch-framework</module>
         <module>worker-batch-archetype</module>
     </modules>
@@ -82,19 +81,9 @@
                 <version>3.2.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.workerframework.messagebuilder</groupId>
-                <artifactId>worker-example-message-builder</artifactId>
-                <version>1.0.0</version>
-            </dependency>
-            <dependency>
                 <groupId>com.hpe.caf.worker.batch</groupId>
                 <artifactId>worker-batch-test-plugin</artifactId>
                 <version>1.11.0-16</version>
-            </dependency>
-            <dependency>
-                <groupId>com.hpe.caf.worker.batch.plugins</groupId>
-                <artifactId>assetid-batch-plugin</artifactId>
-                <version>1.1.0</version>
             </dependency>
             <dependency>
                 <groupId>javax.el</groupId>
