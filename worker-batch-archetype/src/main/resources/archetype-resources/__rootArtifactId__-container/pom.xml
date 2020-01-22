@@ -334,7 +334,6 @@
                             <name>${${rootArtifactId}.container.name}</name>
                             <build>
                                 <from>cafapi/opensuse-jre8:1</from>
-                                <maintainer>joe.blogs@joesblog.net</maintainer>
                                 <ports>
                                     <port>8080</port>
                                     <port>8081</port>
