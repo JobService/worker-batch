@@ -27,7 +27,7 @@
 
     <groupId>com.github.jobservice</groupId>
     <artifactId>worker-batch-aggregator</artifactId>
-    <version>3.3.0-SNAPSHOT</version>
+    <version>3.2.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -69,17 +69,17 @@
             <dependency>
                 <groupId>com.github.jobservice</groupId>
                 <artifactId>worker-batch</artifactId>
-                <version>3.3.0-SNAPSHOT</version>
+                <version>3.2.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.github.jobservice</groupId>
                 <artifactId>worker-batch-extensibility</artifactId>
-                <version>3.3.0-SNAPSHOT</version>
+                <version>3.2.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.github.jobservice</groupId>
                 <artifactId>worker-batch-shared</artifactId>
-                <version>3.3.0-SNAPSHOT</version>
+                <version>3.2.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.hpe.caf.worker.batch</groupId>
