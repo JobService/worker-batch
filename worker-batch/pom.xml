@@ -111,8 +111,8 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.jobservice</groupId>
@@ -136,7 +136,7 @@
         </dependency>
         <dependency>
             <groupId>org.glassfish</groupId>
-            <artifactId>javax.el</artifactId>
+            <artifactId>jakarta.el</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -145,12 +145,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.glassfish.web</groupId>
-            <artifactId>javax.el</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <scope>test</scope>
         </dependency>
