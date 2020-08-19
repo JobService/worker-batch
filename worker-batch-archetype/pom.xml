@@ -24,12 +24,12 @@
   <parent>
       <groupId>com.github.jobservice</groupId>
       <artifactId>worker-batch-aggregator</artifactId>
-      <version>3.3.0-SNAPSHOT</version>
+      <version>3.3.0-377</version>
   </parent>
 
   <groupId>com.github.jobservice</groupId>
   <artifactId>worker-batch-archetype</artifactId>
-  <version>3.3.0-SNAPSHOT</version>
+  <version>3.3.0-377</version>
   <packaging>maven-archetype</packaging>
 
   <name>worker-batch-archetype</name>
