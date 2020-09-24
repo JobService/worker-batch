@@ -25,12 +25,11 @@ import com.hpe.caf.worker.testing.SettingNames;
 import com.hpe.caf.worker.testing.SettingsProvider;
 import com.hpe.caf.worker.testing.WorkerServices;
 import com.rabbitmq.client.*;
-import net.jodah.lyra.ConnectionOptions;
-import net.jodah.lyra.config.Config;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
@@ -60,9 +59,10 @@ public class BatchTargetQueueRetriever {
     public List<TaskMessage> retrieveMessages(String targetQueue) throws IOException, InterruptedException, CodecException {
         if (channel == null) {
             channel = connection.createChannel();
+            channel.queueDeclare(targetQueue, true, false, false, new HashMap<>());
         }
         List<TaskMessage> messages = new ArrayList<>();
-        QueueingConsumer consumer = new QueueingConsumer(channel);
+        QueueConsumer consumer = new QueueConsumer(channel);
 
         // Avoid ShutdownSignalException where targetQueue has yet to be initialised and populated.
         final int numberOfRetries = 5;
@@ -86,7 +86,7 @@ public class BatchTargetQueueRetriever {
         }
 
         //get first message from queue
-        QueueingConsumer.Delivery delivery = consumer.nextDelivery(100);
+        QueueConsumer.Delivery delivery = consumer.nextDelivery(100);
         while (delivery != null) {
             //deserialse message and add to list
             messages.add(codec.deserialise(delivery.getBody(), TaskMessage.class));
@@ -110,11 +110,7 @@ public class BatchTargetQueueRetriever {
         rabbitWorkerConfiguration.getRabbitConfiguration().setRabbitPort(rabbitPort != null ? rabbitPort : rabbitWorkerConfiguration.getRabbitConfiguration().getRabbitPort());
 
         RabbitConfiguration rabbitConfiguration = rabbitWorkerConfiguration.getRabbitConfiguration();
-        ConnectionOptions lyraOpts = RabbitUtil.createLyraConnectionOptions(rabbitConfiguration.getRabbitHost(),
-                rabbitConfiguration.getRabbitPort(), rabbitConfiguration.getRabbitUser(), rabbitConfiguration.getRabbitPassword());
-        Config lyraConfig = RabbitUtil.createLyraConfig(rabbitConfiguration.getBackoffInterval(),
-                rabbitConfiguration.getMaxBackoffInterval(), -1);
-        connection = RabbitUtil.createRabbitConnection(lyraOpts, lyraConfig);
+        connection = RabbitUtil.createRabbitConnection(rabbitConfiguration);
     }
 
     private void purgeQueue(String targetQueue) {
