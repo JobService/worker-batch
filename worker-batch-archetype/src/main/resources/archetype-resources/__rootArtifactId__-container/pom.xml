@@ -25,7 +25,6 @@
         <groupId>${groupId}</groupId>
         <artifactId>${rootArtifactId}-aggregator</artifactId>
         <version>${version}</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <groupId>${groupId}</groupId>
