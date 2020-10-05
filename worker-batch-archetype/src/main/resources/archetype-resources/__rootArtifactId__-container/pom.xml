@@ -333,7 +333,7 @@
                             <alias>${${rootArtifactId}.container.alias}</alias>
                             <name>${${rootArtifactId}.container.name}</name>
                             <build>
-                                <from>cafinternal/prereleases:opensuse-jre8-3.1.0-SNAPSHOT</from>
+                                <from>cafapi/opensuse-jre8:3</from>
                                 <ports>
                                     <port>8080</port>
                                     <port>8081</port>
