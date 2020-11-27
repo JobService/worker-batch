@@ -42,7 +42,7 @@
         <caf.worker-queue.impl>worker-queue-rabbit</caf.worker-queue.impl>
         <maven.failsafe.version>2.19</maven.failsafe.version>
         <maven.compiler.version>3.3</maven.compiler.version>
-        <fabric8.docker.maven.version>0.26.1</fabric8.docker.maven.version>
+        <fabric8.docker.maven.version>0.16.7</fabric8.docker.maven.version>
     </properties>
 
     <dependencies>
