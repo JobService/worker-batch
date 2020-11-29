@@ -311,8 +311,10 @@
                             <alias>config</alias>
                             <name>${project.artifactId}-test-config:${project.version}</name>
                             <build>
+                                <from>busybox:latest</from>
                                 <assembly>
                                     <basedir>/config</basedir>
+                                    <exportBasedir>true</exportBasedir>
                                     <inline>
                                         <fileSets>
                                             <fileSet>
