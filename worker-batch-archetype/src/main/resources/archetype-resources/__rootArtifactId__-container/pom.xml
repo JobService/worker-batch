@@ -42,7 +42,7 @@
         <caf.worker-queue.impl>worker-queue-rabbit</caf.worker-queue.impl>
         <maven.failsafe.version>2.19</maven.failsafe.version>
         <maven.compiler.version>3.3</maven.compiler.version>
-        <fabric8.docker.maven.version>0.26.1</fabric8.docker.maven.version>
+        <fabric8.docker.maven.version>0.16.7</fabric8.docker.maven.version>
     </properties>
 
     <dependencies>
@@ -257,7 +257,7 @@
                     <images>
                         <image>
                             <alias>webdav</alias>
-                            <name>${dockerHubPublic}/cloudesire/webdav</name>
+                            <name>cloudesire/webdav</name>
                             <run>
                                 <volumes>
                                     <bind>
@@ -286,7 +286,7 @@
                         <!-- Start Rabbit image -->
                         <image>
                             <alias>rabbitmq</alias>
-                            <name>${dockerHubPublic}/rabbitmq:3-management</name>
+                            <name>rabbitmq:3-management</name>
                             <run>
                                 <ports>
                                     <port>${rabbitmq.ctrl.port}:15672</port>
@@ -311,10 +311,10 @@
                             <alias>config</alias>
                             <name>${project.artifactId}-test-config:${project.version}</name>
                             <build>
-                                <from>${dockerHubPublic}/library/busybox:latest</from>
+                                <from>busybox:latest</from>
                                 <assembly>
-                                    <exportTargetDir>true</exportTargetDir>
                                     <basedir>/config</basedir>
+                                    <exportBasedir>true</exportBasedir>
                                     <inline>
                                         <fileSets>
                                             <fileSet>
@@ -335,7 +335,7 @@
                             <alias>${${rootArtifactId}.container.alias}</alias>
                             <name>${${rootArtifactId}.container.name}</name>
                             <build>
-                                <from>${dockerHubPublic}/cafapi/opensuse-jre8:3</from>
+                                <from>cafapi/opensuse-jre8:3</from>
                                 <ports>
                                     <port>8080</port>
                                     <port>8081</port>
