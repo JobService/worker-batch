@@ -2,6 +2,7 @@
 ${version-number}
 
 #### New Features
-- [SCMOD-8955]: Updated worker framework version
+- [SCMOD-9988]: Update to latest worker-framework
+
 #### Known Issues
 - None
