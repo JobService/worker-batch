@@ -2,7 +2,7 @@
 ${version-number}
 
 #### New Features
-- [SCMOD-9988]: Update to latest worker-framework 3.4.0
+- SCMOD-9988: Worker Framework updated to 4.0.0
 
 #### Known Issues
 - None
