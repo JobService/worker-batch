@@ -34,7 +34,3 @@ The testing for the Batch Worker is defined [here](https://github.com/jobservice
 ### worker-batch-framework
 
 This project is used for centralizing dependency information for a Batch Worker. The project can be found in [worker-batch-framework](https://github.com/jobservice/worker-batch/tree/develop/worker-batch-framework).
-
-### worker-batch-archetype
-
-This repository is a Maven Archetype template for the generation of a generic Batch Worker project. Generation of a worker project with the Maven Archetype will produce a Batch Worker that splits references into messages. The project can be found in [worker-batch-archetype](https://github.com/jobservice/worker-batch/tree/develop/worker-batch-archetype).
