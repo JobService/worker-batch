@@ -44,7 +44,6 @@
         <module>worker-batch-testing</module>
         <module>worker-batch-extensibility</module>
         <module>worker-batch-framework</module>
-        <module>worker-batch-archetype</module>
     </modules>
 
     <properties>
