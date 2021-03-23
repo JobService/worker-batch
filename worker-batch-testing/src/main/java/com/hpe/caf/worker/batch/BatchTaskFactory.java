@@ -46,6 +46,6 @@ public class BatchTaskFactory extends FileInputWorkerTaskFactory<BatchWorkerTask
 
     @Override
     public TrackingInfo createTrackingInfo(TestItem<BatchTestInput, BatchTestExpectation> testItem) {
-        return new TrackingInfo(testItem.getTag(), new Date(), null, null, null);
+        return new TrackingInfo(testItem.getTag(), null, 0L, null, null, null);
     }
 }
