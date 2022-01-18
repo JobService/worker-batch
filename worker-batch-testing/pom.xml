@@ -43,8 +43,8 @@
             <artifactId>worker-batch-shared</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework</groupId>
-            <artifactId>worker-testing-integration</artifactId>
+            <groupId>com.github.workerframework.testing</groupId>
+            <artifactId>workerframework-testing-integration</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.workerframework</groupId>
@@ -71,8 +71,8 @@
             <artifactId>log4j-over-slf4j</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework</groupId>
-            <artifactId>worker-testing-util</artifactId>
+            <groupId>com.github.workerframework.testing</groupId>
+            <artifactId>workerframework-testing-util</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.workerframework</groupId>
