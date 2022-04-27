@@ -2,10 +2,8 @@
 ${version-number}
 
 #### New Features
-#### New Features
 - 359648: Added support for a new leaner message format  
   The worker framework previously defined the task-specific part of its message (which is the vast majority of the message) as a byte array. As messages are normally passed in JSON, this was serialized as a base64 encoded string, which added~33% to the size of the task data. Given that the task-specific part of the message is itself normally JSON, the Worker Framework has now been updated to embed this directly and avoid the overhead. This significantly reduces the message size.
-- To reduce message size `taskData` field no longer has to be base64-encoded
 
 #### Known Issues
 None
