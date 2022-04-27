@@ -27,7 +27,7 @@
     <parent>
         <groupId>com.github.jobservice</groupId>
         <artifactId>worker-batch-aggregator</artifactId>
-        <version>3.6.0-88</version>
+        <version>3.7.0-SNAPSHOT</version>
     </parent>
 
     <profiles>
