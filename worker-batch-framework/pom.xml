@@ -56,7 +56,7 @@
             <dependency>
                 <groupId>com.hpe.caf.worker</groupId>
                 <artifactId>worker-document-shared</artifactId>
-                <version>1.0.0-5</version>
+                <version>5.2.0-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
