@@ -66,7 +66,7 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
             //If plugin not registered, check if full class name has been specified.
             if (batchWorkerPlugin == null) {
                 Class pluginClass = ClassLoader.getSystemClassLoader().loadClass(task.batchType);
-                batchWorkerPlugin = (BatchWorkerPlugin) pluginClass.newInstance();
+                batchWorkerPlugin = (BatchWorkerPlugin) pluginClass.getDeclaredConstructor().newInstance();
             }
             batchWorkerPlugin.processBatch(batchWorkerServices, task.batchDefinition, task.taskMessageType, task.taskMessageParams);
 
