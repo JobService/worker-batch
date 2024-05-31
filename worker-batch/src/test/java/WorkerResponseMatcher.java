@@ -18,8 +18,7 @@ import com.hpe.caf.api.worker.WorkerResponse;
 import com.hpe.caf.codec.JsonCodec;
 import org.mockito.ArgumentMatcher;
 
-public class WorkerResponseMatcher extends ArgumentMatcher<byte[]>
-{
+public class WorkerResponseMatcher implements ArgumentMatcher<byte[]> {
 
     private JsonCodec codec = new JsonCodec();
     private WorkerResponse expected;
@@ -31,12 +30,11 @@ public class WorkerResponseMatcher extends ArgumentMatcher<byte[]>
     }
 
     @Override
-    public boolean matches(Object argument)
+    public boolean matches(byte[] argument)
     {
-        final byte[] argBytes = (byte[]) argument;
         WorkerResponse message = null;
         try {
-            message = codec.deserialise(argBytes, WorkerResponse.class);
+            message = codec.deserialise(argument, WorkerResponse.class);
         } catch (final CodecException e) {
             e.printStackTrace();
         }

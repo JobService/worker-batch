@@ -24,20 +24,23 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.*;
 
 import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class BatchWorkerServicesTest
 {
-
-    @Mock
     WorkerTaskData workerTaskData;
 
     private final static Codec CODEC = new JsonCodec();
@@ -46,6 +49,8 @@ public class BatchWorkerServicesTest
     private BatchWorkerServicesImpl services;
     private byte[] taskData;
     private BatchWorkerTask task;
+    @TempDir
+    private File mockPath;
 
     @BeforeEach
     public void setup() throws Exception
@@ -69,7 +74,7 @@ public class BatchWorkerServicesTest
         services.register(DataStore.class, mockDataStore);
 
         // Assert that the DataStore stored as a service can be called from the service register
-        Path mockFilePath = null;
+        Path mockFilePath = mockPath.toPath();
         assertEquals(mockRefId, services.getService(DataStore.class).store(mockFilePath, "mockDsRef"));
     }
 
