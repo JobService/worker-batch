@@ -150,11 +150,6 @@
             <artifactId>hibernate-validator</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.hpe.caf.worker.batch</groupId>
-            <artifactId>worker-batch-test-plugin</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
 </project>

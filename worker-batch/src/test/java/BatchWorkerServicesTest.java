@@ -88,7 +88,7 @@ public class BatchWorkerServicesTest
         final BatchWorkerTask localTask = new BatchWorkerTask();
         localTask.targetPipe = outputQueue;
         localTask.batchDefinition = "";
-        localTask.batchType = "com.hpe.caf.worker.batch.BatchPluginTestImpl";
+        localTask.batchType = "BatchPluginTestImpl";
 
         // Set up tracking info for this test
         final TrackingInfo trackingInfo = new TrackingInfo();
