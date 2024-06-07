@@ -18,24 +18,29 @@ import com.hpe.caf.api.CodecException;
 import com.hpe.caf.api.worker.*;
 import com.hpe.caf.codec.JsonCodec;
 import com.hpe.caf.worker.batch.*;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.*;
 
 import static org.mockito.Mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class BatchWorkerServicesTest
 {
-
-    @Mock
     WorkerTaskData workerTaskData;
 
     private final static Codec CODEC = new JsonCodec();
@@ -44,8 +49,10 @@ public class BatchWorkerServicesTest
     private BatchWorkerServicesImpl services;
     private byte[] taskData;
     private BatchWorkerTask task;
+    @TempDir
+    private File mockPath;
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception
     {
         task = new BatchWorkerTask();
@@ -67,8 +74,8 @@ public class BatchWorkerServicesTest
         services.register(DataStore.class, mockDataStore);
 
         // Assert that the DataStore stored as a service can be called from the service register
-        Path mockFilePath = null;
-        Assert.assertEquals(mockRefId, services.getService(DataStore.class).store(mockFilePath, "mockDsRef"));
+        Path mockFilePath = mockPath.toPath();
+        assertEquals(mockRefId, services.getService(DataStore.class).store(mockFilePath, "mockDsRef"));
     }
 
     @Test
@@ -81,7 +88,7 @@ public class BatchWorkerServicesTest
         final BatchWorkerTask localTask = new BatchWorkerTask();
         localTask.targetPipe = outputQueue;
         localTask.batchDefinition = "";
-        localTask.batchType = "com.hpe.caf.worker.batch.BatchPluginTestImpl";
+        localTask.batchType = "BatchPluginTestImpl";
 
         // Set up tracking info for this test
         final TrackingInfo trackingInfo = new TrackingInfo();
@@ -95,24 +102,24 @@ public class BatchWorkerServicesTest
 
         // We can assert the data of the response WITH ZERO SUBTASKS is not empty as we do want to return a result here
         final WorkerResponse workerResponseZeroSubtasks = batchWorker.doWork();
-        Assert.assertTrue(workerResponseZeroSubtasks.getTaskStatus().equals(TaskStatus.RESULT_SUCCESS));
-        Assert.assertTrue(workerResponseZeroSubtasks.getData().length > 0); // there is output data
+        assertEquals(workerResponseZeroSubtasks.getTaskStatus(), TaskStatus.RESULT_SUCCESS);
+        assertTrue(workerResponseZeroSubtasks.getData().length > 0); // there is output data
 
         // We can assert the data of the response WITH SUBTASKS is empty as we don't want to return a result here
         configuration.setReturnValueBehaviour(ReturnValueBehaviour.RETURN_NONE);
         localTask.batchDefinition = "abc";
         batchWorker = new BatchWorker(localTask, configuration, CODEC, plugins, null, workerTaskData);
         final WorkerResponse workerResponseReturnNone = batchWorker.doWork();
-        Assert.assertTrue(workerResponseReturnNone.getTaskStatus().equals(TaskStatus.RESULT_SUCCESS));
-        Assert.assertTrue(workerResponseReturnNone.getData().length == 0); // there is no output data
+        assertEquals(workerResponseReturnNone.getTaskStatus(), TaskStatus.RESULT_SUCCESS);
+        assertEquals(0, workerResponseReturnNone.getData().length); // there is no output data
 
         // We can assert the data of the response WITH SUBTASKS is empty as we don't want to return a result here
         configuration.setReturnValueBehaviour(ReturnValueBehaviour.RETURN_ALL);
         localTask.batchDefinition = "abc";
         batchWorker = new BatchWorker(localTask, configuration, CODEC, plugins, null, workerTaskData);
         final WorkerResponse workerResponseReturnAll = batchWorker.doWork();
-        Assert.assertTrue(workerResponseReturnAll.getTaskStatus().equals(TaskStatus.RESULT_SUCCESS));
-        Assert.assertTrue(workerResponseReturnAll.getData().length > 0); // there is no output data
+        assertEquals(workerResponseReturnAll.getTaskStatus(), TaskStatus.RESULT_SUCCESS);
+        assertTrue(workerResponseReturnAll.getData().length > 0); // there is no output data
     }
 
     @Test
@@ -129,7 +136,8 @@ public class BatchWorkerServicesTest
        Mockito.verify(workerTaskData, Mockito.times(1)).addResponse(any(WorkerResponse.class), eq(false));
     }
 
-    @Test(expected= TaskFailedException.class)
+    @Test
+    @SuppressWarnings("ThrowableResultIgnored")
     public void testSerializeFailure() throws Exception
     {
         final BatchWorkerTask localTask = new BatchWorkerTask();
@@ -138,6 +146,8 @@ public class BatchWorkerServicesTest
         final Codec codec = Mockito.mock(Codec.class);
         services = new BatchWorkerServicesImpl(localTask, codec, "testPipe", workerTaskData);
         Mockito.when(codec.serialise(localTask)).thenThrow(CodecException.class);
-        services.registerItemSubtask(BatchWorkerConstants.WORKER_NAME, BatchWorkerConstants.WORKER_API_VERSION, localTask);
+        Assertions.assertThrows(TaskFailedException.class, () -> services.registerItemSubtask(BatchWorkerConstants.WORKER_NAME,
+            BatchWorkerConstants.WORKER_API_VERSION,
+            localTask));
     }
 }

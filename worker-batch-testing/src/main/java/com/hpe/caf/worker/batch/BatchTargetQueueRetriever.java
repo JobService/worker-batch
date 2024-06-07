@@ -28,6 +28,9 @@ import com.rabbitmq.client.*;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -102,7 +105,8 @@ public class BatchTargetQueueRetriever {
         return messages;
     }
 
-    private void createRabbitConnection(RabbitWorkerQueueConfiguration rabbitWorkerConfiguration) throws IOException, TimeoutException {
+    private void createRabbitConnection(RabbitWorkerQueueConfiguration rabbitWorkerConfiguration) throws IOException, TimeoutException,
+            URISyntaxException, NoSuchAlgorithmException, KeyManagementException {
         //Check if environment override specified
         String rabbitHost = SettingsProvider.defaultProvider.getSetting(SettingNames.dockerHostAddress);
         Integer rabbitPort = Integer.parseInt(SettingsProvider.defaultProvider.getSetting(SettingNames.rabbitmqNodePort));
