@@ -7,7 +7,7 @@ When the Batch Worker receives a batch to process, it constructs an instance of 
 
 ## Configuration 
 
-This worker uses the standard `caf-api` system of `ConfigurationSource` only. The configuration is contained in the `com.hpe.caf.worker.batch.BatchWorkerConfiguration`
+This worker uses the standard `caf-api` system of `ConfigurationSource` only. The configuration is contained in the `com.github.jobservice.worker.batch.BatchWorkerConfiguration`
 class with the following options:
 
 *   `workerVersion`: the version number of the worker
