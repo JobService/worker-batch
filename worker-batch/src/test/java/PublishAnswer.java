@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.hpe.caf.api.worker.WorkerResponse;
+import com.github.workerframework.worker.api.WorkerResponse;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 

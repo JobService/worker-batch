@@ -15,15 +15,15 @@
  */
 package com.hpe.caf.worker.batch;
 
-import com.hpe.caf.api.Codec;
-import com.hpe.caf.api.CodecException;
-import com.hpe.caf.api.worker.TaskMessage;
-import com.hpe.caf.configs.RabbitConfiguration;
-import com.hpe.caf.util.rabbitmq.RabbitUtil;
-import com.hpe.caf.worker.queue.rabbit.RabbitWorkerQueueConfiguration;
-import com.hpe.caf.worker.testing.SettingNames;
-import com.hpe.caf.worker.testing.SettingsProvider;
-import com.hpe.caf.worker.testing.WorkerServices;
+import com.github.cafapi.common.api.Codec;
+import com.github.cafapi.common.api.CodecException;
+import com.github.workerframework.util.rabbitmq.RabbitUtil;
+import com.github.workerframework.worker.api.TaskMessage;
+import com.github.workerframework.worker.configs.RabbitConfiguration;
+import com.github.workerframework.worker.queues.rabbit.RabbitWorkerQueueConfiguration;
+import com.github.workerframework.worker.testing.SettingNames;
+import com.github.workerframework.worker.testing.util.SettingsProvider;
+import com.github.workerframework.worker.testing.util.WorkerServices;
 import com.rabbitmq.client.*;
 import org.apache.log4j.Logger;
 

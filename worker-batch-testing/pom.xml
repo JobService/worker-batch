@@ -43,11 +43,11 @@
             <artifactId>worker-batch-shared</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework.testing</groupId>
+            <groupId>com.github.workerframework.worker.testing</groupId>
             <artifactId>workerframework-testing-integration</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework</groupId>
+            <groupId>com.github.workerframework.worker.queues</groupId>
             <artifactId>worker-queue-rabbit</artifactId>
         </dependency>
         <dependency>
@@ -55,7 +55,7 @@
             <artifactId>amqp-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework</groupId>
+            <groupId>com.github.workerframework.worker.util</groupId>
             <artifactId>util-rabbitmq</artifactId>
         </dependency>
         <dependency>
@@ -63,7 +63,7 @@
             <artifactId>commons-io</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.cafapi.util</groupId>
+            <groupId>com.github.cafapi.common.util</groupId>
             <artifactId>util-ref</artifactId>
         </dependency>
         <dependency>
@@ -71,15 +71,15 @@
             <artifactId>log4j-over-slf4j</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework.testing</groupId>
+            <groupId>com.github.workerframework.worker.testing</groupId>
             <artifactId>workerframework-testing-util</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework</groupId>
+            <groupId>com.github.workerframework.worker</groupId>
             <artifactId>worker-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.cafapi</groupId>
+            <groupId>com.github.cafapi.common.api</groupId>
             <artifactId>caf-api</artifactId>
         </dependency>
          <dependency>
@@ -88,12 +88,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.cafapi.codec</groupId>
+            <groupId>com.github.cafapi.common.codecs</groupId>
             <artifactId>codec-json</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework</groupId>
+            <groupId>com.github.workerframework.worker</groupId>
             <artifactId>worker-configs</artifactId>
         </dependency>
         <dependency>

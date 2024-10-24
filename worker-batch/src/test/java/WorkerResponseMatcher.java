@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.hpe.caf.api.CodecException;
-import com.hpe.caf.api.worker.WorkerResponse;
-import com.hpe.caf.codec.JsonCodec;
+import com.github.cafapi.common.api.CodecException;
+import com.github.cafapi.common.codecs.jsonlzf.JsonCodec;
+import com.github.workerframework.worker.api.WorkerResponse;
 import org.mockito.ArgumentMatcher;
 
 public class WorkerResponseMatcher implements ArgumentMatcher<byte[]> {

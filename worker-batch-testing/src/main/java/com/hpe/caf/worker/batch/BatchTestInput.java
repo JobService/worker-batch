@@ -15,7 +15,7 @@
  */
 package com.hpe.caf.worker.batch;
 
-import com.hpe.caf.worker.testing.FileTestInputData;
+import com.github.workerframework.worker.testing.FileTestInputData;
 
 public class BatchTestInput extends FileTestInputData {
     private BatchWorkerTask task;

@@ -15,12 +15,12 @@
  */
 package com.hpe.caf.worker.batch;
 
-import com.hpe.caf.api.Codec;
-import com.hpe.caf.api.ConfigurationSource;
-import com.hpe.caf.api.worker.DataStore;
-import com.hpe.caf.api.worker.WorkerException;
-import com.hpe.caf.api.worker.WorkerFactory;
-import com.hpe.caf.api.worker.WorkerFactoryProvider;
+import com.github.cafapi.common.api.Codec;
+import com.github.cafapi.common.api.ConfigurationSource;
+import com.github.workerframework.worker.api.DataStore;
+import com.github.workerframework.worker.api.WorkerException;
+import com.github.workerframework.worker.api.WorkerFactory;
+import com.github.workerframework.worker.api.WorkerFactoryProvider;
 
 public class BatchWorkerFactoryProvider implements WorkerFactoryProvider {
 

@@ -15,7 +15,7 @@
  */
 package com.hpe.caf.worker.batch;
 
-import com.hpe.caf.api.worker.WorkerConfiguration;
+import com.github.workerframework.worker.api.WorkerConfiguration;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

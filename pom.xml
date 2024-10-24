@@ -57,24 +57,24 @@
             <dependency>
                 <groupId>com.github.workerframework</groupId>
                 <artifactId>worker-framework-aggregator</artifactId>
-                <version>8.1.0-SNAPSHOT</version>
+                <version>9.0.0-975260-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>com.github.workerframework.testing</groupId>
+                <groupId>com.github.workerframework.worker.testing</groupId>
                 <artifactId>workerframework-testing-integration</artifactId>
-                <version>3.1.0-SNAPSHOT</version>
+                <version>4.0.0-975260-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.workerframework.testing</groupId>
+                <groupId>com.github.workerframework.worker.testing</groupId>
                 <artifactId>workerframework-testing-util</artifactId>
-                <version>3.1.0-SNAPSHOT</version>
+                <version>4.0.0-975260-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.github.cafdataprocessing</groupId>
                 <artifactId>worker-document-shared</artifactId>
-                <version>5.0.0-924</version>
+                <version>7.0.0-975260-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.github.jobservice</groupId>

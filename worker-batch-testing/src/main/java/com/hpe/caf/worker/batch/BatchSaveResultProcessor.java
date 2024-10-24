@@ -15,11 +15,12 @@
  */
 package com.hpe.caf.worker.batch;
 
-import com.hpe.caf.api.Codec;
-import com.hpe.caf.api.worker.TaskMessage;
-import com.hpe.caf.worker.testing.TestConfiguration;
-import com.hpe.caf.worker.testing.TestItem;
-import com.hpe.caf.worker.testing.preparation.PreparationResultProcessor;
+
+import com.github.cafapi.common.api.Codec;
+import com.github.workerframework.worker.api.TaskMessage;
+import com.github.workerframework.worker.testing.TestConfiguration;
+import com.github.workerframework.worker.testing.TestItem;
+import com.github.workerframework.worker.testing.preparation.PreparationResultProcessor;
 
 import java.util.List;
 

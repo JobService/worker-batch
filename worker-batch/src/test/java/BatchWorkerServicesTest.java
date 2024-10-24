@@ -13,10 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.hpe.caf.api.Codec;
-import com.hpe.caf.api.CodecException;
-import com.hpe.caf.api.worker.*;
-import com.hpe.caf.codec.JsonCodec;
+import com.github.cafapi.common.api.Codec;
+import com.github.cafapi.common.api.CodecException;
+import com.github.cafapi.common.codecs.jsonlzf.JsonCodec;
+import com.github.workerframework.worker.api.DataStore;
+import com.github.workerframework.worker.api.TaskFailedException;
+import com.github.workerframework.worker.api.TaskStatus;
+import com.github.workerframework.worker.api.TrackingInfo;
+import com.github.workerframework.worker.api.WorkerResponse;
+import com.github.workerframework.worker.api.WorkerTaskData;
 import com.hpe.caf.worker.batch.*;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -15,17 +15,17 @@
  */
 package com.hpe.caf.worker.batch;
 
-import com.hpe.caf.api.Codec;
-import com.hpe.caf.api.CodecException;
-import com.hpe.caf.api.worker.DataStore;
-import com.hpe.caf.api.worker.DataStoreException;
-import com.hpe.caf.api.worker.TaskMessage;
-import com.hpe.caf.api.worker.TaskStatus;
-import com.hpe.caf.worker.document.DocumentWorkerFieldEncoding;
-import com.hpe.caf.worker.document.DocumentWorkerFieldValue;
-import com.hpe.caf.worker.document.DocumentWorkerTask;
-import com.hpe.caf.worker.testing.ResultProcessor;
-import com.hpe.caf.worker.testing.TestItem;
+import com.github.cafapi.common.api.Codec;
+import com.github.cafapi.common.api.CodecException;
+import com.github.cafdataprocessing.worker.document.DocumentWorkerFieldEncoding;
+import com.github.cafdataprocessing.worker.document.DocumentWorkerFieldValue;
+import com.github.cafdataprocessing.worker.document.DocumentWorkerTask;
+import com.github.workerframework.worker.api.DataStore;
+import com.github.workerframework.worker.api.DataStoreException;
+import com.github.workerframework.worker.api.TaskMessage;
+import com.github.workerframework.worker.api.TaskStatus;
+import com.github.workerframework.worker.testing.ResultProcessor;
+import com.github.workerframework.worker.testing.TestItem;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 

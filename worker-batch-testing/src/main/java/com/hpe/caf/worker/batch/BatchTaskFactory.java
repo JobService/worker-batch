@@ -15,11 +15,12 @@
  */
 package com.hpe.caf.worker.batch;
 
-import com.hpe.caf.api.worker.TrackingInfo;
-import com.hpe.caf.util.ref.ReferencedData;
-import com.hpe.caf.worker.testing.FileInputWorkerTaskFactory;
-import com.hpe.caf.worker.testing.TestConfiguration;
-import com.hpe.caf.worker.testing.TestItem;
+
+import com.github.cafapi.common.util.ref.ReferencedData;
+import com.github.workerframework.worker.api.TrackingInfo;
+import com.github.workerframework.worker.testing.FileInputWorkerTaskFactory;
+import com.github.workerframework.worker.testing.TestConfiguration;
+import com.github.workerframework.worker.testing.TestItem;
 
 import java.util.Date;
 

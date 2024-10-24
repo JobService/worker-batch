@@ -15,12 +15,17 @@
  */
 package com.hpe.caf.worker.batch;
 
-import com.hpe.caf.api.Codec;
-import com.hpe.caf.api.ConfigurationSource;
-import com.hpe.caf.api.HealthResult;
-import com.hpe.caf.api.worker.*;
-import com.hpe.caf.util.ModuleLoader;
-import com.hpe.caf.worker.AbstractWorkerFactory;
+import com.github.cafapi.common.api.Codec;
+import com.github.cafapi.common.api.ConfigurationSource;
+import com.github.cafapi.common.api.HealthResult;
+import com.github.cafapi.common.util.moduleloader.ModuleLoader;
+import com.github.workerframework.worker.AbstractWorkerFactory;
+import com.github.workerframework.worker.api.DataStore;
+import com.github.workerframework.worker.api.InvalidTaskException;
+import com.github.workerframework.worker.api.TaskRejectedException;
+import com.github.workerframework.worker.api.Worker;
+import com.github.workerframework.worker.api.WorkerException;
+import com.github.workerframework.worker.api.WorkerTaskData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

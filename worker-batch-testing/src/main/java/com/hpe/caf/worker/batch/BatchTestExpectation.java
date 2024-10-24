@@ -15,7 +15,7 @@
  */
 package com.hpe.caf.worker.batch;
 
-import com.hpe.caf.api.worker.TaskMessage;
+import com.github.workerframework.worker.api.TaskMessage;
 
 import java.util.List;
 

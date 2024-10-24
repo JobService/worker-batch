@@ -15,8 +15,12 @@
  */
 package com.hpe.caf.worker.batch;
 
-import com.hpe.caf.worker.testing.*;
-import com.hpe.caf.worker.testing.execution.AbstractTestControllerProvider;
+import com.github.workerframework.worker.testing.ResultProcessor;
+import com.github.workerframework.worker.testing.TestConfiguration;
+import com.github.workerframework.worker.testing.TestItemProvider;
+import com.github.workerframework.worker.testing.WorkerTaskFactory;
+import com.github.workerframework.worker.testing.execution.AbstractTestControllerProvider;
+import com.github.workerframework.worker.testing.util.WorkerServices;
 
 public class BatchTestControllerProvider extends AbstractTestControllerProvider<BatchWorkerConfiguration, BatchWorkerTask, BatchWorkerResult, BatchTestInput, BatchTestExpectation> {
 

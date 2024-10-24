@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.hpe.caf.api.CodecException;
-import com.hpe.caf.api.worker.DataStore;
-import com.hpe.caf.api.worker.DataStoreException;
-import com.hpe.caf.api.worker.TaskMessage;
-import com.hpe.caf.api.worker.TaskStatus;
-import com.hpe.caf.codec.JsonCodec;
+import com.github.cafapi.common.api.CodecException;
+import com.github.cafapi.common.codecs.jsonlzf.JsonCodec;
+import com.github.workerframework.worker.api.DataStore;
+import com.github.workerframework.worker.api.DataStoreException;
+import com.github.workerframework.worker.api.TaskMessage;
+import com.github.workerframework.worker.api.TaskStatus;
 import com.hpe.caf.worker.batch.BatchResultValidationProcessor;
 import static org.testng.Assert.fail;
 import static org.testng.Assert.assertTrue;

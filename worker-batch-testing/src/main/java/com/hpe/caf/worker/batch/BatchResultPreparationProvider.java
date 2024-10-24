@@ -15,9 +15,9 @@
  */
 package com.hpe.caf.worker.batch;
 
-import com.hpe.caf.worker.testing.TestConfiguration;
-import com.hpe.caf.worker.testing.TestItem;
-import com.hpe.caf.worker.testing.preparation.PreparationItemProvider;
+import com.github.workerframework.worker.testing.TestConfiguration;
+import com.github.workerframework.worker.testing.TestItem;
+import com.github.workerframework.worker.testing.preparation.PreparationItemProvider;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
