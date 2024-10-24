@@ -27,7 +27,7 @@
     <parent>
         <groupId>com.github.jobservice</groupId>
         <artifactId>worker-batch-aggregator</artifactId>
-        <version>3.7.0-SNAPSHOT</version>
+        <version>4.0.0-SNAPSHOT</version>
     </parent>
 
     <profiles>
@@ -44,7 +44,7 @@
             <id>store-fs</id>
             <dependencies>
                 <dependency>
-                    <groupId>com.github.workerframework</groupId>
+                    <groupId>com.github.workerframework.worker.datastores</groupId>
                     <artifactId>worker-store-fs</artifactId>
                 </dependency>
             </dependencies>
@@ -54,27 +54,27 @@
             <id>local-debug</id>
             <dependencies>
                 <dependency>
-                    <groupId>com.github.cafapi.cipher</groupId>
+                    <groupId>com.github.cafapi.common.ciphers</groupId>
                     <artifactId>cipher-null</artifactId>
                 </dependency>
                 <dependency>
-                    <groupId>com.github.cafapi.config</groupId>
+                    <groupId>com.github.cafapi.common.config.sources</groupId>
                     <artifactId>config-file</artifactId>
                 </dependency>
                 <dependency>
-                    <groupId>com.github.cafapi.codec</groupId>
+                    <groupId>com.github.cafapi.common.codecs</groupId>
                     <artifactId>codec-json</artifactId>
                 </dependency>
                 <dependency>
-                    <groupId>com.github.workerframework</groupId>
+                    <groupId>com.github.workerframework.worker.queues</groupId>
                     <artifactId>worker-queue-rabbit</artifactId>
                 </dependency>
                 <dependency>
-                    <groupId>com.github.workerframework</groupId>
+                    <groupId>com.github.workerframework.worker</groupId>
                     <artifactId>worker-core</artifactId>
                 </dependency>
                 <dependency>
-                    <groupId>com.github.workerframework</groupId>
+                    <groupId>com.github.workerframework.worker</groupId>
                     <artifactId>worker-api</artifactId>
                 </dependency>
             </dependencies>
@@ -83,11 +83,11 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.cafapi</groupId>
+            <groupId>com.github.cafapi.common.api</groupId>
             <artifactId>caf-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework</groupId>
+            <groupId>com.github.workerframework.worker</groupId>
             <artifactId>worker-caf</artifactId>
         </dependency>
         <dependency>
@@ -95,16 +95,16 @@
             <artifactId>worker-batch-shared</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.cafapi.util</groupId>
+            <groupId>com.github.cafapi.common.util</groupId>
             <artifactId>util-moduleloader</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.cafapi.codec</groupId>
+            <groupId>com.github.cafapi.common.codecs</groupId>
             <artifactId>codec-json</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework</groupId>
+            <groupId>com.github.workerframework.worker</groupId>
             <artifactId>worker-api</artifactId>
         </dependency>
         <dependency>

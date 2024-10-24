@@ -13,23 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.github.workerframework.worker.api.WorkerResponse;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
+package com.github.jobservice.worker.batch;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.github.workerframework.worker.testing.FileTestInputData;
 
-/**
- * Created by gibsodom on 04/04/2016.
- */
-public class PublishAnswer implements Answer {
+public class BatchTestInput extends FileTestInputData {
+    private BatchWorkerTask task;
 
-    public List<WorkerResponse> messageList = new ArrayList<>();
+    public BatchWorkerTask getTask() {
+        return task;
+    }
 
-    @Override
-    public Object answer(InvocationOnMock invocation) throws Throwable {
-        messageList.add((WorkerResponse) invocation.getArguments()[1]);
-        return invocation.getArguments()[1];
+    public void setTask(BatchWorkerTask task) {
+        this.task = task;
     }
 }
