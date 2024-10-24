@@ -29,7 +29,6 @@ import com.github.workerframework.worker.api.TaskStatus;
 import com.github.workerframework.worker.api.TrackingInfo;
 import com.github.workerframework.worker.api.WorkerResponse;
 import com.github.workerframework.worker.api.WorkerTaskData;
-import com.hpe.caf.worker.batch.*;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
