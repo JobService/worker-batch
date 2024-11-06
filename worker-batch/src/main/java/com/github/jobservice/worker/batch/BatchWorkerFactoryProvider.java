@@ -17,10 +17,11 @@ package com.github.jobservice.worker.batch;
 
 import com.github.cafapi.common.api.Codec;
 import com.github.cafapi.common.api.ConfigurationSource;
-import com.github.workerframework.worker.api.DataStore;
-import com.github.workerframework.worker.api.WorkerException;
-import com.github.workerframework.worker.api.WorkerFactory;
-import com.github.workerframework.worker.api.WorkerFactoryProvider;
+import com.github.workerframework.api.WorkerFactoryProvider;
+import com.github.workerframework.api.DataStore;
+import com.github.workerframework.api.WorkerException;
+import com.github.workerframework.api.WorkerFactory;
+import com.github.workerframework.api.WorkerFactoryProvider;
 
 public class BatchWorkerFactoryProvider implements WorkerFactoryProvider {
 

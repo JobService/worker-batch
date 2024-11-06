@@ -15,12 +15,12 @@
  */
 package com.github.jobservice.worker.batch;
 
-import com.github.workerframework.worker.testing.ResultProcessor;
-import com.github.workerframework.worker.testing.TestConfiguration;
-import com.github.workerframework.worker.testing.TestItemProvider;
-import com.github.workerframework.worker.testing.WorkerTaskFactory;
-import com.github.workerframework.worker.testing.execution.AbstractTestControllerProvider;
-import com.github.workerframework.worker.testing.util.WorkerServices;
+import com.github.workerframework.testing.ResultProcessor;
+import com.github.workerframework.testing.TestConfiguration;
+import com.github.workerframework.testing.TestItemProvider;
+import com.github.workerframework.testing.WorkerTaskFactory;
+import com.github.workerframework.testing.execution.AbstractTestControllerProvider;
+import com.github.workerframework.testing.util.WorkerServices;
 
 public class BatchTestControllerProvider extends AbstractTestControllerProvider<BatchWorkerConfiguration, BatchWorkerTask, BatchWorkerResult, BatchTestInput, BatchTestExpectation> {
 

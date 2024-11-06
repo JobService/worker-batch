@@ -15,7 +15,7 @@
  */
 import com.github.cafapi.common.api.CodecException;
 import com.github.cafapi.common.codecs.jsonlzf.JsonCodec;
-import com.github.workerframework.worker.api.WorkerResponse;
+import com.github.workerframework.api.WorkerResponse;
 import org.mockito.ArgumentMatcher;
 
 public class WorkerResponseMatcher implements ArgumentMatcher<byte[]> {

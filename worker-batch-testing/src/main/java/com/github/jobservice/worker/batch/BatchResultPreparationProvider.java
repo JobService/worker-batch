@@ -15,9 +15,9 @@
  */
 package com.github.jobservice.worker.batch;
 
-import com.github.workerframework.worker.testing.TestConfiguration;
-import com.github.workerframework.worker.testing.TestItem;
-import com.github.workerframework.worker.testing.preparation.PreparationItemProvider;
+import com.github.workerframework.testing.TestConfiguration;
+import com.github.workerframework.testing.TestItem;
+import com.github.workerframework.testing.preparation.PreparationItemProvider;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

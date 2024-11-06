@@ -17,14 +17,14 @@ package com.github.jobservice.worker.batch;
 
 
 import com.github.cafapi.common.api.Codec;
-import com.github.workerframework.worker.AbstractWorker;
-import com.github.workerframework.worker.api.DataStore;
-import com.github.workerframework.worker.api.InvalidTaskException;
-import com.github.workerframework.worker.api.TaskFailedException;
-import com.github.workerframework.worker.api.TaskRejectedException;
-import com.github.workerframework.worker.api.TrackingInfo;
-import com.github.workerframework.worker.api.WorkerResponse;
-import com.github.workerframework.worker.api.WorkerTaskData;
+import com.github.workerframework.caf.AbstractWorker;
+import com.github.workerframework.api.DataStore;
+import com.github.workerframework.api.InvalidTaskException;
+import com.github.workerframework.api.TaskFailedException;
+import com.github.workerframework.api.TaskRejectedException;
+import com.github.workerframework.api.TrackingInfo;
+import com.github.workerframework.api.WorkerResponse;
+import com.github.workerframework.api.WorkerTaskData;
 
 import java.util.Map;
 

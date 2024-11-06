@@ -62,12 +62,12 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>com.github.workerframework.worker.testing</groupId>
+                <groupId>com.github.workerframework.testing</groupId>
                 <artifactId>workerframework-testing-integration</artifactId>
                 <version>4.0.0-975260-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.workerframework.worker.testing</groupId>
+                <groupId>com.github.workerframework.testing</groupId>
                 <artifactId>workerframework-testing-util</artifactId>
                 <version>4.0.0-975260-SNAPSHOT</version>
             </dependency>

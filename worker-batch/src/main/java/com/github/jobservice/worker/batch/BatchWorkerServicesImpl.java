@@ -18,10 +18,10 @@ package com.github.jobservice.worker.batch;
 
 import com.github.cafapi.common.api.Codec;
 import com.github.cafapi.common.api.CodecException;
-import com.github.workerframework.worker.api.TaskFailedException;
-import com.github.workerframework.worker.api.TaskStatus;
-import com.github.workerframework.worker.api.WorkerResponse;
-import com.github.workerframework.worker.api.WorkerTaskData;
+import com.github.workerframework.api.TaskFailedException;
+import com.github.workerframework.api.TaskStatus;
+import com.github.workerframework.api.WorkerResponse;
+import com.github.workerframework.api.WorkerTaskData;
 
 import java.util.HashMap;
 import java.util.Map;

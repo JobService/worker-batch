@@ -17,10 +17,10 @@ package com.github.jobservice.worker.batch;
 
 
 import com.github.cafapi.common.util.ref.ReferencedData;
-import com.github.workerframework.worker.api.TrackingInfo;
-import com.github.workerframework.worker.testing.FileInputWorkerTaskFactory;
-import com.github.workerframework.worker.testing.TestConfiguration;
-import com.github.workerframework.worker.testing.TestItem;
+import com.github.workerframework.api.TrackingInfo;
+import com.github.workerframework.testing.FileInputWorkerTaskFactory;
+import com.github.workerframework.testing.TestConfiguration;
+import com.github.workerframework.testing.TestItem;
 
 public class BatchTaskFactory extends FileInputWorkerTaskFactory<BatchWorkerTask, BatchTestInput, BatchTestExpectation> {
 

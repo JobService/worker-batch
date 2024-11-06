@@ -15,7 +15,7 @@
  */
 package com.github.jobservice.worker.batch;
 
-import com.github.workerframework.worker.api.WorkerConfiguration;
+import com.github.workerframework.api.WorkerConfiguration;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

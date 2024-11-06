@@ -17,10 +17,10 @@ package com.github.jobservice.worker.batch;
 
 
 import com.github.cafapi.common.api.Codec;
-import com.github.workerframework.worker.api.TaskMessage;
-import com.github.workerframework.worker.testing.TestConfiguration;
-import com.github.workerframework.worker.testing.TestItem;
-import com.github.workerframework.worker.testing.preparation.PreparationResultProcessor;
+import com.github.workerframework.api.TaskMessage;
+import com.github.workerframework.testing.TestConfiguration;
+import com.github.workerframework.testing.TestItem;
+import com.github.workerframework.testing.preparation.PreparationResultProcessor;
 
 import java.util.List;
 

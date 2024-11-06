@@ -15,7 +15,7 @@
  */
 package com.github.jobservice.worker.batch;
 
-import com.github.workerframework.worker.api.TaskMessage;
+import com.github.workerframework.api.TaskMessage;
 
 import java.util.List;
 

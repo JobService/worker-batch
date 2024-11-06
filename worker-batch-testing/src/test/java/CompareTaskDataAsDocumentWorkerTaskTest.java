@@ -15,10 +15,10 @@
  */
 import com.github.cafapi.common.api.CodecException;
 import com.github.cafapi.common.codecs.jsonlzf.JsonCodec;
-import com.github.workerframework.worker.api.DataStore;
-import com.github.workerframework.worker.api.DataStoreException;
-import com.github.workerframework.worker.api.TaskMessage;
-import com.github.workerframework.worker.api.TaskStatus;
+import com.github.workerframework.api.DataStore;
+import com.github.workerframework.api.DataStoreException;
+import com.github.workerframework.api.TaskMessage;
+import com.github.workerframework.api.TaskStatus;
 import com.github.jobservice.worker.batch.BatchResultValidationProcessor;
 import static org.testng.Assert.fail;
 import static org.testng.Assert.assertTrue;

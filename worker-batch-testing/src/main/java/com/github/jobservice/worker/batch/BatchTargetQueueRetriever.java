@@ -18,12 +18,12 @@ package com.github.jobservice.worker.batch;
 import com.github.cafapi.common.api.Codec;
 import com.github.cafapi.common.api.CodecException;
 import com.github.workerframework.util.rabbitmq.RabbitUtil;
-import com.github.workerframework.worker.api.TaskMessage;
-import com.github.workerframework.worker.configs.RabbitConfiguration;
-import com.github.workerframework.worker.queues.rabbit.RabbitWorkerQueueConfiguration;
-import com.github.workerframework.worker.testing.SettingNames;
-import com.github.workerframework.worker.testing.util.SettingsProvider;
-import com.github.workerframework.worker.testing.util.WorkerServices;
+import com.github.workerframework.api.TaskMessage;
+import com.github.workerframework.configs.RabbitConfiguration;
+import com.github.workerframework.queues.rabbit.RabbitWorkerQueueConfiguration;
+import com.github.workerframework.testing.SettingNames;
+import com.github.workerframework.testing.util.SettingsProvider;
+import com.github.workerframework.testing.util.WorkerServices;
 import com.rabbitmq.client.*;
 import org.apache.log4j.Logger;
 

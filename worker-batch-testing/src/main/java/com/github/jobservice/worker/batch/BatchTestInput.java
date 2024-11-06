@@ -15,7 +15,7 @@
  */
 package com.github.jobservice.worker.batch;
 
-import com.github.workerframework.worker.testing.FileTestInputData;
+import com.github.workerframework.testing.FileTestInputData;
 
 public class BatchTestInput extends FileTestInputData {
     private BatchWorkerTask task;
