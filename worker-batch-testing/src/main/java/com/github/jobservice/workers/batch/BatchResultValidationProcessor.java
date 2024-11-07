@@ -17,9 +17,9 @@ package com.github.jobservice.workers.batch;
 
 import com.github.cafapi.common.api.Codec;
 import com.github.cafapi.common.api.CodecException;
-import com.github.cafdataprocessing.worker.document.DocumentWorkerFieldEncoding;
-import com.github.cafdataprocessing.worker.document.DocumentWorkerFieldValue;
-import com.github.cafdataprocessing.worker.document.DocumentWorkerTask;
+import com.github.cafdataprocessing.workers.document.DocumentWorkerFieldEncoding;
+import com.github.cafdataprocessing.workers.document.DocumentWorkerFieldValue;
+import com.github.cafdataprocessing.workers.document.DocumentWorkerTask;
 import com.github.workerframework.api.DataStore;
 import com.github.workerframework.api.DataStoreException;
 import com.github.workerframework.api.TaskMessage;
