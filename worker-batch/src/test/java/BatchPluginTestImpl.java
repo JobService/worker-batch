@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.github.jobservice.worker.batch.BatchWorkerPlugin;
-import com.github.jobservice.worker.batch.BatchWorkerServices;
+import com.github.jobservice.workers.batch.BatchWorkerPlugin;
+import com.github.jobservice.workers.batch.BatchWorkerServices;
 
 import java.util.Arrays;
 import java.util.List;

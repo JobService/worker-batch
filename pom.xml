@@ -25,7 +25,7 @@
     <description>Large batch handling for the Job Service</description>
     <url>https://jobservice.github.io/job-service</url>
 
-    <groupId>com.github.jobservice</groupId>
+    <groupId>com.github.jobservice.workers.batch</groupId>
     <artifactId>worker-batch-aggregator</artifactId>
     <version>4.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -57,37 +57,37 @@
             <dependency>
                 <groupId>com.github.workerframework</groupId>
                 <artifactId>worker-framework-aggregator</artifactId>
-                <version>9.0.0-975260-SNAPSHOT</version>
+                <version>9.0.0-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.github.workerframework.testing</groupId>
                 <artifactId>workerframework-testing-integration</artifactId>
-                <version>4.0.0-975260-SNAPSHOT</version>
+                <version>4.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.github.workerframework.testing</groupId>
                 <artifactId>workerframework-testing-util</artifactId>
-                <version>4.0.0-975260-SNAPSHOT</version>
+                <version>4.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.github.cafdataprocessing</groupId>
                 <artifactId>worker-document-shared</artifactId>
-                <version>7.0.0-975260-SNAPSHOT</version>
+                <version>7.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.jobservice</groupId>
+                <groupId>com.github.jobservice.workers.batch</groupId>
                 <artifactId>worker-batch</artifactId>
                 <version>4.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.jobservice</groupId>
+                <groupId>com.github.jobservice.workers.batch</groupId>
                 <artifactId>worker-batch-extensibility</artifactId>
                 <version>4.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.jobservice</groupId>
+                <groupId>com.github.jobservice.workers.batch</groupId>
                 <artifactId>worker-batch-shared</artifactId>
                 <version>4.0.0-SNAPSHOT</version>
             </dependency>
