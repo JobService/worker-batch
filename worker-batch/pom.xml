@@ -21,13 +21,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
-    <groupId>com.github.jobservice</groupId>
     <artifactId>worker-batch</artifactId>
 
     <parent>
-        <groupId>com.github.jobservice</groupId>
+        <groupId>com.github.jobservice.workers.batch</groupId>
         <artifactId>worker-batch-aggregator</artifactId>
-        <version>3.7.0-SNAPSHOT</version>
+        <version>4.0.0-SNAPSHOT</version>
     </parent>
 
     <profiles>
@@ -54,15 +53,15 @@
             <id>local-debug</id>
             <dependencies>
                 <dependency>
-                    <groupId>com.github.cafapi.cipher</groupId>
+                    <groupId>com.github.cafapi.common</groupId>
                     <artifactId>cipher-null</artifactId>
                 </dependency>
                 <dependency>
-                    <groupId>com.github.cafapi.config</groupId>
+                    <groupId>com.github.cafapi.common</groupId>
                     <artifactId>config-file</artifactId>
                 </dependency>
                 <dependency>
-                    <groupId>com.github.cafapi.codec</groupId>
+                    <groupId>com.github.cafapi.common</groupId>
                     <artifactId>codec-json</artifactId>
                 </dependency>
                 <dependency>
@@ -83,7 +82,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.cafapi</groupId>
+            <groupId>com.github.cafapi.common</groupId>
             <artifactId>caf-api</artifactId>
         </dependency>
         <dependency>
@@ -91,15 +90,15 @@
             <artifactId>worker-caf</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.jobservice</groupId>
+            <groupId>com.github.jobservice.workers.batch</groupId>
             <artifactId>worker-batch-shared</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.cafapi.util</groupId>
+            <groupId>com.github.cafapi.common</groupId>
             <artifactId>util-moduleloader</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.cafapi.codec</groupId>
+            <groupId>com.github.cafapi.common</groupId>
             <artifactId>codec-json</artifactId>
             <scope>provided</scope>
         </dependency>
@@ -116,7 +115,7 @@
             <artifactId>jakarta.validation-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.jobservice</groupId>
+            <groupId>com.github.jobservice.workers.batch</groupId>
             <artifactId>worker-batch-extensibility</artifactId>
         </dependency>
         <!-- Test Dependencies -->

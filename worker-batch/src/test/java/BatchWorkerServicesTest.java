@@ -13,11 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.hpe.caf.api.Codec;
-import com.hpe.caf.api.CodecException;
-import com.hpe.caf.api.worker.*;
-import com.hpe.caf.codec.JsonCodec;
-import com.hpe.caf.worker.batch.*;
+import com.github.cafapi.common.api.Codec;
+import com.github.cafapi.common.api.CodecException;
+import com.github.cafapi.common.codecs.jsonlzf.JsonCodec;
+import com.github.jobservice.workers.batch.BatchWorker;
+import com.github.jobservice.workers.batch.BatchWorkerConfiguration;
+import com.github.jobservice.workers.batch.BatchWorkerConstants;
+import com.github.jobservice.workers.batch.BatchWorkerPlugin;
+import com.github.jobservice.workers.batch.BatchWorkerServicesImpl;
+import com.github.jobservice.workers.batch.BatchWorkerTask;
+import com.github.jobservice.workers.batch.ReturnValueBehaviour;
+import com.github.workerframework.api.DataStore;
+import com.github.workerframework.api.TaskFailedException;
+import com.github.workerframework.api.TaskStatus;
+import com.github.workerframework.api.TrackingInfo;
+import com.github.workerframework.api.WorkerResponse;
+import com.github.workerframework.api.WorkerTaskData;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,7 +36,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.io.File;
