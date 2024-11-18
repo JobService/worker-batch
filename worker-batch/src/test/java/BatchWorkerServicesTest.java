@@ -15,7 +15,7 @@
  */
 import com.github.cafapi.common.api.Codec;
 import com.github.cafapi.common.api.CodecException;
-import com.github.cafapi.common.codecs.jsonlzf.JsonCodec;
+import com.github.cafapi.common.codecs.json.JsonCodec;
 import com.github.jobservice.workers.batch.BatchWorker;
 import com.github.jobservice.workers.batch.BatchWorkerConfiguration;
 import com.github.jobservice.workers.batch.BatchWorkerConstants;

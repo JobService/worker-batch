@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import com.github.cafapi.common.api.CodecException;
-import com.github.cafapi.common.codecs.jsonlzf.JsonCodec;
+import com.github.cafapi.common.codecs.json.JsonCodec;
 import com.github.workerframework.api.WorkerResponse;
 import org.mockito.ArgumentMatcher;
 
