@@ -17,9 +17,6 @@ More information on the functioning of the Batch Worker is available [here](http
 
 Configuration details can be found [here](https://github.houston.softwaregrp.net/caf/chateau/tree/develop/services/batch-worker/configuration-files).
 
-##### Feature Testing
-The testing for the Batch Worker is defined [here](https://github.com/jobservice/worker-batch/tree/develop/testcases)
-
 ### worker-batch-testing
 - This project contains service specific testing implementations to allow automated testing of the batch worker.
 
