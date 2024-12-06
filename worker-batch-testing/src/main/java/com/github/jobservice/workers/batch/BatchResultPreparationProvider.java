@@ -40,7 +40,7 @@ public class BatchResultPreparationProvider extends PreparationItemProvider<Batc
             task = new BatchWorkerTask();
             task.targetPipe = UUID.randomUUID().toString();
             task.batchDefinition = new String(Files.readAllBytes(inputFile));
-            task.batchType = "com.hpe.caf.worker.batch.BatchPluginTestImpl";
+            task.batchType = "BatchPluginTestImpl";
         } else {
             task.batchDefinition = new String(Files.readAllBytes(inputFile));
         }
