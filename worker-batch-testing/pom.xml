@@ -27,7 +27,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>worker-batch-testing</artifactId>
-
+    <name>Batch Worker Testing</name>
     <dependencies>
         <dependency>
             <groupId>com.github.cafdataprocessing.workers.document</groupId>
