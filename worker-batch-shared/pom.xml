@@ -22,7 +22,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>worker-batch-shared</artifactId>
-
+    <name>Batch Worker Shared</name>
     <parent>
         <groupId>com.github.jobservice.workers.batch</groupId>
         <artifactId>worker-batch-aggregator</artifactId>
