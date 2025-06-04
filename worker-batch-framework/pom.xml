@@ -23,6 +23,7 @@
 
     <artifactId>worker-batch-framework</artifactId>
     <packaging>pom</packaging>
+    <name>Batch Worker Framework</name>
 
     <parent>
         <groupId>com.github.jobservice.workers.batch</groupId>
