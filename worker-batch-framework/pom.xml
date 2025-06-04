@@ -31,34 +31,28 @@
         <version>4.1.0-SNAPSHOT</version>
     </parent>
     
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.github.jobservice</groupId>
-                <artifactId>worker-batch</artifactId>
-                <version>4.1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.jobservice</groupId>
-                <artifactId>worker-batch-extensibility</artifactId>
-                <version>4.1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.jobservice</groupId>
-                <artifactId>worker-batch-testing</artifactId>
-                <version>4.1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.jobservice</groupId>
-                <artifactId>document-message-builder</artifactId>
-                <version>4.1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.cafdataprocessing.workers.document</groupId>
-                <artifactId>worker-document-shared</artifactId>
-                <version>4.1.0-SNAPSHOT</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.github.jobservice</groupId>
+            <artifactId>worker-batch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.jobservice</groupId>
+            <artifactId>worker-batch-extensibility</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.jobservice</groupId>
+            <artifactId>worker-batch-testing</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.jobservice</groupId>
+            <artifactId>document-message-builder</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cafdataprocessing.workers.document</groupId>
+            <artifactId>worker-document-shared</artifactId>
+        </dependency>
+    </dependencies>
+
 
 </project>
