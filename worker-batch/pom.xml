@@ -22,6 +22,7 @@
     <modelVersion>4.0.0</modelVersion>
     
     <artifactId>worker-batch</artifactId>
+    <name>worker-batch</name>
 
     <parent>
         <groupId>com.github.jobservice.workers.batch</groupId>
