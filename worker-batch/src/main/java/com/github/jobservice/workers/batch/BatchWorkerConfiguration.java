@@ -28,6 +28,10 @@ public class BatchWorkerConfiguration extends WorkerConfiguration {
     @Size(min = 1)
     private String outputQueue;
 
+    @NotNull
+    @Size(min = 1)
+    private String invalidQueue;
+
     @Min(1)
     @Max(20)
     private int threads;
@@ -43,6 +47,14 @@ public class BatchWorkerConfiguration extends WorkerConfiguration {
 
     public void setOutputQueue(String outputQueue) {
         this.outputQueue = outputQueue;
+    }
+
+    public String getInvalidQueue() {
+        return invalidQueue;
+    }
+
+    public void setInvalidQueue(String invalidQueue) {
+        this.invalidQueue = invalidQueue;
     }
 
     public int getThreads() {
