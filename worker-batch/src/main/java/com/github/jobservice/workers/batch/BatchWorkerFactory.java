@@ -50,7 +50,7 @@ public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfigu
     }
 
     @Override
-    protected String getWorkerName() {
+    public String getWorkerName() {
         return BatchWorkerConstants.WORKER_NAME;
     }
 
