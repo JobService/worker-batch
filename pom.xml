@@ -27,7 +27,7 @@
 
     <groupId>com.github.jobservice.workers.batch</groupId>
     <artifactId>worker-batch-aggregator</artifactId>
-    <version>5.0.0-SNAPSHOT</version>
+    <version>4.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <parent>
