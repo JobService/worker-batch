@@ -19,14 +19,13 @@ import com.github.cafapi.common.api.Codec;
 import com.github.cafapi.common.api.ConfigurationSource;
 import com.github.cafapi.common.api.HealthResult;
 import com.github.cafapi.common.util.moduleloader.ModuleLoader;
+import com.github.workerframework.caf.AbstractWorkerFactory;
 import com.github.workerframework.api.DataStore;
 import com.github.workerframework.api.InvalidTaskException;
 import com.github.workerframework.api.TaskRejectedException;
 import com.github.workerframework.api.Worker;
-import com.github.workerframework.api.WorkerConfiguration;
 import com.github.workerframework.api.WorkerException;
 import com.github.workerframework.api.WorkerTaskData;
-import com.github.workerframework.caf.AbstractWorkerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,7 +55,7 @@ public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfigu
     }
 
     @Override
-    public String getWorkerName() {
+    protected String getWorkerName() {
         return BatchWorkerConstants.WORKER_NAME;
     }
 
@@ -73,7 +72,7 @@ public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfigu
 
     @Override
     public String getInvalidTaskQueue() {
-        return getConfiguration().getInvalidQueue();
+        return getConfiguration().getOutputQueue();
     }
 
     @Override
@@ -84,12 +83,6 @@ public class BatchWorkerFactory extends AbstractWorkerFactory<BatchWorkerConfigu
     @Override
     public HealthResult healthCheck() {
         return HealthResult.RESULT_HEALTHY;
-    }
-
-    @Override
-    public WorkerConfiguration getWorkerConfiguration()
-    {
-        return getConfiguration();
     }
 
     private void registerPlugins() {
