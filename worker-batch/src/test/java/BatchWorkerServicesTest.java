@@ -106,6 +106,10 @@ public class BatchWorkerServicesTest
 
         // Can be empty as we will be defaulting to the test plugin when no match is found
         final Map<String, BatchWorkerPlugin> plugins = new HashMap<>();
+        plugins.put("BatchPluginTestImpl", (services, batchDefinition, taskMessageType, taskMessageParams) -> {
+            // no-op plugin for return-value behaviour assertions
+        });
+
         final BatchWorkerConfiguration configuration = new BatchWorkerConfiguration();
         configuration.setReturnValueBehaviour(ReturnValueBehaviour.RETURN_ONLY_IF_ZERO_SUBTASKS);
         BatchWorker batchWorker = new BatchWorker(localTask, configuration, CODEC, plugins, null, workerTaskData);
