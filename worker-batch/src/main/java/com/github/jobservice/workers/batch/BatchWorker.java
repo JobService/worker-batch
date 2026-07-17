@@ -70,10 +70,8 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
             checkIfInterrupted();
             BatchWorkerTask task = getTask();
             BatchWorkerPlugin batchWorkerPlugin = registeredPlugins.get(task.batchType);
-            //If plugin not registered, check if full class name has been specified.
             if (batchWorkerPlugin == null) {
-                Class pluginClass = ClassLoader.getSystemClassLoader().loadClass(task.batchType);
-                batchWorkerPlugin = (BatchWorkerPlugin) pluginClass.newInstance();
+                throw new TaskFailedException("Invalid batch type: plugin is not registered: " + task.batchType);
             }
             batchWorkerPlugin.processBatch(batchWorkerServices, task.batchDefinition, task.taskMessageType, task.taskMessageParams);
 
@@ -102,8 +100,6 @@ public class BatchWorker extends AbstractWorker<BatchWorkerTask, BatchWorkerResu
                 default:
                     return createSuccessAndCompleteResponse(result);
             }
-        } catch (final ReflectiveOperationException e) {
-            throw new TaskFailedException("Invalid batch type  " + getTask().batchType);
         } catch (final BatchDefinitionException e) {
             throw new TaskFailedException("Failed to process batch", e);
         } catch(final BatchWorkerTransientException e) {
